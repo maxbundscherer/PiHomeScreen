@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane fx:controller="de.maxbundscherer.pihomescreen.presenter.MainPresenter" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Button fx:id="btnTopLeft" onAction="#btnTopLeft_onAction" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Button" />
+   </children>
+</Pane>

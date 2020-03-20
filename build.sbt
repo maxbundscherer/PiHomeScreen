@@ -22,6 +22,11 @@ libraryDependencies ++= javaFXModules.map( m =>
 // Add fxml files to compile dir
 resourceDirectory in Compile := (scalaSource in Compile).value
 
+// Bridging the gap between scalafx and FXML with generated proxies
+scalacOptions += "-Ymacro-annotations"
+
+libraryDependencies += "org.scalafx" %% "scalafxml-core-sfx8" % "0.5"
+
 // JAR Assembly
 assemblyMergeStrategy in assembly := {
   case PathList("META-INF", xs @ _*) => MergeStrategy.discard
