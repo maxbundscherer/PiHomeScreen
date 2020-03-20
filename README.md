@@ -14,6 +14,6 @@ Author: Maximilian Bundscherer
 
 ## Let's get started (run on target)
 
-- Generate jar file with ``sbt assembly``
+- Generate jar file with ``sbt generate-jar``
 - Copy jar-file from ``./target/scala-2.13/PiHomeScreen-assembly-X.Y.jar`` to raspberry
 - Run on target with ``java -jar PiHomeScreen-assembly-X.Y.jar`` (use jdk from above)
