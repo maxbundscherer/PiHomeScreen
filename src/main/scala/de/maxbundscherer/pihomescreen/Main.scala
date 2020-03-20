@@ -19,6 +19,7 @@ object Main extends JFXApp {
   private val state = new PrimaryStage() {
     title = "Main"
     scene = new Scene(root)
+    fullScreen = true
   }
 
 }

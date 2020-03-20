@@ -21,3 +21,9 @@ libraryDependencies ++= javaFXModules.map( m =>
 
 // Add fxml files to compile dir
 resourceDirectory in Compile := (scalaSource in Compile).value
+
+// JAR Assembly
+assemblyMergeStrategy in assembly := {
+  case PathList("META-INF", xs @ _*) => MergeStrategy.discard
+  case x => MergeStrategy.first
+}
