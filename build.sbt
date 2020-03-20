@@ -14,7 +14,8 @@ lazy val osName = System.getProperty("os.name") match {
 }
 
 // Add dependency on JavaFX libraries, OS dependent
-lazy val javaFXModules = Seq("base", "controls", "fxml", "graphics", "media", "swing", "web")
+//lazy val javaFXModules = Seq("base", "controls", "fxml", "graphics", "media", "swing", "web")
+lazy val javaFXModules = Seq("base", "controls", "fxml")
 libraryDependencies ++= javaFXModules.map( m =>
   "org.openjfx" % s"javafx-$m" % "12.0.2" classifier osName
 )
