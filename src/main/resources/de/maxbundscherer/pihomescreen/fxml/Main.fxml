@@ -2,65 +2,75 @@
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
-<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="panBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.maxbundscherer.pihomescreen.presenter.MainPresenter">
+<Pane fx:id="panBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" style="-fx-background-color: darkblue;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.maxbundscherer.pihomescreen.presenter.MainPresenter">
 
    <children>
 
-      <Label layoutX="214.0" layoutY="59.0" text="01.02" textFill="WHITE">
-         <font>
-            <Font size="40.0" />
-         </font>
-      </Label>
+      <Pane layoutX="162.0" layoutY="100.0" prefHeight="105.0" prefWidth="700.0" style="-fx-background-color: black;">
+         <children>
+      
+            <Label layoutX="80.0" layoutY="29.0" text="01.02" textFill="WHITE">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </Label>
+      
+            <Label layoutX="265.0" layoutY="7.0" text="12:31" textFill="WHITE">
+               <font>
+                  <Font size="75.0" />
+               </font>
+            </Label>
+      
+            <Label layoutX="535.0" layoutY="29.0" text="5 °C " textFill="WHITE">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
 
-      <Label layoutX="426.0" layoutY="37.0" text="12:31" textFill="WHITE">
-         <font>
-            <Font size="75.0" />
-         </font>
-      </Label>
+      <Pane layoutX="162.0" layoutY="250.0" prefHeight="215.0" prefWidth="700.0" style="-fx-background-color: black;">
 
-      <Label layoutX="708.0" layoutY="59.0" text="5 °C " textFill="WHITE">
-         <font>
-            <Font size="40.0" />
-         </font>
-      </Label>
+         <children>
+            <ProgressBar layoutX="25.0" layoutY="146.0" onMouseMoved="#prb_onMouseMoved" prefHeight="40.0" prefWidth="200.0" progress="0.5" />
+            <ProgressBar layoutX="250.0" layoutY="146.0" onMouseMoved="#prb_onMouseMoved" prefHeight="40.0" prefWidth="200.0" progress="0.81" />
+            <ProgressBar layoutX="475.0" layoutY="146.0" onMouseMoved="#prb_onMouseMoved" prefHeight="40.0" prefWidth="200.0" progress="0.13" />
 
-      <ProgressBar layoutX="164.0" layoutY="345.0" onMouseMoved="#prb_onMouseMoved" prefHeight="40.0" prefWidth="200.0" progress="0.13" />
-      <ProgressBar layoutX="412.0" layoutY="345.0" onMouseMoved="#prb_onMouseMoved" prefHeight="40.0" prefWidth="200.0" progress="0.5" />
-      <ProgressBar layoutX="660.0" layoutY="345.0" onMouseMoved="#prb_onMouseMoved" prefHeight="40.0" prefWidth="200.0" progress="0.81" />
+            <ImageView fx:id="imvKitchen" fitHeight="105.0" fitWidth="105.0" layoutX="73.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../img/kitchen.png" />
+               </image>
+               <effect>
+                  <ColorAdjust />
+               </effect>
+            </ImageView>
+      
+            <ImageView fx:id="imvLivingRoom" fitHeight="105.0" fitWidth="105.0" layoutX="298.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../img/livingroom.png" />
+               </image>
+               <effect>
+                  <ColorAdjust />
+               </effect>
+            </ImageView>
+      
+            <ImageView fx:id="imvBedroom" fitHeight="105.0" fitWidth="105.0" layoutX="523.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../img/bedroom.png" />
+               </image>
+               <effect>
+                  <ColorAdjust />
+               </effect>
+            </ImageView>
+         </children>
 
-      <ImageView fx:id="imvKitchen" fitHeight="105.0" fitWidth="105.0" layoutX="211.0" layoutY="225.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../img/kitchen.png" />
-         </image>
-         <effect>
-            <ColorAdjust />
-         </effect>
-      </ImageView>
-
-      <ImageView fx:id="imvLivingRoom" fitHeight="105.0" fitWidth="105.0" layoutX="460.0" layoutY="225.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../img/livingroom.png" />
-         </image>
-         <effect>
-            <ColorAdjust />
-         </effect>
-      </ImageView>
-
-      <ImageView fx:id="imvBedroom" fitHeight="105.0" fitWidth="105.0" layoutX="697.0" layoutY="225.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../img/bedroom.png" />
-         </image>
-         <effect>
-            <ColorAdjust />
-         </effect>
-      </ImageView>
+      </Pane>
 
    </children>
 </Pane>
