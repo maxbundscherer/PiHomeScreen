@@ -2,7 +2,6 @@ package de.maxbundscherer.pihomescreen.utils
 
 import scalafx.Includes._
 import scalafx.animation.{KeyFrame, Timeline}
-
 import scala.language.postfixOps
 
 trait InitPresenter {
