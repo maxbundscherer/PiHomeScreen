@@ -3,6 +3,11 @@ Raspberry PI Home Screen
 
 Author: Maximilian Bundscherer
 
+## Overview
+
+- Control your hue lamps
+- tbd.
+
 ## Requirements
 
 - Raspberry Pi with touchscreen (1024x600 recommend)
