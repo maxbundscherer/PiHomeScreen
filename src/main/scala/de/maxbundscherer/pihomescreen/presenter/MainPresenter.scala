@@ -65,7 +65,7 @@ class MainPresenter(
         case 9    => tobBedroomBack.setStyle(styleTranslator(newState))
         case 1    => tobBedroomFront.setStyle(styleTranslator(newState))
 
-        case _    => logger.error("Light not found")
+        case _    => logger.error(s"Light not found (id=$id)")
 
       }
 
@@ -74,6 +74,7 @@ class MainPresenter(
   }
 
   def prb_onMouseMoved(event: MouseEvent): Unit = {
+
     updateProgressBar(event)
   }
 

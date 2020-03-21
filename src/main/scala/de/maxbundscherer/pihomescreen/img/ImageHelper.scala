@@ -11,7 +11,7 @@ object ImageHelper {
    */
   def getBackground(): Background = {
 
-    val res = getClass.getResourceAsStream("background.png")
+    val res = getClass.getResourceAsStream("backgrounds/background.png")
 
     if(res == null) throw new RuntimeException("Background not found")
 
