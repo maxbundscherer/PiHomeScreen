@@ -15,9 +15,9 @@ object Main extends JFXApp {
 
   if(resource == null) throw new RuntimeException("Cannot load fxml file")
 
-  private val root= FXMLView(resource, NoDependencyResolver)
+  private val root = FXMLView(resource, NoDependencyResolver)
 
-  private val state = new PrimaryStage() {
+  private val _ = new PrimaryStage() {
     title = "Main"
     scene = new Scene(root)
     fullScreen = true

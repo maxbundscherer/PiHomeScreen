@@ -1,5 +1,5 @@
 # Pi Home Screen
-Raspberry PI Home Screen
+Raspberry Pi Home Screen
 
 Author: Maximilian Bundscherer
 
