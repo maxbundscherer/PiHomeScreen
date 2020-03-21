@@ -1,29 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.maxbundscherer.pihomescreen.presenter.MainPresenter">
+<Pane fx:id="panBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.maxbundscherer.pihomescreen.presenter.MainPresenter">
+
    <children>
 
-      <Button fx:id="btnTopLeft" layoutX="118.0" layoutY="27.0" mnemonicParsing="false" onAction="#btnTopLeft_onAction" text="Button" />
+      <Label layoutX="414.0" layoutY="36.0" text="12:31" textFill="WHITE">
+         <font>
+            <Font size="75.0" />
+         </font>
+      </Label>
 
-      <ProgressBar onMouseMoved="#prbMiddle_onMouseMoved" layoutX="164.0" layoutY="418.0" prefHeight="68.0" prefWidth="561.0" progress="0.0" />
+      <Label layoutX="200.0" layoutY="58.0" text="01.02" textFill="WHITE">
+         <font>
+            <Font size="40.0" />
+         </font>
+      </Label>
+      
+      <Label layoutX="708.0" layoutY="58.0" text="5 °C " textFill="WHITE">
+         <font>
+            <Font size="40.0" />
+         </font>
+      </Label>
 
-      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="669.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true">
+      <ProgressBar layoutX="150.0" layoutY="337.0" onMouseMoved="#prb_onMouseMoved" prefHeight="30.0" prefWidth="200.0" progress="0.13" />
+      <ProgressBar layoutX="400.0" layoutY="337.0" onMouseMoved="#prb_onMouseMoved" prefHeight="30.0" prefWidth="200.0" progress="0.5" />
+      <ProgressBar layoutX="650.0" layoutY="337.0" onMouseMoved="#prb_onMouseMoved" prefHeight="30.0" prefWidth="200.0" progress="0.81" />
+
+      <ImageView fx:id="imvKitchen" fitHeight="150.0" fitWidth="150.0" layoutX="175.0" layoutY="163.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@img/bedroom.png" />
+            <Image url="@img/kitchen.png" />
          </image>
          <effect>
             <ColorAdjust />
          </effect>
       </ImageView>
 
-      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="425.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imvLivingRoom" fitHeight="150.0" fitWidth="150.0" layoutX="425.0" layoutY="187.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@img/livingroom.png" />
          </image>
@@ -32,9 +52,9 @@
          </effect>
       </ImageView>
 
-      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="173.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imvBedroom" fitHeight="150.0" fitWidth="150.0" layoutX="675.0" layoutY="168.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@img/kitchen.png" />
+            <Image url="@img/bedroom.png" />
          </image>
          <effect>
             <ColorAdjust />
