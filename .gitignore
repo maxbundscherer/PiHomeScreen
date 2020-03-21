@@ -2,3 +2,5 @@ target/
 .idea/
 *.class
 *.log
+.java-version
+.DS_Store
