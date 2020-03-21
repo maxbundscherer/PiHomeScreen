@@ -38,6 +38,7 @@ class MainPresenter(
   override def initPresenter(): Unit = {
     logger.debug("Init Presenter")
     panBackground.setBackground(ImageHelper.getBackground())
+    this.updateLightStates()
   }
 
   /**

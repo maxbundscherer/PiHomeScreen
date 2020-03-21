@@ -14,9 +14,11 @@ trait ProgressBarSlider {
     val progressBar = event.source.asInstanceOf[javafx.scene.control.ProgressBar]
     val progress    = event.x / progressBar.getWidth
 
-    progressBar.setProgress(progress)
+    val resultProgress = if(progress <= 0.1) 0 else if(progress >= 0.9) 1 else progress
 
-    progress
+    progressBar.setProgress(resultProgress)
+
+    resultProgress
   }
 
 }
