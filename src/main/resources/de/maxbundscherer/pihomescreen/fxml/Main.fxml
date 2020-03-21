@@ -12,7 +12,7 @@
 
    <children>
 
-      <Pane layoutX="162.0" layoutY="100.0" prefHeight="105.0" prefWidth="700.0" style="-fx-background-color: black;">
+      <Pane layoutX="162.0" layoutY="70.0" prefHeight="105.0" prefWidth="700.0" style="-fx-background-color: black; -fx-background-radius: 20;">
          <children>
       
             <Label layoutX="80.0" layoutY="29.0" text="01.02" textFill="WHITE">
@@ -35,7 +35,7 @@
          </children>
       </Pane>
 
-      <Pane layoutX="162.0" layoutY="250.0" prefHeight="215.0" prefWidth="700.0" style="-fx-background-color: black;">
+      <Pane layoutX="162.0" layoutY="220.0" prefHeight="215.0" prefWidth="700.0" style="-fx-background-color: black; -fx-background-radius: 20;">
 
          <children>
             <ProgressBar layoutX="25.0" layoutY="146.0" onMouseMoved="#prb_onMouseMoved" prefHeight="40.0" prefWidth="200.0" progress="0.5" />
