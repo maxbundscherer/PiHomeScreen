@@ -36,7 +36,7 @@
 
       <ImageView fx:id="imvKitchen" fitHeight="150.0" fitWidth="150.0" layoutX="175.0" layoutY="163.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@img/kitchen.png" />
+            <Image url="@../img/kitchen.png" />
          </image>
          <effect>
             <ColorAdjust />
@@ -45,7 +45,7 @@
 
       <ImageView fx:id="imvLivingRoom" fitHeight="150.0" fitWidth="150.0" layoutX="425.0" layoutY="187.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@img/livingroom.png" />
+            <Image url="@../img/livingroom.png" />
          </image>
          <effect>
             <ColorAdjust />
@@ -54,7 +54,7 @@
 
       <ImageView fx:id="imvBedroom" fitHeight="150.0" fitWidth="150.0" layoutX="675.0" layoutY="168.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@img/bedroom.png" />
+            <Image url="@../img/bedroom.png" />
          </image>
          <effect>
             <ColorAdjust />

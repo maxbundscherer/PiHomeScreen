@@ -1,4 +1,4 @@
-package de.maxbundscherer.pihomescreen.fxml.img
+package de.maxbundscherer.pihomescreen.img
 
 import scalafx.scene.image.Image
 import scalafx.scene.layout.{Background, BackgroundImage}

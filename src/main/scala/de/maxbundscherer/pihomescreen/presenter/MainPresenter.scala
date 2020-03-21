@@ -1,6 +1,6 @@
 package de.maxbundscherer.pihomescreen.presenter
 
-import de.maxbundscherer.pihomescreen.fxml.img.ImageHelper
+import de.maxbundscherer.pihomescreen.img.ImageHelper
 import de.maxbundscherer.pihomescreen.utils.ProgressBarSlider
 
 import scalafx.event.ActionEvent

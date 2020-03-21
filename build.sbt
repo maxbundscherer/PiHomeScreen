@@ -20,9 +20,6 @@ libraryDependencies ++= javaFXModules.map( m =>
   "org.openjfx" % s"javafx-$m" % "12.0.2" classifier osName
 )
 
-// Add fxml files to compile dir
-resourceDirectory in Compile := (scalaSource in Compile).value
-
 // Bridging the gap between scalafx and FXML with generated proxies
 scalacOptions += "-Ymacro-annotations"
 
