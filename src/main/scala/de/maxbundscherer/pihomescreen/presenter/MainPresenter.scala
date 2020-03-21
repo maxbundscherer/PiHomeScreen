@@ -1,20 +1,21 @@
 package de.maxbundscherer.pihomescreen.presenter
 
+import de.maxbundscherer.pihomescreen.utils.ProgressBarSlider
+
 import scalafx.event.ActionEvent
-import scalafx.scene.control.{Button, ChoiceBox, ProgressBar, Slider, TextArea, TextField}
+import scalafx.scene.control.Button
 import scalafx.scene.input.MouseEvent
-import scalafx.scene.layout.GridPane
 import scalafxml.core.macros.sfxml
 
 @sfxml
-class MainPresenter(private val btnTopLeft: Button, private val prbMiddle: ProgressBar) {
+class MainPresenter(private val btnTopLeft: Button) extends ProgressBarSlider {
 
   def btnTopLeft_onAction(event: ActionEvent): Unit = {
     this.btnTopLeft.setText("Hello!")
   }
 
   def prbMiddle_onMouseMoved(event: MouseEvent): Unit = {
-    prbMiddle.progress = event.x / prbMiddle.width.value
+    println(s"Got ${updateProgressBar(event)} %")
   }
 
 }

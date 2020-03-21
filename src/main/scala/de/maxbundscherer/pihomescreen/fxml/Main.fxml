@@ -12,7 +12,7 @@
 
       <Button fx:id="btnTopLeft" layoutX="118.0" layoutY="27.0" mnemonicParsing="false" onAction="#btnTopLeft_onAction" text="Button" />
 
-      <ProgressBar fx:id="prbMiddle" onMouseMoved="#prbMiddle_onMouseMoved" layoutX="164.0" layoutY="418.0" prefHeight="68.0" prefWidth="561.0" progress="0.0" />
+      <ProgressBar onMouseMoved="#prbMiddle_onMouseMoved" layoutX="164.0" layoutY="418.0" prefHeight="68.0" prefWidth="561.0" progress="0.0" />
 
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="669.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true">
          <image>
