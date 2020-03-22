@@ -8,7 +8,7 @@ trait InitPresenter extends TimelineHelper {
   /**
    * Start init timeline
    */
-  this.startNewTimeline(interval = 1 s,
+  this.startNewTimeline(interval = 5 s,
     repeat = false,
     title="Init Timeline",
     handler = () => {this.initPresenter()}
