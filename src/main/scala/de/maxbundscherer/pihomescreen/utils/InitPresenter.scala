@@ -1,20 +1,18 @@
 package de.maxbundscherer.pihomescreen.utils
 
 import scalafx.Includes._
-import scalafx.animation.{KeyFrame, Timeline}
 import scala.language.postfixOps
 
-trait InitPresenter {
+trait InitPresenter extends TimelineHelper {
 
-  private val initTimeline = new Timeline {
-    cycleCount = 0 //Only run one time
-    autoReverse = false
-    keyFrames = Seq(KeyFrame(1 s, onFinished = () => {
-      initPresenter()
-    }))
-  }
-
-  this.initTimeline.playFromStart()
+  /**
+   * Start init timeline
+   */
+  this.startNewTimeline(firstActionAfter = 1 s,
+    repeat = false,
+    title="Init Timeline",
+    src = () => {this.initPresenter()}
+  )
 
   /**
    * Init Presenter
