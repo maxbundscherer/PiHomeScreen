@@ -44,7 +44,22 @@ class MainPresenter(
    */
   override def initPresenter(): Unit = {
     logger.debug("Init Presenter")
+
     this.panBackground.setBackground(ImageHelper.getBackground())
+
+    this.tobKitchenTop.setGraphic(ImageHelper.getGetLightBulbImageView(lightType = 4, width = 42, height = 42))
+    this.tobKitchenTable.setGraphic(ImageHelper.getGetLightBulbImageView(lightType = 1, width = 42, height = 42))
+    this.tobKitchenBottom.setGraphic(ImageHelper.getGetLightBulbImageView(lightType = 4, width = 42, height = 42))
+
+    this.tobLivingRoomLeft.setGraphic(ImageHelper.getGetLightBulbImageView(lightType = 6, width = 42, height = 42))
+    this.tobLivingRoomTruss.setGraphic(ImageHelper.getGetLightBulbImageView(lightType = 2, width = 42, height = 42))
+    this.tobLivingRoomRight.setGraphic(ImageHelper.getGetLightBulbImageView(lightType = 6, width = 42, height = 42))
+    this.tobLivingRoomCouch.setGraphic(ImageHelper.getGetLightBulbImageView(lightType = 3, width = 42, height = 42))
+    this.tobLivingRoomCloset.setGraphic(ImageHelper.getGetLightBulbImageView(lightType = 6, width = 42, height = 42))
+
+    this.tobBedroomBack.setGraphic(ImageHelper.getGetLightBulbImageView(lightType = 5, width = 42, height = 42))
+    this.tobBedroomFront.setGraphic(ImageHelper.getGetLightBulbImageView(lightType = 5, width = 42, height = 42))
+
     this.updateLightStates()
   }
 
