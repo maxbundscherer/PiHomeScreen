@@ -1,12 +1,13 @@
 package de.maxbundscherer.pihomescreen.presenter
 
 import de.maxbundscherer.pihomescreen.img.ImageHelper
-import de.maxbundscherer.pihomescreen.services.MockLightService
-import de.maxbundscherer.pihomescreen.services.abstracts.LightService
-import de.maxbundscherer.pihomescreen.utils.{InitPresenter, Logger, ProgressBarSlider}
+import de.maxbundscherer.pihomescreen.services.{MockLightService, SimpleCalendarService}
+import de.maxbundscherer.pihomescreen.services.abstracts.{CalendarService, LightService}
+import de.maxbundscherer.pihomescreen.utils.{InitPresenter, Logger, ProgressBarSlider, TimelineHelper}
 
-import scalafx.scene.control.ToggleButton
-import scalafx.scene.control.ProgressBar
+import scalafx.Includes._
+import scala.language.postfixOps
+import scalafx.scene.control.{Label, ProgressBar, ToggleButton}
 import scalafx.scene.input.MouseEvent
 import scalafx.scene.layout.Pane
 import scalafxml.core.macros.sfxml
@@ -16,6 +17,8 @@ class MainPresenter(
 
                       //System
                       private val panBackground: Pane,
+                      private val lblClock: Label,
+                      private val lblDate: Label,
 
                       //Bulbs
                       private val tobKitchenTop: ToggleButton,
@@ -34,16 +37,18 @@ class MainPresenter(
                       private val prbLivingRoom: ProgressBar,
                       private val prbBedroom: ProgressBar,
 
-                   ) extends InitPresenter with ProgressBarSlider {
+                   ) extends InitPresenter with ProgressBarSlider with TimelineHelper {
 
-  private val logger: Logger              = new Logger(getClass.getSimpleName)
-  private val lightService: LightService  = new MockLightService()
+  private val logger: Logger                    = new Logger(getClass.getSimpleName)
+  private val lightService: LightService        = new MockLightService()
+  private val calendarService: CalendarService  = new SimpleCalendarService()
 
   /**
    * Init Presenter
    */
   override def initPresenter(): Unit = {
-    logger.debug("Init Presenter")
+
+    logger.info("Init Presenter")
 
     this.panBackground.setBackground(ImageHelper.getBackground())
 
@@ -60,7 +65,14 @@ class MainPresenter(
     this.tobBedroomBack.setGraphic(ImageHelper.getGetLightBulbImageView(lightType = 5, width = 42, height = 42))
     this.tobBedroomFront.setGraphic(ImageHelper.getGetLightBulbImageView(lightType = 5, width = 42, height = 42))
 
+    this.startNewTimeline(firstActionAfter = 5 s, repeat = true, title = "Clock Timeline", () => {
+      this.lblClock.setText(this.calendarService.getHourAndMinuteToString)
+      this.lblDate.setText(this.calendarService.getDateToString)
+    })
+
     this.updateLightStates()
+
+    logger.info("End init presenter")
   }
 
   /**
