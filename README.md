@@ -6,7 +6,7 @@ Raspberry Pi Home Screen
 
 [![shields.io](http://img.shields.io/badge/license-Apache2-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-Author: Maximilian Bundscherer
+Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 ![](./resources/screenshot.png)
 
