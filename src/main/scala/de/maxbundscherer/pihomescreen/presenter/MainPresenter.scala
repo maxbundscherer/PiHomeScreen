@@ -138,7 +138,7 @@ class MainPresenter(
    */
   def prb_onMouseMoved(event: MouseEvent): Unit = {
 
-    val newRoomBrightness: Double = this.updateProgressBar(event)
+    val newRoomBrightness: Double = this.processProgressBar(event, updateSender = false)
 
     val prb = event.getSource.asInstanceOf[javafx.scene.control.ProgressBar]
 

@@ -23,7 +23,7 @@ class MockLightService extends LightService {
   )
 
   /**
-   * Fake database Map(roomId, value)
+   * Fake database Map(roomId, value 0 to 1)
    */
   var fakeRoomStates: Map[Int, Double] = Map (
     0 -> 0.4,
@@ -39,7 +39,7 @@ class MockLightService extends LightService {
 
   /**
    * Get room brightness
-   * @return Map (roomId, value)
+   * @return Map (roomId, value 0 to 1)
    */
   override def getRoomBrightness: Map[Int, Double] = this.fakeRoomStates
 

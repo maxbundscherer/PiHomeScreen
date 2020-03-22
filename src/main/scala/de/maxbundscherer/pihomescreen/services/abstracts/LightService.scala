@@ -10,7 +10,7 @@ abstract class LightService {
 
   /**
    * Get room brightness
-   * @return Map (roomId, value)
+   * @return Map (roomId, value 0 to 1)
    */
   def getRoomBrightness: Map[Int, Double]
 
