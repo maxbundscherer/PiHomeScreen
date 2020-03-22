@@ -28,7 +28,7 @@
                </font>
             </Label>
       
-            <Label layoutX="547.0" layoutY="29.0" text="0°C " textFill="WHITE">
+            <Label fx:id="lblWeather" layoutX="547.0" layoutY="29.0" text="0°C " textFill="WHITE">
                <font>
                   <Font size="40.0" />
                </font>
