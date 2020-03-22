@@ -23,7 +23,7 @@ Author: Maximilian Bundscherer
 
 - Edit config (see section below)
 - Generate jar file with ``sbt generate-jar``
-- Copy jar-file from ``./target/scala-2.13/PiHomeScreen-assembly-X.Y.jar`` to raspberry
+- Copy jar-file from ``./target/scala-2.12/PiHomeScreen-assembly-X.Y.jar`` to raspberry
 - Run on target with ``java -jar PiHomeScreen-assembly-X.Y.jar`` (use jdk from above)
 
 # Config
