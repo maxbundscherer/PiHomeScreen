@@ -1,4 +1,3 @@
-src/*/application.conf
 target/
 .idea/
 *.class
