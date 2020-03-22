@@ -49,7 +49,7 @@ class MainPresenter(
 
     def styleTranslator(state: Boolean): String = if(state) "-fx-background-color: yellow" else "-fx-background-color: grey"
 
-    for ( (id, newState) <- this.lightService.getStates ) {
+    for ( (id, newState) <- this.lightService.getLightBulbStates) {
 
       id match {
 
@@ -76,11 +76,17 @@ class MainPresenter(
 
   /**
    * Progress Bar (fake slider)
-   * @param event  MouseEvent (updates slider)
+   * @param event  MouseEvent (updates slider / useData = room id)
    */
   def prb_onMouseMoved(event: MouseEvent): Unit = {
 
-    this.updateProgressBar(event)
+    val newRoomBrightness: Double = this.updateProgressBar(event)
+
+    val prb = event.getSource.asInstanceOf[javafx.scene.control.ProgressBar]
+
+    val roomId: Int = prb.getUserData.toString.toInt
+
+    println(s"Should change $roomId to $newRoomBrightness")
   }
 
   /**
@@ -91,9 +97,9 @@ class MainPresenter(
 
     val tob = event.getSource.asInstanceOf[javafx.scene.control.ToggleButton]
 
-    val id: Int = tob.getUserData.toString.toInt
+    val lightId: Int = tob.getUserData.toString.toInt
 
-    this.lightService.toggleState(id)
+    this.lightService.toggleLightBulb(lightId)
     this.updateLightStates()
   }
 

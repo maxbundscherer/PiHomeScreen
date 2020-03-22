@@ -43,7 +43,7 @@
             <ProgressBar layoutX="250.0" layoutY="146.0" onMouseMoved="#prb_onMouseMoved" prefHeight="40.0" prefWidth="200.0" progress="0.81" />
             <ProgressBar layoutX="475.0" layoutY="146.0" onMouseMoved="#prb_onMouseMoved" prefHeight="40.0" prefWidth="200.0" progress="0.13" />
 
-            <ImageView fx:id="imvKitchen" fitHeight="105.0" fitWidth="105.0" layoutX="73.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="imvKitchen" userData="0" fitHeight="105.0" fitWidth="105.0" layoutX="73.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../img/kitchen.png" />
                </image>
@@ -52,7 +52,7 @@
                </effect>
             </ImageView>
       
-            <ImageView fx:id="imvLivingRoom" fitHeight="105.0" fitWidth="105.0" layoutX="298.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="imvLivingRoom" userData="1" fitHeight="105.0" fitWidth="105.0" layoutX="298.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../img/livingroom.png" />
                </image>
@@ -61,7 +61,7 @@
                </effect>
             </ImageView>
       
-            <ImageView fx:id="imvBedroom" fitHeight="105.0" fitWidth="105.0" layoutX="523.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="imvBedroom" userData="2" fitHeight="105.0" fitWidth="105.0" layoutX="523.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../img/bedroom.png" />
                </image>

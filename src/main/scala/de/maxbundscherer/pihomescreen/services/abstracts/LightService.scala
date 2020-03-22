@@ -4,15 +4,28 @@ abstract class LightService {
 
   /**
    * Get light bulbs states
-   * @return
+   * @return Map (lightId, value)
    */
-  def getStates: Map[Int, Boolean]
+  def getLightBulbStates: Map[Int, Boolean]
+
+  /**
+   * Get room brightness
+   * @return Map (roomId, value)
+   */
+  def getRoomBrightness: Map[Int, Double]
 
   /**
    * Toggle state from light bulb
-   * @param target id
+   * @param lightId Id from light
    * @param value Some = value / None = toggle
    */
-  def toggleState(target: Int, value: Option[Boolean] = None)
+  def toggleLightBulb(lightId: Int, value: Option[Boolean] = None)
+
+  /**
+   * Set room brightness
+   * @param roomId Id from room
+   * @param value (0 to 1)
+   */
+  def setRoomBrightness(roomId: Int, value: Double)
 
 }
