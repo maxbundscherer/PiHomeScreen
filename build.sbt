@@ -1,6 +1,6 @@
 name := "PiHomeScreen"
 version := "0.1"
-scalaVersion := "2.12.11"
+scalaVersion := "2.12.9"
 
 // Add dependency on ScalaFX library
 libraryDependencies += "org.scalafx" %% "scalafx" % "12.0.2-R18"
@@ -20,10 +20,11 @@ libraryDependencies ++= javaFXModules.map( m =>
   "org.openjfx" % s"javafx-$m" % "12.0.2" classifier osName
 )
 
-// Bridging the gap between scalafx and FXML with generated proxies
-scalacOptions += "-Ymacro-annotations"
-
+// Scalafxml
 libraryDependencies += "org.scalafx" %% "scalafxml-core-sfx8" % "0.5"
+
+//resolvers += Resolver.sonatypeRepo("releases")
+addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
 
 // JAR Assembly
 assemblyMergeStrategy in assembly := {
