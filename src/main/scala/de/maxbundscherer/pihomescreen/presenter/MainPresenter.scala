@@ -1,8 +1,8 @@
 package de.maxbundscherer.pihomescreen.presenter
 
 import de.maxbundscherer.pihomescreen.img.ImageHelper
-import de.maxbundscherer.pihomescreen.services.{MockLightService, SimpleCalendarService}
-import de.maxbundscherer.pihomescreen.services.abstracts.{CalendarService, LightService}
+import de.maxbundscherer.pihomescreen.services.{MockLightService, SimpleCalendarService, SimpleWeatherService}
+import de.maxbundscherer.pihomescreen.services.abstracts.{CalendarService, LightService, WeatherService}
 import de.maxbundscherer.pihomescreen.utils.{InitPresenter, Logger, ProgressBarSlider, TimelineHelper}
 
 import scalafx.Includes._
@@ -19,6 +19,7 @@ class MainPresenter(
                       private val panBackground: Pane,
                       private val lblClock: Label,
                       private val lblDate: Label,
+                      private val lblWeather: Label,
 
                       //Bulbs
                       private val tobKitchenTop: ToggleButton,
@@ -40,8 +41,10 @@ class MainPresenter(
                    ) extends InitPresenter with ProgressBarSlider with TimelineHelper {
 
   private val logger: Logger                    = new Logger(getClass.getSimpleName)
+
   private val lightService: LightService        = new MockLightService()
   private val calendarService: CalendarService  = new SimpleCalendarService()
+  private val weatherService: WeatherService    = new SimpleWeatherService()
 
   /**
    * Init Presenter
@@ -68,6 +71,10 @@ class MainPresenter(
     this.startNewTimeline(interval = 5 s, repeat = true, title = "Clock Timeline", handler = () => {
       this.lblClock.setText(this.calendarService.getHourAndMinuteToString)
       this.lblDate.setText(this.calendarService.getDateToString)
+    })
+
+    this.startNewTimeline(interval = 1 m, repeat = true, title = "Weather Timeline", handler = () => {
+      this.lblWeather.setText(this.weatherService.getActualTempInCelsius + " C°")
     })
 
     this.updateLightStates()
