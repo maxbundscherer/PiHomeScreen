@@ -16,19 +16,19 @@
       <Pane layoutX="162.0" layoutY="50.0" prefHeight="105.0" prefWidth="700.0" style="-fx-background-color: rgba(0, 0, 0, 0.7); -fx-background-radius: 0;">
          <children>
       
-            <Label fx:id="lblDate" layoutX="80.0" layoutY="29.0" text="01.02." textFill="WHITE">
+            <Label fx:id="lblDate" layoutX="71.0" layoutY="29.0" text="00.00." textFill="WHITE">
                <font>
                   <Font size="40.0" />
                </font>
             </Label>
       
-            <Label fx:id="lblClock" layoutX="265.0" layoutY="7.0" text="12:31" textFill="WHITE">
+            <Label fx:id="lblClock" layoutX="250.0" layoutY="6.0" text="00:00" textFill="WHITE">
                <font>
                   <Font size="75.0" />
                </font>
             </Label>
       
-            <Label layoutX="535.0" layoutY="29.0" text="5 °C " textFill="WHITE">
+            <Label layoutX="547.0" layoutY="29.0" text="0°C " textFill="WHITE">
                <font>
                   <Font size="40.0" />
                </font>
