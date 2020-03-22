@@ -39,9 +39,9 @@
       <Pane layoutX="162.0" layoutY="180.0" prefHeight="215.0" prefWidth="700.0" style="-fx-background-color: rgba(0, 0, 0, 0.7); -fx-background-radius: 0;">
 
          <children>
-            <ProgressBar layoutX="25.0" layoutY="146.0" onMouseMoved="#prb_onMouseMoved" prefHeight="40.0" prefWidth="200.0" progress="0.5" />
-            <ProgressBar layoutX="250.0" layoutY="146.0" onMouseMoved="#prb_onMouseMoved" prefHeight="40.0" prefWidth="200.0" progress="0.81" />
-            <ProgressBar layoutX="475.0" layoutY="146.0" onMouseMoved="#prb_onMouseMoved" prefHeight="40.0" prefWidth="200.0" progress="0.13" />
+            <ProgressBar fx:id="prbKitchen" userData="0" layoutX="25.0" layoutY="146.0" onMouseMoved="#prb_onMouseMoved" prefHeight="40.0" prefWidth="200.0" progress="0.5" />
+            <ProgressBar fx:id="prbLivingRoom" userData="1" layoutX="250.0" layoutY="146.0" onMouseMoved="#prb_onMouseMoved" prefHeight="40.0" prefWidth="200.0" progress="0.81" />
+            <ProgressBar fx:id="prbBedroom" userData="2" layoutX="475.0" layoutY="146.0" onMouseMoved="#prb_onMouseMoved" prefHeight="40.0" prefWidth="200.0" progress="0.13" />
 
             <ImageView fx:id="imvKitchen" userData="0" fitHeight="105.0" fitWidth="105.0" layoutX="73.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
                <image>

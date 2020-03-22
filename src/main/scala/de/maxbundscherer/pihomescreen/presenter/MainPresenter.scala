@@ -6,6 +6,7 @@ import de.maxbundscherer.pihomescreen.services.abstracts.LightService
 import de.maxbundscherer.pihomescreen.utils.{InitPresenter, Logger, ProgressBarSlider}
 
 import scalafx.scene.control.ToggleButton
+import scalafx.scene.control.ProgressBar
 import scalafx.scene.input.MouseEvent
 import scalafx.scene.layout.Pane
 import scalafxml.core.macros.sfxml
@@ -28,6 +29,11 @@ class MainPresenter(
                       private val tobBedroomBack: ToggleButton,
                       private val tobBedroomFront: ToggleButton,
 
+                      //Fake sliders
+                      private val prbKitchen: ProgressBar,
+                      private val prbLivingRoom: ProgressBar,
+                      private val prbBedroom: ProgressBar,
+
                    ) extends InitPresenter with ProgressBarSlider {
 
   private val logger: Logger              = new Logger(getClass.getSimpleName)
@@ -49,24 +55,38 @@ class MainPresenter(
 
     def styleTranslator(state: Boolean): String = if(state) "-fx-background-color: yellow" else "-fx-background-color: grey"
 
-    for ( (id, newState) <- this.lightService.getLightBulbStates) {
+    for ( (lightId, newState) <- this.lightService.getLightBulbStates) {
 
-      id match {
+      lightId match {
 
-        case 7    => tobKitchenTop.setStyle(styleTranslator(newState))
-        case 8    => tobKitchenTable.setStyle(styleTranslator(newState))
-        case 2    => tobKitchenBottom.setStyle(styleTranslator(newState))
+        case 7    => this.tobKitchenTop.setStyle(styleTranslator(newState))
+        case 8    => this.tobKitchenTable.setStyle(styleTranslator(newState))
+        case 2    => this.tobKitchenBottom.setStyle(styleTranslator(newState))
 
-        case 5    => tobLivingRoomLeft.setStyle(styleTranslator(newState))
-        case 11   => tobLivingRoomTruss.setStyle(styleTranslator(newState))
-        case 6    => tobLivingRoomRight.setStyle(styleTranslator(newState))
-        case 4    => tobLivingRoomCouch.setStyle(styleTranslator(newState))
-        case 10   => tobLivingRoomCloset.setStyle(styleTranslator(newState))
+        case 5    => this.tobLivingRoomLeft.setStyle(styleTranslator(newState))
+        case 11   => this.tobLivingRoomTruss.setStyle(styleTranslator(newState))
+        case 6    => this.tobLivingRoomRight.setStyle(styleTranslator(newState))
+        case 4    => this.tobLivingRoomCouch.setStyle(styleTranslator(newState))
+        case 10   => this.tobLivingRoomCloset.setStyle(styleTranslator(newState))
 
-        case 9    => tobBedroomBack.setStyle(styleTranslator(newState))
-        case 1    => tobBedroomFront.setStyle(styleTranslator(newState))
+        case 9    => this.tobBedroomBack.setStyle(styleTranslator(newState))
+        case 1    => this.tobBedroomFront.setStyle(styleTranslator(newState))
 
-        case _    => logger.error(s"Light not found (id=$id)")
+        case _    => logger.error(s"Light not found (id=$lightId)")
+
+      }
+
+    }
+
+    for ( (roomId, newValue) <- this.lightService.getRoomBrightness) {
+
+      roomId match {
+
+        case 0 => this.prbKitchen.setProgress(newValue)
+        case 1 => this.prbLivingRoom.setProgress(newValue)
+        case 2 => this.prbBedroom.setProgress(newValue)
+
+        case _ => logger.error(s"Room not found (id=$roomId)")
 
       }
 
@@ -75,8 +95,8 @@ class MainPresenter(
   }
 
   /**
-   * Progress Bar (fake slider)
-   * @param event  MouseEvent (updates slider / useData = room id)
+   * Progress Bar (fake slider) (room brightness)
+   * @param event  MouseEvent (updates slider / userData = roomId)
    */
   def prb_onMouseMoved(event: MouseEvent): Unit = {
 
@@ -86,12 +106,13 @@ class MainPresenter(
 
     val roomId: Int = prb.getUserData.toString.toInt
 
-    println(s"Should change $roomId to $newRoomBrightness")
+    this.lightService.setRoomBrightness(roomId, newRoomBrightness)
+    this.updateLightStates()
   }
 
   /**
-   * Toggle Button
-   * @param event MouseEvent (userData = light id)
+   * Toggle Button (toggle light)
+   * @param event MouseEvent (userData = lightId)
    */
   def tob_onMouseMoved(event: MouseEvent): Unit = {
 
