@@ -1,6 +1,6 @@
 name := "PiHomeScreen"
 version := "0.1"
-scalaVersion := "2.13.1"
+scalaVersion := "2.12.11"
 
 // Add dependency on ScalaFX library
 libraryDependencies += "org.scalafx" %% "scalafx" % "12.0.2-R18"
@@ -33,6 +33,9 @@ assemblyMergeStrategy in assembly := {
 
 // Config Factory
 libraryDependencies += "com.typesafe" % "config" % "1.4.0"
+
+// Weather API
+libraryDependencies += "com.snowplowanalytics" %% "scala-weather" % "0.5.0"
 
 // Alias
 addCommandAlias("generate-jar", ";clean;assembly")

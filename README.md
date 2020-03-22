@@ -37,7 +37,7 @@ pihomescreen {
   openweathermap {
 
     api-key = ""
-    city-id = ""
+    city-id = 0
 
   }
 

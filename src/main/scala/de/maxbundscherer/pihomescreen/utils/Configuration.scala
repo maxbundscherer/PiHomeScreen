@@ -13,7 +13,7 @@ trait Configuration {
       lazy private val c = config.getConfig("openweathermap")
 
       lazy val apiKey: String = c.getString("api-key")
-      lazy val cityId: String = c.getString("city-id")
+      lazy val cityId: Int    = c.getInt("city-id")
 
     }
 
