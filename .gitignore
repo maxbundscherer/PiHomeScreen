@@ -1,4 +1,4 @@
-src/main/resources/application.conf
+src/*/application.conf
 target/
 .idea/
 *.class
