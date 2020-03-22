@@ -61,6 +61,26 @@ class MockLightService extends LightService {
   }
 
   /**
+   * Toggle room
+   * @param roomId Id from room
+   * @param value  Some = value / None = toggle
+   */
+  override def toggleRoom(roomId: Int, value: Option[Boolean]): Unit = value match {
+
+    case None =>
+
+      val oldValue: Double = this.getRoomBrightness(roomId)
+      if(oldValue > 0) this.setRoomBrightness(roomId, 0)
+      else this.setRoomBrightness(roomId, 1)
+
+    case Some(sth) =>
+
+      if(sth) this.setRoomBrightness(roomId, 1)
+      else this.setRoomBrightness(roomId, 0)
+
+  }
+
+  /**
    * Set room brightness
    * @param roomId Id from room
    * @param value  (0 to 1)

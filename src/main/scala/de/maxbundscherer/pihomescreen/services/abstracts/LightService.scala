@@ -22,6 +22,13 @@ abstract class LightService {
   def toggleLightBulb(lightId: Int, value: Option[Boolean] = None)
 
   /**
+   * Toggle room
+   * @param roomId Id from room
+   * @param value Some = value / None = toggle
+   */
+  def toggleRoom(roomId: Int, value: Option[Boolean] = None)
+
+  /**
    * Set room brightness
    * @param roomId Id from room
    * @param value (0 to 1)

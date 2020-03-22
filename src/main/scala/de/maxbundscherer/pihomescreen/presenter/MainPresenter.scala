@@ -111,6 +111,20 @@ class MainPresenter(
   }
 
   /**
+   * Image View (toggle room)
+   * @param event MouseEvent (userData = roomId)
+   */
+  def imv_onMouseMoved(event: MouseEvent): Unit = {
+
+    val imv = event.getSource.asInstanceOf[javafx.scene.image.ImageView]
+
+    val roomId: Int = imv.getUserData.toString.toInt
+
+    this.lightService.toggleRoom(roomId)
+    this.updateLightStates()
+  }
+
+  /**
    * Toggle Button (toggle light)
    * @param event MouseEvent (userData = lightId)
    */
