@@ -68,11 +68,13 @@ class MainPresenter(
     this.tobBedroomBack.setGraphic(ImageHelper.getGetLightBulbImageView(lightType = 5, width = 42, height = 42))
     this.tobBedroomFront.setGraphic(ImageHelper.getGetLightBulbImageView(lightType = 5, width = 42, height = 42))
 
-    this.startNewTimeline(interval = 5 s, repeat = true, title = "Clock Timeline", handler = () => {
+    //TODO: Improve first time & duration
+    this.startNewTimeline(interval = 1 m, repeat = true, title = "Clock Timeline", handler = () => {
       this.lblClock.setText(this.calendarService.getHourAndMinuteToString)
       this.lblDate.setText(this.calendarService.getDateToString)
     })
 
+    //TODO: Improve first time & duration
     this.startNewTimeline(interval = 1 m, repeat = true, title = "Weather Timeline", handler = () => {
       this.lblWeather.setText(this.weatherService.getActualTempInCelsius + " C°")
     })
