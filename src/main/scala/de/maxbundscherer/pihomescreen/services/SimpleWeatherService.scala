@@ -10,10 +10,10 @@ class SimpleWeatherService extends WeatherService with Configuration {
   import cats.{Eval, Id}
   import cats.effect.IO
 
-  val client = CreateOWM[IO].create("history.openweathermap.org", Config.OpenWeatherMap.apiKey, timeout = 1.seconds, ssl = true)
+  val client = CreateOWM[IO].create("api.openweathermap.org", Config.OpenWeatherMap.apiKey, timeout = 1.seconds, ssl = true)
 
   /**
-   * Get acutal temperature in celsius
+   * Get actual temperature in celsius
 
    * @return Celsius
    */
