@@ -1,9 +1,11 @@
 package de.maxbundscherer.pihomescreen.services
 
-class MockHueService extends HueService {
+import de.maxbundscherer.pihomescreen.services.abstracts.LightService
+
+class MockLightService extends LightService {
 
   /**
-   * Fake database (hue bridge)
+   * Fake database
    */
   var fakeStates: Map[Int, Boolean] = Map (
     7 -> true,

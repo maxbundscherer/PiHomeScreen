@@ -1,6 +1,6 @@
-package de.maxbundscherer.pihomescreen.services
+package de.maxbundscherer.pihomescreen.services.abstracts
 
-abstract class HueService {
+abstract class LightService {
 
   /**
    * Get light bulbs states

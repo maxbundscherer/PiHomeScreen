@@ -1,7 +1,8 @@
 package de.maxbundscherer.pihomescreen.presenter
 
 import de.maxbundscherer.pihomescreen.img.ImageHelper
-import de.maxbundscherer.pihomescreen.services.{HueService, MockHueService}
+import de.maxbundscherer.pihomescreen.services.MockLightService
+import de.maxbundscherer.pihomescreen.services.abstracts.LightService
 import de.maxbundscherer.pihomescreen.utils.{InitPresenter, Logger, ProgressBarSlider}
 
 import scalafx.scene.control.ToggleButton
@@ -29,8 +30,8 @@ class MainPresenter(
 
                    ) extends InitPresenter with ProgressBarSlider {
 
-  private val logger: Logger          = new Logger(getClass.getSimpleName)
-  private val hueService: HueService  = new MockHueService()
+  private val logger: Logger              = new Logger(getClass.getSimpleName)
+  private val lightService: LightService  = new MockLightService()
 
   /**
    * Init Presenter
@@ -48,7 +49,7 @@ class MainPresenter(
 
     def styleTranslator(state: Boolean): String = if(state) "-fx-background-color: yellow" else "-fx-background-color: grey"
 
-    for ( (id, newState) <- this.hueService.getStates ) {
+    for ( (id, newState) <- this.lightService.getStates ) {
 
       id match {
 
@@ -73,18 +74,26 @@ class MainPresenter(
 
   }
 
+  /**
+   * Progress Bar (fake slider)
+   * @param event  MouseEvent (updates slider)
+   */
   def prb_onMouseMoved(event: MouseEvent): Unit = {
 
     this.updateProgressBar(event)
   }
 
+  /**
+   * Toggle Button
+   * @param event MouseEvent (userData = light id)
+   */
   def tob_onMouseMoved(event: MouseEvent): Unit = {
 
     val tob = event.getSource.asInstanceOf[javafx.scene.control.ToggleButton]
 
     val id: Int = tob.getUserData.toString.toInt
 
-    this.hueService.toggleState(id)
+    this.lightService.toggleState(id)
     this.updateLightStates()
   }
 
