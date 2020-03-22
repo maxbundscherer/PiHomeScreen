@@ -31,5 +31,8 @@ assemblyMergeStrategy in assembly := {
   case x => MergeStrategy.first
 }
 
+// Config Factory
+libraryDependencies += "com.typesafe" % "config" % "1.4.0"
+
 // Alias
 addCommandAlias("generate-jar", ";clean;assembly")
