@@ -37,7 +37,7 @@ class MainPresenter(
    */
   override def initPresenter(): Unit = {
     logger.debug("Init Presenter")
-    panBackground.setBackground(ImageHelper.getBackground())
+    this.panBackground.setBackground(ImageHelper.getBackground())
     this.updateLightStates()
   }
 
@@ -75,7 +75,7 @@ class MainPresenter(
 
   def prb_onMouseMoved(event: MouseEvent): Unit = {
 
-    updateProgressBar(event)
+    this.updateProgressBar(event)
   }
 
   def tob_onMouseMoved(event: MouseEvent): Unit = {
