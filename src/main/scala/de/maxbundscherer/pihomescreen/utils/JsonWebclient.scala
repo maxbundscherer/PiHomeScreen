@@ -73,42 +73,33 @@ trait JsonWebclient {
     }
 
     /**
-     * Send post request and convert response to json model
-     * @param decoder Decoder (from response)
+     * Send put request and convert response to json model
+     * @param decoder Decoder (from response) (Some = response / None = no response)
      * @param url Endpoint (e.g. http://example.org)
      * @param headerParams Map (key -> value)
-     * @param body Map (key -> value)
-     * @param rawBody If set = use rawBody instead of body
+     * @param rawBody Body
      * @tparam ResponseType classOf Response
      * @return Response (Some = ok / None = failure)
      */
-    def postRequestToJSON[ResponseType](    decoder: Decoder[ResponseType],
+    def putRequestToJSON[ResponseType](    decoder: Option[Decoder[ResponseType]],
                                             url: String,
                                             headerParams: Map[String, String] = Map.empty,
-                                            body: Map[String, String] = Map.empty,
-                                            rawBody: Option[String] = None
+                                            rawBody: String
                                          ): Option[ResponseType] = {
 
-      val req = if(rawBody.isEmpty) {
+      val req = basicRequest
+        .put(uri"$url")
+        .headers(headerParams)
+        .body(rawBody)
+        .send()
 
-        //TODO: Add try to req.send() (java.lang.RuntimeException - Network failures)
-        basicRequest
-          .post(uri"$url")
-          .headers(headerParams)
-          .body(body)
-          .send()
-      }
+      if(decoder.isDefined) this.convertResponse[ResponseType](req.body)(decoder.get)
       else {
 
-        //TODO: Add try to req.send() (java.lang.RuntimeException - Network failures)
-        basicRequest
-          .post(uri"$url")
-          .headers(headerParams)
-          .body(rawBody.get)
-          .send()
+        if(req.body.isLeft) logger.error("Request failed (status is not 200)")
+        None
       }
 
-      this.convertResponse[ResponseType](req.body)(decoder)
     }
 
   }
