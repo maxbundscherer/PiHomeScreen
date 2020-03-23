@@ -23,9 +23,8 @@ trait JsonWebclient {
      * @tparam ResponseType classOf Response
      * @return Response (Some = ok / None = failure)
      */
-    private def convertResponse[ResponseType](decoder: Decoder[ResponseType],
-                                              rsp: Either[String, String]
-                                             ): Option[ResponseType] = {
+    private def convertResponse[ResponseType](rsp: Either[String, String]
+                                             )(implicit decoder: Decoder[ResponseType]): Option[ResponseType] = {
 
       rsp match {
 
@@ -69,7 +68,7 @@ trait JsonWebclient {
         .headers(headerParams)
         .send()
 
-      this.convertResponse[ResponseType](decoder, req.body)
+      this.convertResponse[ResponseType](req.body)(decoder)
     }
 
     /**
@@ -106,7 +105,7 @@ trait JsonWebclient {
           .send()
       }
 
-      this.convertResponse[ResponseType](decoder, req.body)
+      this.convertResponse[ResponseType](req.body)(decoder)
     }
 
   }

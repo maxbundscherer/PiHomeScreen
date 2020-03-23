@@ -21,7 +21,7 @@ trait Configuration {
 
       lazy private val c = config.getConfig("philipshue")
 
-      lazy val bridgeApiUrl: String          = c.getString("bridge-api-url")
+      lazy val bridgeApiUrl: String       = c.getString("bridge-api-url")
       lazy val bridgeApiUsername: String  = c.getString("bridge-api-username")
 
     }
