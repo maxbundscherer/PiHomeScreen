@@ -76,7 +76,7 @@ class SimpleHueService extends LightService with JsonWebclient with Configuratio
    * @param newState Some = Set light bulb to value / None = toggle light bulb
    * @param newBrightness 0 to 1 Some = Set light bulb to value / None = Dont change it
    */
-  def toggleLightBulb(light: Lights.Light, newState: Option[Boolean] = None, newBrightness: Option[Double] = None) = {
+  def toggleLightBulb(light: Lights.Light, newState: Option[Boolean] = None, newBrightness: Option[Double] = None): Unit = {
 
     val stateString      = if(newState.getOrElse(!this.getLightBulbStates(light).on)) "true" else "false"
     val brightnessString = if(newBrightness.isDefined) ", \"bri\":" + (newBrightness.get * 255).toInt else ""
@@ -96,21 +96,21 @@ class SimpleHueService extends LightService with JsonWebclient with Configuratio
    * @param room  Room
    * @param value Some = value / None = toggle
    */
-override def toggleRoom(room: Rooms.Room, value: Option[Boolean]): Unit = {
+  override def toggleRoom(room: Rooms.Room, value: Option[Boolean]): Unit = {
 
-  val newState: Boolean = value match {
+    val newState: Boolean = value match {
 
-    case Some(sth) => sth
+      case Some(sth) => sth
 
-    case None =>
+      case None =>
 
-      val actualRoomsStates: Map[Rooms.Room, EntityState] = this.getRoomStates(None)
-      !actualRoomsStates(room).on
+        val actualRoomsStates: Map[Rooms.Room, EntityState] = this.getRoomStates(None)
+        !actualRoomsStates(room).on
 
+    }
+
+    room.foreach(light => this.toggleLightBulb(light, newState = Some(newState)))
   }
-
-  room.foreach(light => this.toggleLightBulb(light, newState = Some(newState)))
-}
 
   /**
    * Set room brightness

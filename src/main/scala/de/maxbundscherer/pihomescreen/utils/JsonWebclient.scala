@@ -14,7 +14,7 @@ trait JsonWebclient {
     private val sort: Option[String] = None
     private val query = "http language:scala"
 
-    private implicit val backend = HttpURLConnectionBackend()
+    private implicit val backend: SttpBackend[Identity, Nothing, NothingT] = HttpURLConnectionBackend()
 
     /**
      * Convert response (body) to response
