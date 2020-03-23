@@ -143,8 +143,8 @@ class MainPresenter(
    */
   private def updateLightStates(): Unit = {
 
-    def lightStyleTranslator(state: Boolean): String = if(state) "-fx-background-color: orange" else "-fx-background-color: orange"
-    def roomStyleTranslator(state: Boolean): String = if(state) "-fx-accent: orange" else "-fx-accent: orange"
+    def lightStyleTranslator(state: Boolean): String = if(state) "-fx-background-color: orange" else "-fx-background-color: grey"
+    def roomStyleTranslator(state: Boolean): String = if(state) "-fx-accent: orange" else "-fx-accent: grey"
 
     val actualBulbStates = this.lightService.getLightBulbStates
 
