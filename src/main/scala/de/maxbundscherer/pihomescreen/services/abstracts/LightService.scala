@@ -5,16 +5,23 @@ import de.maxbundscherer.pihomescreen.utils.LightConfiguration
 abstract class LightService extends LightConfiguration {
 
   /**
-   * Get light bulbs states
-   * @return Map (Light, value)
+   * EntityState (for lights and rooms)
+   * @param on Boolean
+   * @param brightness Double 0 to 1
    */
-  def getLightBulbStates: Map[Lights.Light, Boolean]
+  case class EntityState(on: Boolean, brightness: Double)
+
+  /**
+   * Get light bulbs states
+   * @return Map (Light, EntityState)
+   */
+  def getLightBulbStates: Map[Lights.Light, EntityState]
 
   /**
    * Get room brightness
-   * @return Map (Room, value 0 to 1)
+   * @return Map (Room, EntityState)
    */
-  def getRoomBrightness: Map[Rooms.Room, Double]
+  def getRoomStates: Map[Rooms.Room, EntityState]
 
   /**
    * Toggle state from light bulb

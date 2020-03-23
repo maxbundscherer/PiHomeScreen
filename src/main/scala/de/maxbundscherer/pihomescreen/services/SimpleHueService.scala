@@ -14,11 +14,11 @@ class SimpleHueService extends LightService with JsonWebclient with Configuratio
 
   /**
    * Get light bulbs states
-   * @return Map (Light, value)
+   * @return Map (Light, EntityState)
    */
-  override def getLightBulbStates: Map[Lights.Light, Boolean] = {
+  override def getLightBulbStates: Map[Lights.Light, EntityState] = {
 
-    case class State(on: Boolean)
+    case class State(on: Boolean, bri: Int)
     case class HueLight(state: State)
 
     Webclient.getRequestToJson(
@@ -34,7 +34,10 @@ class SimpleHueService extends LightService with JsonWebclient with Configuratio
       case Some(answer) =>
 
         Lights.ALL_LIGHTS.map(light =>
-          light -> answer(light).state.on
+          light -> EntityState(
+            on = answer(light).state.on,
+            brightness = answer(light).state.bri / 255.0 //Norm to 0 to 1
+          )
         ).toMap
 
     }
@@ -43,14 +46,27 @@ class SimpleHueService extends LightService with JsonWebclient with Configuratio
 
   /**
    * Get room brightness
-   * @return Map (Room, value 0 to 1)
+   * @return Map (Room, EntityState)
    */
-  override def getRoomBrightness: Map[Rooms.Room, Double] = {
+  override def getRoomStates: Map[Rooms.Room, EntityState] = {
 
-    //TODO: Implement
-    Rooms.ALL_ROOMS.map(room =>
-      room -> 1.0
+    val actualBulbsStates: Map[Lights.Light, EntityState] = this.getLightBulbStates
+
+    val roomWithLightBulbStates: Map[Rooms.Room, Vector[EntityState]] = Rooms.ALL_ROOMS.map(room =>
+
+      room -> room.map(light => actualBulbsStates(light))
+
     ).toMap
+
+    roomWithLightBulbStates.map { case (room, lightBulbStates) =>
+
+      room -> EntityState(
+        on          = lightBulbStates.exists(_.on == true), //One bulb on is enough
+        brightness  = lightBulbStates.map(_.brightness).max //Take brightness from max bright bulb
+      )
+
+    }
+
   }
 
   /**
@@ -66,8 +82,8 @@ class SimpleHueService extends LightService with JsonWebclient with Configuratio
 
       case None =>
 
-        val actualStates: Map[Lights.Light, Boolean] = this.getLightBulbStates
-        if(actualStates(light)) "false" else "true"
+        val actualBulbsStates: Map[Lights.Light, EntityState] = this.getLightBulbStates
+        if(actualBulbsStates(light).on) "false" else "true"
 
     }
 
