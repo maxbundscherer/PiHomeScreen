@@ -46,15 +46,16 @@ class SimpleHueService extends LightService with JsonWebclient with Configuratio
 
   /**
    * Get room brightness
+   * @param actualBulbStates Some = Cached light states / None = Calls getLightBulbStates
    * @return Map (Room, EntityState)
    */
-  override def getRoomStates: Map[Rooms.Room, EntityState] = {
+  override def getRoomStates(actualBulbStates: Option[Map[Lights.Light, EntityState]]): Map[Rooms.Room, EntityState] = {
 
-    val actualBulbsStates: Map[Lights.Light, EntityState] = this.getLightBulbStates
+    val bulbStates: Map[Lights.Light, EntityState] = actualBulbStates.getOrElse(this.getLightBulbStates)
 
     val roomWithLightBulbStates: Map[Rooms.Room, Vector[EntityState]] = Rooms.ALL_ROOMS.map(room =>
 
-      room -> room.map(light => actualBulbsStates(light))
+      room -> room.map(light => bulbStates(light))
 
     ).toMap
 
@@ -103,7 +104,7 @@ override def toggleRoom(room: Rooms.Room, value: Option[Boolean]): Unit = {
 
     case None =>
 
-      val actualRoomsStates: Map[Rooms.Room, EntityState] = this.getRoomStates
+      val actualRoomsStates: Map[Rooms.Room, EntityState] = this.getRoomStates(None)
       !actualRoomsStates(room).on
 
   }

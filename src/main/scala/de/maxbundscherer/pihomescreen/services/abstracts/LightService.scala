@@ -19,9 +19,10 @@ abstract class LightService extends LightConfiguration {
 
   /**
    * Get room brightness
+   * @param actualBulbStates Some = Cached light states / None = Calls getLightBulbStates
    * @return Map (Room, EntityState)
    */
-  def getRoomStates: Map[Rooms.Room, EntityState]
+  def getRoomStates(actualBulbStates: Option[Map[Lights.Light, EntityState]]): Map[Rooms.Room, EntityState]
 
   /**
    * Toggle state from light bulb

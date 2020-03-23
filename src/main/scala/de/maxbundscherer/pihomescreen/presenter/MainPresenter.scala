@@ -135,8 +135,6 @@ class MainPresenter(
       this.updateLightStates()
     })
 
-    this.updateLightStates()
-
     logger.info("End init presenter")
   }
 
@@ -147,14 +145,16 @@ class MainPresenter(
 
     def lightStyleTranslator(state: Boolean): String = if(state) "-fx-background-color: yellow" else "-fx-background-color: grey"
 
-    for ( (light, lightState) <- this.lightService.getLightBulbStates) {
+    val actualBulbStates = this.lightService.getLightBulbStates
+
+    for ( (light, lightState) <- actualBulbStates) {
 
       val targetToggleButton = this.lightsMapping.find(_._2 == light).get._1
       targetToggleButton.setStyle(lightStyleTranslator(lightState.on))
 
     }
 
-    for ( (room, roomState) <- this.lightService.getRoomStates) {
+    for ( (room, roomState) <- this.lightService.getRoomStates(Some(actualBulbStates))) {
 
       //TODO: Implement state on and off
       val targetProgressBar = this.roomsMappingProgressBars.find(_._2 == room).get._1
