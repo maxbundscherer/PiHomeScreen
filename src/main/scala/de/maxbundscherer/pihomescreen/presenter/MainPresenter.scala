@@ -1,7 +1,7 @@
 package de.maxbundscherer.pihomescreen.presenter
 
 import de.maxbundscherer.pihomescreen.img.ImageHelper
-import de.maxbundscherer.pihomescreen.services.{MockLightService, SimpleCalendarService, SimpleWeatherService}
+import de.maxbundscherer.pihomescreen.services.{SimpleCalendarService, SimpleHueService, SimpleWeatherService}
 import de.maxbundscherer.pihomescreen.services.abstracts.{CalendarService, LightService, WeatherService}
 import de.maxbundscherer.pihomescreen.utils.{InitPresenter, Logger, ProgressBarSlider, TimelineHelper}
 
@@ -42,7 +42,7 @@ class MainPresenter(
 
   private val logger: Logger                    = new Logger(getClass.getSimpleName)
 
-  private val lightService: LightService        = new MockLightService()
+  private val lightService: LightService        = new SimpleHueService()
   private val calendarService: CalendarService  = new SimpleCalendarService()
   private val weatherService: WeatherService    = new SimpleWeatherService()
 

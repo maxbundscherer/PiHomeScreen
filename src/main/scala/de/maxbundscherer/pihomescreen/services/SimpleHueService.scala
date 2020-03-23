@@ -39,14 +39,21 @@ class SimpleHueService extends LightService with JsonWebclient with Configuratio
    * Get room brightness
    * @return Map (roomId, value 0 to 1)
    */
-  override def getRoomBrightness: Map[Int, Double] = Map(0 -> 1, 1 -> 1, 2 -> 1)
+  override def getRoomBrightness: Map[Int, Double] = {
+
+    //TODO: Implement
+    Map(0 -> 1, 1 -> 1, 2 -> 1)
+  }
 
   /**
    * Toggle state from light bulb
    * @param lightId Id from light
    * @param value   Some = value / None = toggle
    */
-override def toggleLightBulb(lightId: Int, value: Option[Boolean]): Unit = ???
+override def toggleLightBulb(lightId: Int, value: Option[Boolean]): Unit = {
+
+  //TODO: Implement
+}
 
   /**
    * Toggle room
@@ -60,6 +67,9 @@ override def toggleLightBulb(lightId: Int, value: Option[Boolean]): Unit = ???
    * @param roomId Id from room
    * @param value  (0 to 1)
    */
-  override def setRoomBrightness(roomId: Int, value: Double): Unit = ???
+  override def setRoomBrightness(roomId: Int, value: Double): Unit = (
+
+    //TODO: Implement
+  )
 
 }
