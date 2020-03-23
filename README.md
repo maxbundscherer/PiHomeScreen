@@ -37,6 +37,7 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 ## Config
 
+- Edit [philips hue](https://www2.meethue.com/) mapping  under ``./src/main/scala/de/maxbundscherer/pihomescreen/utils/LightConfiguration.scala``
 - Edit config file under ``./src/main/resources/application.conf``
 - Add [philips hue](https://www2.meethue.com/) bridge secrets and your [openWeatherMap](https://openweathermap.org/) config.
 
