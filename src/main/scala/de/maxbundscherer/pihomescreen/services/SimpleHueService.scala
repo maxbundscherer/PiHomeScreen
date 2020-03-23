@@ -20,16 +20,18 @@ class SimpleHueService extends LightService with JsonWebclient with Configuratio
     case class HueLight(state: State)
 
     Webclient.getRequestToJson(
-
       decoder = Decoder[Map[Int, HueLight]],
       url     = s"${Config.PhilipsHue.bridgeApiUrl}${Config.PhilipsHue.bridgeApiUsername}/" + "lights"
-
     ) match {
 
-      case None         => Map.empty //Error log in Webclient
+      case None         =>
+
+        logger.error("No answer from webclient")
+        Map.empty
+
       case Some(answer) =>
 
-        answer.map { case (id, light) => id -> light.state.on }
+        answer.map { case (lightId, hueLight) => lightId -> hueLight.state.on }
 
     }
 
@@ -50,17 +52,20 @@ class SimpleHueService extends LightService with JsonWebclient with Configuratio
    * @param lightId Id from light
    * @param value   Some = value / None = toggle
    */
-override def toggleLightBulb(lightId: Int, value: Option[Boolean]): Unit = {
+  override def toggleLightBulb(lightId: Int, value: Option[Boolean]): Unit = {
 
-  //TODO: Implement
-}
+    //TODO: Implement
+  }
 
   /**
    * Toggle room
    * @param roomId Id from room
    * @param value  Some = value / None = toggle
    */
-  override def toggleRoom(roomId: Int, value: Option[Boolean]): Unit = ???
+  override def toggleRoom(roomId: Int, value: Option[Boolean]): Unit = {
+
+    //TODO: Implement
+  }
 
   /**
    * Set room brightness

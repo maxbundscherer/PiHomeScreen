@@ -12,7 +12,7 @@ class SimpleWeatherService extends WeatherService with Configuration {
 
   private val logger: Logger                    = new Logger(getClass.getSimpleName)
 
-  val client = CreateOWM[IO].create("api.openweathermap.org", Config.OpenWeatherMap.apiKey, timeout = 1.seconds, ssl = true)
+  private val client = CreateOWM[IO].create("api.openweathermap.org", Config.OpenWeatherMap.apiKey, timeout = 1.seconds, ssl = true)
 
   /**
    * Get actual temperature in celsius
