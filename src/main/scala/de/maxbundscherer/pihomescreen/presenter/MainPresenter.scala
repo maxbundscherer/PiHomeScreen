@@ -184,6 +184,7 @@ class MainPresenter(
    * Progress Bar (fake slider) (room brightness)
    * @param event  MouseEvent
    */
+  //TODO: Now it is onMouseClicked
   def prb_onMouseMoved(event: MouseEvent): Unit = {
 
     val newRoomBrightness: Double = this.processProgressBar(event, updateSender = false)
@@ -200,6 +201,7 @@ class MainPresenter(
    * Image View (toggle room)
    * @param event MouseEvent
    */
+  //TODO: Now it is onMouseClicked
   def imv_onMouseMoved(event: MouseEvent): Unit = {
 
     val imv = event.getSource.asInstanceOf[javafx.scene.image.ImageView]
@@ -214,6 +216,7 @@ class MainPresenter(
    * Toggle Button (toggle light)
    * @param event MouseEvent
    */
+  //TODO: Now it is onMouseClicked
   def tob_onMouseMoved(event: MouseEvent): Unit = {
 
     val tob = event.getSource.asInstanceOf[javafx.scene.control.ToggleButton]

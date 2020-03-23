@@ -22,7 +22,7 @@ trait JsonWebclient {
     private def blockedWait(): Unit = {
 
       //TODO: Remove this function and implement synchronized toggle and single click ui
-      Thread.sleep(500)
+      Thread.sleep(100)
     }
 
     /**
