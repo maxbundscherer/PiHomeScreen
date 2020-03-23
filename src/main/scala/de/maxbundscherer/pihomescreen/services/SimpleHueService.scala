@@ -109,6 +109,7 @@ class SimpleHueService extends LightService with JsonWebclient with Configuratio
 
     }
 
+    //TODO: Toggle all lights synchronized
     room.foreach(light => this.toggleLightBulb(light, newState = Some(newState)))
   }
 
@@ -121,6 +122,7 @@ class SimpleHueService extends LightService with JsonWebclient with Configuratio
 
     val newState = if(value == 0) false else true
 
+    //TODO: Toggle all lights synchronized
     room.foreach(light => this.toggleLightBulb(light, newState = Some(newState), newBrightness = Some(value)))
   }
 

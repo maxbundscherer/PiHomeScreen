@@ -17,6 +17,15 @@ trait JsonWebclient {
     private implicit val backend: SttpBackend[Identity, Nothing, NothingT] = HttpURLConnectionBackend()
 
     /**
+     * Blocks calls (not to much calls to bridge)
+     */
+    private def blockedWait(): Unit = {
+
+      //TODO: Remove this function and implement synchronized toggle and single click ui
+      Thread.sleep(500)
+    }
+
+    /**
      * Convert response (body) to response
      * @param decoder Decoder (from response)
      * @param rsp Body from Response
@@ -63,6 +72,9 @@ trait JsonWebclient {
                                         headerParams: Map[String, String] = Map.empty
                                          ): Option[ResponseType] = {
 
+      //TODO: Remove this function and implement synchronized toggle and single click ui
+      this.blockedWait()
+
       //TODO: Add try to req.send() (java.lang.RuntimeException - Network failures)
       val req = basicRequest
         .get(uri"$url")
@@ -87,6 +99,10 @@ trait JsonWebclient {
                                             rawBody: String
                                          ): Option[ResponseType] = {
 
+      //TODO: Remove this function and implement synchronized toggle and single click ui
+      this.blockedWait()
+
+      //TODO: Add try to req.send() (java.lang.RuntimeException - Network failures)
       val req = basicRequest
         .put(uri"$url")
         .headers(headerParams)
