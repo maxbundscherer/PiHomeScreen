@@ -26,9 +26,10 @@ abstract class LightService extends LightConfiguration {
   /**
    * Toggle state from light bulb
    * @param light Light
-   * @param value Some = value / None = toggle
+   * @param newState Some = Set light bulb to value / None = toggle light bulb
+   * @param newBrightness 0 to 1 Some = Set light bulb to value / None = Dont change it
    */
-  def toggleLightBulb(light: Lights.Light, value: Option[Boolean] = None)
+  def toggleLightBulb(light: Lights.Light, newState: Option[Boolean] = None, newBrightness: Option[Double] = None)
 
   /**
    * Toggle room

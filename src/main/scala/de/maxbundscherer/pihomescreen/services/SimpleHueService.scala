@@ -72,22 +72,15 @@ class SimpleHueService extends LightService with JsonWebclient with Configuratio
   /**
    * Toggle state from light bulb
    * @param light Light
-   * @param value Some = value / None = toggle
+   * @param newState Some = Set light bulb to value / None = toggle light bulb
+   * @param newBrightness 0 to 1 Some = Set light bulb to value / None = Dont change it
    */
-  override def toggleLightBulb(light: Lights.Light, value: Option[Boolean]): Unit = {
+  def toggleLightBulb(light: Lights.Light, newState: Option[Boolean] = None, newBrightness: Option[Double] = None) = {
 
-    val newState: String = value match {
+    val stateString      = if(newState.getOrElse(!this.getLightBulbStates(light).on)) "true" else "false"
+    val brightnessString = if(newBrightness.isDefined) ", \"bri\":" + (newBrightness.get * 255).toInt else ""
 
-      case Some(sth) => if(sth) "true" else "false"
-
-      case None =>
-
-        val actualBulbsStates: Map[Lights.Light, EntityState] = this.getLightBulbStates
-        if(actualBulbsStates(light).on) "false" else "true"
-
-    }
-
-    val jsonRequestString: String = "{\"on\":" + newState + "}"
+    val jsonRequestString = "{\"on\":" + stateString + brightnessString  + "}"
 
     Webclient.putRequestToJSON(
       decoder = None,
@@ -104,7 +97,18 @@ class SimpleHueService extends LightService with JsonWebclient with Configuratio
    */
 override def toggleRoom(room: Rooms.Room, value: Option[Boolean]): Unit = {
 
-  //TODO: Implement
+  val newState: Boolean = value match {
+
+    case Some(sth) => sth
+
+    case None =>
+
+      val actualRoomsStates: Map[Rooms.Room, EntityState] = this.getRoomStates
+      !actualRoomsStates(room).on
+
+  }
+
+  room.foreach(light => this.toggleLightBulb(light, newState = Some(newState)))
 }
 
   /**
@@ -114,7 +118,9 @@ override def toggleRoom(room: Rooms.Room, value: Option[Boolean]): Unit = {
    */
   override def setRoomBrightness(room: Rooms.Room, value: Double): Unit = {
 
-    //TODO: Implement
+    val newState = if(value == 0) false else true
+
+    room.foreach(light => this.toggleLightBulb(light, newState = Some(newState), newBrightness = Some(value)))
   }
 
 }
