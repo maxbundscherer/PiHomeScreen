@@ -8,6 +8,7 @@ import de.maxbundscherer.pihomescreen.utils.{InitPresenter, LightConfiguration, 
 import scalafx.Includes._
 import scala.language.postfixOps
 import scalafx.scene.control.{Label, ProgressBar, ToggleButton}
+import scalafx.scene.image.ImageView
 import scalafx.scene.input.MouseEvent
 import scalafx.scene.layout.Pane
 import scalafxml.core.macros.sfxml
@@ -21,7 +22,7 @@ class MainPresenter(
                       private val lblDate: Label,
                       private val lblWeather: Label,
 
-                      //Bulbs
+                      //ToggleButtons (bulbs)
                       private val tobKitchenTop: ToggleButton,
                       private val tobKitchenTable: ToggleButton,
                       private val tobKitchenBottom: ToggleButton,
@@ -33,10 +34,15 @@ class MainPresenter(
                       private val tobBedroomBack: ToggleButton,
                       private val tobBedroomFront: ToggleButton,
 
-                      //Fake sliders
+                      //Fake sliders (rooms)
                       private val prbKitchen: ProgressBar,
                       private val prbLivingRoom: ProgressBar,
                       private val prbBedroom: ProgressBar,
+
+                      //Image views (rooms)
+                      private val imvKitchen: ImageView,
+                      private val imvLivingRoom: ImageView,
+                      private val imvBedroom: ImageView,
 
                    ) extends InitPresenter with ProgressBarSlider with TimelineHelper with LightConfiguration {
 
@@ -69,13 +75,25 @@ class MainPresenter(
   /**
    * Maps Rooms to ProgressBars
    */
-  private val roomsMapping: Map[ProgressBar, Rooms.Room] = Map (
+  private val roomsMappingProgressBars: Map[ProgressBar, Rooms.Room] = Map (
 
     this.prbKitchen    -> Rooms.Kitchen,
     this.prbLivingRoom -> Rooms.LivingRoom,
     this.prbBedroom    -> Rooms.Bedroom,
 
   )
+
+  /**
+   * Maps Rooms to ProgressBars
+   */
+  private val roomsMappingImageViews: Map[ImageView, Rooms.Room] = Map (
+
+    this.imvKitchen    -> Rooms.Kitchen,
+    this.imvLivingRoom -> Rooms.LivingRoom,
+    this.imvBedroom    -> Rooms.Bedroom,
+
+  )
+
 
   /**
    * Init Presenter
@@ -112,6 +130,11 @@ class MainPresenter(
       this.lblWeather.setText(this.weatherService.getActualTempInCelsius + " C°")
     })
 
+    //TODO: Improve first time & duration
+    this.startNewTimeline(interval = 10 s, repeat = true, title = "Light Timeline", handler = () => {
+      this.updateLightStates()
+    })
+
     this.updateLightStates()
 
     logger.info("End init presenter")
@@ -120,20 +143,20 @@ class MainPresenter(
   /**
    * Updates states from toggle buttons
    */
-  def updateLightStates(): Unit = {
+  private def updateLightStates(): Unit = {
 
-    def styleTranslator(state: Boolean): String = if(state) "-fx-background-color: yellow" else "-fx-background-color: grey"
+    def lightStyleTranslator(state: Boolean): String = if(state) "-fx-background-color: yellow" else "-fx-background-color: grey"
 
     for ( (light, newState) <- this.lightService.getLightBulbStates) {
 
       val targetToggleButton = this.lightsMapping.find(_._2 == light).get._1
-      targetToggleButton.setStyle(styleTranslator(newState))
+      targetToggleButton.setStyle(lightStyleTranslator(newState))
 
     }
 
     for ( (room, newValue) <- this.lightService.getRoomBrightness) {
 
-      val targetProgressBar = this.roomsMapping.find(_._2 == room).get._1
+      val targetProgressBar = this.roomsMappingProgressBars.find(_._2 == room).get._1
       targetProgressBar.setProgress(newValue)
 
     }
@@ -142,7 +165,7 @@ class MainPresenter(
 
   /**
    * Progress Bar (fake slider) (room brightness)
-   * @param event  MouseEvent (updates slider / userData = roomId)
+   * @param event  MouseEvent
    */
   def prb_onMouseMoved(event: MouseEvent): Unit = {
 
@@ -150,7 +173,7 @@ class MainPresenter(
 
     val prb = event.getSource.asInstanceOf[javafx.scene.control.ProgressBar]
 
-    val room: Rooms.Room = this.roomsMapping(prb)
+    val room: Rooms.Room = this.roomsMappingProgressBars(prb)
 
     this.lightService.setRoomBrightness(room, newRoomBrightness)
     this.updateLightStates()
@@ -158,27 +181,27 @@ class MainPresenter(
 
   /**
    * Image View (toggle room)
-   * @param event MouseEvent (userData = roomId)
+   * @param event MouseEvent
    */
   def imv_onMouseMoved(event: MouseEvent): Unit = {
 
     val imv = event.getSource.asInstanceOf[javafx.scene.image.ImageView]
 
-    val roomId: Int = imv.getUserData.toString.toInt
+    val room: Rooms.Room = this.roomsMappingImageViews(imv)
 
-    this.lightService.toggleRoom(roomId)
+    this.lightService.toggleRoom(room)
     this.updateLightStates()
   }
 
   /**
    * Toggle Button (toggle light)
-   * @param event MouseEvent (userData = lightId)
+   * @param event MouseEvent
    */
   def tob_onMouseMoved(event: MouseEvent): Unit = {
 
     val tob = event.getSource.asInstanceOf[javafx.scene.control.ToggleButton]
 
-    val light: Lights.Light = this.lightsMapping(tob).get
+    val light: Lights.Light = this.lightsMapping(tob)
 
     this.lightService.toggleLightBulb(light)
     this.updateLightStates()
