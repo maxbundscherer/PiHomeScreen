@@ -119,21 +119,21 @@ class MainPresenter(
     this.tobBedroomBack.setGraphic(ImageHelper.getGetLightBulbImageView(lightType = 5, width = size, height = size))
     this.tobBedroomFront.setGraphic(ImageHelper.getGetLightBulbImageView(lightType = 5, width = size, height = size))
 
-    //TODO: Improve first time & duration
     this.startNewTimeline(interval = 1 m, repeat = true, title = "Clock Timeline", handler = () => {
-      this.lblClock.setText(this.calendarService.getHourAndMinuteToString)
-      this.lblDate.setText(this.calendarService.getDateToString)
+      this.updateClock()
     })
 
-    //TODO: Improve first time & duration
-    this.startNewTimeline(interval = 1 m, repeat = true, title = "Weather Timeline", handler = () => {
-      this.lblWeather.setText(this.weatherService.getActualTempInCelsius + " C°")
+    this.startNewTimeline(interval = 15 m, repeat = true, title = "Weather Timeline", handler = () => {
+      this.updateWeather()
     })
 
-    //TODO: Improve first time & duration
     this.startNewTimeline(interval = 10 s, repeat = true, title = "Light Timeline", handler = () => {
       this.updateLightStates()
     })
+
+    this.updateClock()
+    this.updateWeather()
+    this.updateLightStates()
 
     logger.info("End init presenter")
   }
@@ -163,6 +163,21 @@ class MainPresenter(
 
     }
 
+  }
+
+  /**
+   * Updates clock
+   */
+  private def updateClock(): Unit = {
+    this.lblClock.setText(this.calendarService.getHourAndMinuteToString)
+    this.lblDate.setText(this.calendarService.getDateToString)
+  }
+
+  /**
+   * Updates weather
+   */
+  private def updateWeather(): Unit = {
+    this.lblWeather.setText(this.weatherService.getActualTempInCelsius + " C°")
   }
 
   /**
