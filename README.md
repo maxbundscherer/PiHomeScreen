@@ -50,5 +50,12 @@ pihomescreen {
 
   }
 
+   philipshue {
+
+    bridge-url = "http://192.168.x.y/"
+    bridge-api-username = ""
+
+  }
+
 }
 ```

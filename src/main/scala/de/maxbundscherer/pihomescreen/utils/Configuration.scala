@@ -17,6 +17,15 @@ trait Configuration {
 
     }
 
+    object PhilipsHue {
+
+      lazy private val c = config.getConfig("philipshue")
+
+      lazy val bridgeUrl: String          = c.getString("bridge-url")
+      lazy val bridgeApiUsername: String  = c.getString("bridge-api-username")
+
+    }
+
   }
 
 }
