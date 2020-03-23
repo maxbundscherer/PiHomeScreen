@@ -143,7 +143,8 @@ class MainPresenter(
    */
   private def updateLightStates(): Unit = {
 
-    def lightStyleTranslator(state: Boolean): String = if(state) "-fx-background-color: yellow" else "-fx-background-color: grey"
+    def lightStyleTranslator(state: Boolean): String = if(state) "-fx-background-color: orange" else "-fx-background-color: orange"
+    def roomStyleTranslator(state: Boolean): String = if(state) "-fx-accent: orange" else "-fx-accent: orange"
 
     val actualBulbStates = this.lightService.getLightBulbStates
 
@@ -156,9 +157,9 @@ class MainPresenter(
 
     for ( (room, roomState) <- this.lightService.getRoomStates(Some(actualBulbStates))) {
 
-      //TODO: Implement state on and off
       val targetProgressBar = this.roomsMappingProgressBars.find(_._2 == room).get._1
       targetProgressBar.setProgress(roomState.brightness)
+      targetProgressBar.setStyle(roomStyleTranslator(roomState.on))
 
     }
 
