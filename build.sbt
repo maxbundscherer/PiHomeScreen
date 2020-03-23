@@ -23,6 +23,18 @@ libraryDependencies ++= javaFXModules.map( m =>
 // Scalafxml
 libraryDependencies += "org.scalafx" %% "scalafxml-core-sfx8" % "0.5"
 
+// HTTP Client
+libraryDependencies += "com.softwaremill.sttp.client" %% "core" % "2.0.6"
+
+// JSON
+val circeVersion = "0.13.0"
+
+libraryDependencies ++= Seq(
+  "io.circe" %% "circe-core",
+  "io.circe" %% "circe-generic",
+  "io.circe" %% "circe-parser"
+).map(_ % circeVersion)
+
 //resolvers += Resolver.sonatypeRepo("releases")
 addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
 
