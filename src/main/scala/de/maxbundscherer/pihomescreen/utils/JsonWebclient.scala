@@ -63,6 +63,7 @@ trait JsonWebclient {
                                         headerParams: Map[String, String] = Map.empty
                                          ): Option[ResponseType] = {
 
+      //TODO: Add try to req.send() (java.lang.RuntimeException - Network failures)
       val req = basicRequest
         .get(uri"$url")
         .headers(headerParams)
@@ -90,6 +91,7 @@ trait JsonWebclient {
 
       val req = if(rawBody.isEmpty) {
 
+        //TODO: Add try to req.send() (java.lang.RuntimeException - Network failures)
         basicRequest
           .post(uri"$url")
           .headers(headerParams)
@@ -98,6 +100,7 @@ trait JsonWebclient {
       }
       else {
 
+        //TODO: Add try to req.send() (java.lang.RuntimeException - Network failures)
         basicRequest
           .post(uri"$url")
           .headers(headerParams)
