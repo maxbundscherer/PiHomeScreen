@@ -35,7 +35,7 @@ libraryDependencies ++= Seq(
   "io.circe" %% "circe-parser"
 ).map(_ % circeVersion)
 
-//resolvers += Resolver.sonatypeRepo("releases")
+//TODO: Add -Ymacro-annotations in scala 12.13.x and higher
 addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
 
 // JAR Assembly
@@ -46,9 +46,6 @@ assemblyMergeStrategy in assembly := {
 
 // Config Factory
 libraryDependencies += "com.typesafe" % "config" % "1.4.0"
-
-// Weather API
-libraryDependencies += "com.snowplowanalytics" %% "scala-weather" % "0.5.0"
 
 // Alias
 addCommandAlias("generate-jar", ";clean;assembly")

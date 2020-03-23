@@ -1,18 +1,16 @@
 package de.maxbundscherer.pihomescreen.services
 
 import de.maxbundscherer.pihomescreen.services.abstracts.WeatherService
-import de.maxbundscherer.pihomescreen.utils.{Configuration, Logger}
+import de.maxbundscherer.pihomescreen.utils.{Configuration, JsonWebclient, Logger}
 
-class SimpleWeatherService extends WeatherService with Configuration {
+class SimpleWeatherService extends WeatherService with JsonWebclient with Configuration {
 
-  import scala.concurrent.duration._
-  import com.snowplowanalytics.weather.providers.openweather.CreateOWM
-  import cats.{Eval, Id}
-  import cats.effect.IO
+  import io.circe.Decoder
+  import io.circe.generic.auto._, io.circe.parser._, io.circe.syntax._
 
   private val logger: Logger                    = new Logger(getClass.getSimpleName)
 
-  private val client = CreateOWM[IO].create("api.openweathermap.org", Config.OpenWeatherMap.apiKey, timeout = 1.seconds, ssl = true)
+  private val targetUrl: String = s"https://api.openweathermap.org/data/2.5/weather?id=${Config.OpenWeatherMap.cityId}&appid=${Config.OpenWeatherMap.apiKey}"
 
   /**
    * Get actual temperature in celsius
@@ -20,18 +18,22 @@ class SimpleWeatherService extends WeatherService with Configuration {
    */
   override def getActualTempInCelsius: String = {
 
-    val ans = client.currentById(Config.OpenWeatherMap.cityId)
+    case class Main(temp: Double)
+    case class WeatherModel(main: Main)
 
-    ans.unsafeRunSync() match {
+    Webclient.getRequestToJson(
+      decoder = Decoder[WeatherModel],
+      url     = this.targetUrl
+    ) match {
 
-      case Left(left) =>
+      case None         =>
 
-        logger.error(left.getLocalizedMessage)
+        logger.error("No answer from webclient")
         "?"
 
-      case Right(right) =>
+      case Some(answer) =>
 
-        (right.main.temp.bigDecimal.floatValue() - 273.15).toInt.toString
+        (answer.main.temp - 273.15).toInt.toString
 
     }
 

@@ -10,6 +10,8 @@ class SimpleHueService extends LightService with JsonWebclient with Configuratio
 
   private val logger: Logger = new Logger(getClass.getSimpleName)
 
+  private val targetUrl: String = s"${Config.PhilipsHue.bridgeApiUrl}${Config.PhilipsHue.bridgeApiUsername}/"
+
   /**
    * Get light bulbs states
    * @return Map (lightId, value)
@@ -21,7 +23,7 @@ class SimpleHueService extends LightService with JsonWebclient with Configuratio
 
     Webclient.getRequestToJson(
       decoder = Decoder[Map[Int, HueLight]],
-      url     = s"${Config.PhilipsHue.bridgeApiUrl}${Config.PhilipsHue.bridgeApiUsername}/" + "lights"
+      url     = this.targetUrl + "lights"
     ) match {
 
       case None         =>
