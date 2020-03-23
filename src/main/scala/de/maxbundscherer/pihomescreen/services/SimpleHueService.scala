@@ -60,7 +60,25 @@ class SimpleHueService extends LightService with JsonWebclient with Configuratio
    */
   override def toggleLightBulb(light: Lights.Light, value: Option[Boolean]): Unit = {
 
-    //TODO: Implement
+    val newState: String = value match {
+
+      case Some(sth) => if(sth) "true" else "false"
+
+      case None =>
+
+        val actualStates: Map[Lights.Light, Boolean] = this.getLightBulbStates
+        if(actualStates(light)) "false" else "true"
+
+    }
+
+    val jsonRequestString: String = "{\"on\":" + newState + "}"
+
+    Webclient.putRequestToJSON(
+      decoder = None,
+      rawBody = jsonRequestString,
+      url     = this.targetUrl + s"lights/$light/state"
+    )
+
   }
 
   /**
