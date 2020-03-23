@@ -4,31 +4,37 @@ trait LightConfiguration {
 
   object Lights {
 
-    abstract class Light(hueLightId: Int)
+    type Light = Int
 
-    case object KitchenTop    extends Light(hueLightId = 7)
-    case object KitchenTable  extends Light(hueLightId = 8)
-    case object KitchenBottom extends Light(hueLightId = 2)
+    val KitchenTop: Light = 7
+    val KitchenTable: Light = 8
+    val KitchenBottom: Light = 2
 
-    case object LivingRoomLeft    extends Light(hueLightId = 5)
-    case object LivingRoomTruss   extends Light(hueLightId = 11)
-    case object LivingRoomRight   extends Light(hueLightId = 6)
-    case object LivingRoomCouch   extends Light(hueLightId = 4)
-    case object LivingRoomCloset  extends Light(hueLightId = 10)
+    val LivingRoomLeft: Light = 5
+    val LivingRoomTruss: Light = 11
+    val LivingRoomRight: Light = 6
+    val LivingRoomCouch: Light = 4
+    val LivingRoomCloset: Light = 10
 
-    case object BedroomBack   extends Light(hueLightId = 9)
-    case object BedroomFront  extends Light(hueLightId = 1)
+    val BedroomBack: Light = 9
+    val BedroomFront: Light = 1
+
+    val ALL_LIGHTS: Vector[Light] = Vector(KitchenTop, KitchenTable, KitchenBottom, LivingRoomLeft, LivingRoomTruss, LivingRoomRight, LivingRoomCouch, LivingRoomCloset, BedroomBack, BedroomFront)
 
   }
 
   object Rooms {
 
-    abstract class Room(lights: Vector[Lights.Light])
+    import Lights._
+    
+    type Room = Vector[Light]
+    
+    val Kitchen = Vector(KitchenTop, KitchenTable, KitchenBottom)
+    val LivingRoom = Vector(LivingRoomLeft, LivingRoomTruss, LivingRoomRight, LivingRoomCouch, LivingRoomCloset)
+    val Bedroom = Vector(BedroomBack, BedroomFront)
 
-    case object Kitchen     extends Room(Vector(Lights.KitchenTop, Lights.KitchenTable, Lights.KitchenBottom))
-    case object LivingRoom  extends Room(Vector(Lights.LivingRoomLeft, Lights.LivingRoomTruss, Lights.LivingRoomRight, Lights.LivingRoomCouch, Lights.LivingRoomCloset))
-    case object Bedroom     extends Room(Vector(Lights.BedroomBack, Lights.BedroomFront))
-
+    val ALL_ROOMS: Vector[Room] = Vector(Kitchen, LivingRoom, Bedroom)
+    
   }
 
 }

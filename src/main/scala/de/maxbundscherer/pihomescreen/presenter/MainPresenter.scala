@@ -3,7 +3,7 @@ package de.maxbundscherer.pihomescreen.presenter
 import de.maxbundscherer.pihomescreen.img.ImageHelper
 import de.maxbundscherer.pihomescreen.services.{SimpleCalendarService, SimpleHueService, SimpleWeatherService}
 import de.maxbundscherer.pihomescreen.services.abstracts.{CalendarService, LightService, WeatherService}
-import de.maxbundscherer.pihomescreen.utils.{InitPresenter, Logger, ProgressBarSlider, TimelineHelper}
+import de.maxbundscherer.pihomescreen.utils.{InitPresenter, LightConfiguration, Logger, ProgressBarSlider, TimelineHelper}
 
 import scalafx.Includes._
 import scala.language.postfixOps
@@ -38,13 +38,44 @@ class MainPresenter(
                       private val prbLivingRoom: ProgressBar,
                       private val prbBedroom: ProgressBar,
 
-                   ) extends InitPresenter with ProgressBarSlider with TimelineHelper {
+                   ) extends InitPresenter with ProgressBarSlider with TimelineHelper with LightConfiguration {
 
   private val logger: Logger                    = new Logger(getClass.getSimpleName)
 
   private val lightService: LightService        = new SimpleHueService()
   private val calendarService: CalendarService  = new SimpleCalendarService()
   private val weatherService: WeatherService    = new SimpleWeatherService()
+
+  /**
+   * Maps Lights to ToggleButtons
+   */
+  private val lightsMapping: Map[ToggleButton, Lights.Light] = Map (
+
+    this.tobKitchenTop    -> Lights.KitchenTop,
+    this.tobKitchenTable  -> Lights.KitchenTable,
+    this.tobKitchenBottom -> Lights.KitchenBottom,
+
+    this.tobLivingRoomLeft    -> Lights.LivingRoomLeft,
+    this.tobLivingRoomTruss   -> Lights.LivingRoomTruss,
+    this.tobLivingRoomRight   -> Lights.LivingRoomRight,
+    this.tobLivingRoomCouch   -> Lights.LivingRoomCouch,
+    this.tobLivingRoomCloset  -> Lights.LivingRoomCloset,
+
+    this.tobBedroomBack   -> Lights.BedroomBack,
+    this.tobBedroomFront  -> Lights.BedroomFront,
+
+  )
+
+  /**
+   * Maps Rooms to ProgressBars
+   */
+  private val roomsMapping: Map[ProgressBar, Rooms.Room] = Map (
+
+    this.prbKitchen    -> Rooms.Kitchen,
+    this.prbLivingRoom -> Rooms.LivingRoom,
+    this.prbBedroom    -> Rooms.Bedroom,
+
+  )
 
   /**
    * Init Presenter
@@ -93,40 +124,17 @@ class MainPresenter(
 
     def styleTranslator(state: Boolean): String = if(state) "-fx-background-color: yellow" else "-fx-background-color: grey"
 
-    for ( (lightId, newState) <- this.lightService.getLightBulbStates) {
+    for ( (light, newState) <- this.lightService.getLightBulbStates) {
 
-      lightId match {
-
-        case 7    => this.tobKitchenTop.setStyle(styleTranslator(newState))
-        case 8    => this.tobKitchenTable.setStyle(styleTranslator(newState))
-        case 2    => this.tobKitchenBottom.setStyle(styleTranslator(newState))
-
-        case 5    => this.tobLivingRoomLeft.setStyle(styleTranslator(newState))
-        case 11   => this.tobLivingRoomTruss.setStyle(styleTranslator(newState))
-        case 6    => this.tobLivingRoomRight.setStyle(styleTranslator(newState))
-        case 4    => this.tobLivingRoomCouch.setStyle(styleTranslator(newState))
-        case 10   => this.tobLivingRoomCloset.setStyle(styleTranslator(newState))
-
-        case 9    => this.tobBedroomBack.setStyle(styleTranslator(newState))
-        case 1    => this.tobBedroomFront.setStyle(styleTranslator(newState))
-
-        case _    => logger.error(s"Light not found (id=$lightId)")
-
-      }
+      val targetToggleButton = this.lightsMapping.find(_._2 == light).get._1
+      targetToggleButton.setStyle(styleTranslator(newState))
 
     }
 
-    for ( (roomId, newValue) <- this.lightService.getRoomBrightness) {
+    for ( (room, newValue) <- this.lightService.getRoomBrightness) {
 
-      roomId match {
-
-        case 0 => this.prbKitchen.setProgress(newValue)
-        case 1 => this.prbLivingRoom.setProgress(newValue)
-        case 2 => this.prbBedroom.setProgress(newValue)
-
-        case _ => logger.error(s"Room not found (id=$roomId)")
-
-      }
+      val targetProgressBar = this.roomsMapping.find(_._2 == room).get._1
+      targetProgressBar.setProgress(newValue)
 
     }
 
@@ -142,9 +150,9 @@ class MainPresenter(
 
     val prb = event.getSource.asInstanceOf[javafx.scene.control.ProgressBar]
 
-    val roomId: Int = prb.getUserData.toString.toInt
+    val room: Rooms.Room = this.roomsMapping(prb)
 
-    this.lightService.setRoomBrightness(roomId, newRoomBrightness)
+    this.lightService.setRoomBrightness(room, newRoomBrightness)
     this.updateLightStates()
   }
 
@@ -170,9 +178,9 @@ class MainPresenter(
 
     val tob = event.getSource.asInstanceOf[javafx.scene.control.ToggleButton]
 
-    val lightId: Int = tob.getUserData.toString.toInt
+    val light: Lights.Light = this.lightsMapping(tob).get
 
-    this.lightService.toggleLightBulb(lightId)
+    this.lightService.toggleLightBulb(light)
     this.updateLightStates()
   }
 

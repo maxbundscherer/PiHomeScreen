@@ -1,38 +1,40 @@
 package de.maxbundscherer.pihomescreen.services.abstracts
 
-abstract class LightService {
+import de.maxbundscherer.pihomescreen.utils.LightConfiguration
+
+abstract class LightService extends LightConfiguration {
 
   /**
    * Get light bulbs states
-   * @return Map (lightId, value)
+   * @return Map (Light, value)
    */
-  def getLightBulbStates: Map[Int, Boolean]
+  def getLightBulbStates: Map[Lights.Light, Boolean]
 
   /**
    * Get room brightness
-   * @return Map (roomId, value 0 to 1)
+   * @return Map (Room, value 0 to 1)
    */
-  def getRoomBrightness: Map[Int, Double]
+  def getRoomBrightness: Map[Rooms.Room, Double]
 
   /**
    * Toggle state from light bulb
-   * @param lightId Id from light
+   * @param light Light
    * @param value Some = value / None = toggle
    */
-  def toggleLightBulb(lightId: Int, value: Option[Boolean] = None)
+  def toggleLightBulb(light: Lights.Light, value: Option[Boolean] = None)
 
   /**
    * Toggle room
-   * @param roomId Id from room
+   * @param room Room
    * @param value Some = value / None = toggle
    */
-  def toggleRoom(roomId: Int, value: Option[Boolean] = None)
+  def toggleRoom(room: Rooms.Room, value: Option[Boolean] = None)
 
   /**
    * Set room brightness
-   * @param roomId Id from room
+   * @param room Room
    * @param value (0 to 1)
    */
-  def setRoomBrightness(roomId: Int, value: Double)
+  def setRoomBrightness(room: Rooms.Room, value: Double)
 
 }

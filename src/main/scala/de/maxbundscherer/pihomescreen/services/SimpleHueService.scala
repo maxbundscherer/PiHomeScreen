@@ -14,9 +14,9 @@ class SimpleHueService extends LightService with JsonWebclient with Configuratio
 
   /**
    * Get light bulbs states
-   * @return Map (lightId, value)
+   * @return Map (Light, value)
    */
-  override def getLightBulbStates: Map[Int, Boolean] = {
+  override def getLightBulbStates: Map[Lights.Light, Boolean] = {
 
     case class State(on: Boolean)
     case class HueLight(state: State)
@@ -33,7 +33,9 @@ class SimpleHueService extends LightService with JsonWebclient with Configuratio
 
       case Some(answer) =>
 
-        answer.map { case (lightId, hueLight) => lightId -> hueLight.state.on }
+        Lights.ALL_LIGHTS.map(light =>
+          light -> answer(light).state.on
+        ).toMap
 
     }
 
@@ -41,42 +43,44 @@ class SimpleHueService extends LightService with JsonWebclient with Configuratio
 
   /**
    * Get room brightness
-   * @return Map (roomId, value 0 to 1)
+   * @return Map (Room, value 0 to 1)
    */
-  override def getRoomBrightness: Map[Int, Double] = {
+  override def getRoomBrightness: Map[Rooms.Room, Double] = {
 
     //TODO: Implement
-    Map(0 -> 1, 1 -> 1, 2 -> 1)
+    Rooms.ALL_ROOMS.map(room =>
+      room -> 1.0
+    ).toMap
   }
 
   /**
    * Toggle state from light bulb
-   * @param lightId Id from light
-   * @param value   Some = value / None = toggle
+   * @param light Light
+   * @param value Some = value / None = toggle
    */
-  override def toggleLightBulb(lightId: Int, value: Option[Boolean]): Unit = {
+  override def toggleLightBulb(light: Lights.Light, value: Option[Boolean]): Unit = {
 
     //TODO: Implement
   }
 
   /**
    * Toggle room
-   * @param roomId Id from room
-   * @param value  Some = value / None = toggle
+   * @param room  Room
+   * @param value Some = value / None = toggle
    */
-  override def toggleRoom(roomId: Int, value: Option[Boolean]): Unit = {
+override def toggleRoom(room: Rooms.Room, value: Option[Boolean]): Unit = {
 
-    //TODO: Implement
-  }
+  //TODO: Implement
+}
 
   /**
    * Set room brightness
-   * @param roomId Id from room
-   * @param value  (0 to 1)
+   * @param room  Room
+   * @param value (0 to 1)
    */
-  override def setRoomBrightness(roomId: Int, value: Double): Unit = (
+  override def setRoomBrightness(room: Rooms.Room, value: Double): Unit = {
 
     //TODO: Implement
-  )
+  }
 
 }
