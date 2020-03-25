@@ -4,6 +4,8 @@ trait JsonWebclient {
 
   object Webclient {
 
+    import scala.util.{Failure, Success, Try}
+
     import io.circe.Decoder
     import io.circe.generic.auto._, io.circe.parser._, io.circe.syntax._
 
@@ -75,13 +77,22 @@ trait JsonWebclient {
       //TODO: Remove this function and implement synchronized toggle and single click ui
       this.blockedWait()
 
-      //TODO: Add try to req.send() (java.lang.RuntimeException - Network failures)
-      val req = basicRequest
-        .get(uri"$url")
-        .headers(headerParams)
-        .send()
+      Try {
+        basicRequest
+          .get(uri"$url")
+          .headers(headerParams)
+          .send()
+      } match {
 
-      this.convertResponse[ResponseType](req.body)(decoder)
+        case Failure(exception) =>
+          logger.error(exception.getLocalizedMessage)
+          None
+
+        case Success(res) =>
+          this.convertResponse[ResponseType](res.body)(decoder)
+
+      }
+
     }
 
     /**
@@ -102,18 +113,34 @@ trait JsonWebclient {
       //TODO: Remove this function and implement synchronized toggle and single click ui
       this.blockedWait()
 
-      //TODO: Add try to req.send() (java.lang.RuntimeException - Network failures)
-      val req = basicRequest
-        .put(uri"$url")
-        .headers(headerParams)
-        .body(rawBody)
-        .send()
+      Try {
+        basicRequest
+          .put(uri"$url")
+          .headers(headerParams)
+          .body(rawBody)
+          .send()
+      } match {
 
-      if(decoder.isDefined) this.convertResponse[ResponseType](req.body)(decoder.get)
-      else {
+        case Failure(exception) =>
 
-        if(req.body.isLeft) logger.error("Request failed (status is not 200)")
-        None
+          logger.error(exception.getLocalizedMessage)
+          None
+
+        case Success(res) =>
+
+          decoder match {
+
+            case None =>
+
+              if(res.body.isLeft) logger.error("Request failed (not 200)")
+              None
+
+            case Some(sthDecoder) =>
+              this.convertResponse[ResponseType](res.body)(sthDecoder)
+
+          }
+
+
       }
 
     }
