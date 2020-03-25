@@ -16,21 +16,21 @@
       <Pane layoutX="162.0" layoutY="41.0" prefHeight="105.0" prefWidth="700.0" style="-fx-background-color: rgba(0, 0, 0, 0.7); -fx-background-radius: 0;">
          <children>
       
-            <Label fx:id="lblDate" layoutX="51.0" layoutY="28.0" text="??, ??.??." textFill="WHITE">
+            <Label fx:id="lblDate" alignment="CENTER_LEFT" layoutX="29.0" layoutY="33.0" prefHeight="42.0" prefWidth="164.0" text="??, ??.??." textFill="WHITE">
                <font>
-                  <Font size="40.0" />
+                  <Font size="34.0" />
                </font>
             </Label>
       
-            <Label fx:id="lblClock" layoutX="259.0" layoutY="2.0" text="??:??" textFill="WHITE">
+            <Label fx:id="lblClock" alignment="CENTER" layoutX="195.0" layoutY="4.0" prefHeight="99.0" prefWidth="311.0" text="??:??" textFill="WHITE">
                <font>
-                  <Font size="82.0" />
+                  <Font size="80.0" />
                </font>
             </Label>
       
-            <Label fx:id="lblWeather" layoutX="541.0" layoutY="28.0" text="?°C " textFill="WHITE">
+            <Label fx:id="lblWeather" alignment="CENTER_RIGHT" layoutX="568.0" layoutY="33.0" prefHeight="42.0" prefWidth="99.0" text="? °C " textFill="WHITE">
                <font>
-                  <Font size="40.0" />
+                  <Font size="34.0" />
                </font>
             </Label>
          </children>
