@@ -39,11 +39,11 @@
       <Pane layoutX="162.0" layoutY="171.0" prefHeight="215.0" prefWidth="700.0" style="-fx-background-color: rgba(0, 0, 0, 0.7); -fx-background-radius: 0;">
 
          <children>
-            <ProgressBar fx:id="prbKitchen" layoutX="25.0" layoutY="146.0" onMouseClicked="#prb_onMouseMoved" prefHeight="40.0" prefWidth="200.0" progress="0.5" style="-fx-accent: grey;" />
-            <ProgressBar fx:id="prbLivingRoom" layoutX="250.0" layoutY="146.0" onMouseClicked="#prb_onMouseMoved" prefHeight="40.0" prefWidth="200.0" progress="0.5" style="-fx-accent: grey;" />
-            <ProgressBar fx:id="prbBedroom" layoutX="475.0" layoutY="146.0" onMouseClicked="#prb_onMouseMoved" prefHeight="40.0" prefWidth="200.0" progress="0.5" style="-fx-accent: grey;" />
+            <ProgressBar fx:id="prbKitchen" layoutX="25.0" layoutY="146.0" onMouseClicked="#prb_onMouseClicked" prefHeight="40.0" prefWidth="200.0" progress="0.5" style="-fx-accent: grey;" />
+            <ProgressBar fx:id="prbLivingRoom" layoutX="250.0" layoutY="146.0" onMouseClicked="#prb_onMouseClicked" prefHeight="40.0" prefWidth="200.0" progress="0.5" style="-fx-accent: grey;" />
+            <ProgressBar fx:id="prbBedroom" layoutX="475.0" layoutY="146.0" onMouseClicked="#prb_onMouseClicked" prefHeight="40.0" prefWidth="200.0" progress="0.5" style="-fx-accent: grey;" />
 
-            <ImageView fx:id="imvKitchen" fitHeight="105.0" fitWidth="105.0" layoutX="73.0" layoutY="26.0" onMouseClicked="#imv_onMouseMoved" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="imvKitchen" fitHeight="105.0" fitWidth="105.0" layoutX="73.0" layoutY="26.0" onMouseClicked="#imv_onMouseClicked" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../img/kitchen.png" />
                </image>
@@ -52,7 +52,7 @@
                </effect>
             </ImageView>
       
-            <ImageView fx:id="imvLivingRoom" fitHeight="140.0" fitWidth="148.0" layoutX="280.0" layoutY="13.0" onMouseClicked="#imv_onMouseMoved" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="imvLivingRoom" fitHeight="140.0" fitWidth="148.0" layoutX="280.0" layoutY="13.0" onMouseClicked="#imv_onMouseClicked" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../img/livingroom.png" />
                </image>
@@ -61,7 +61,7 @@
                </effect>
             </ImageView>
       
-            <ImageView fx:id="imvBedroom" fitHeight="105.0" fitWidth="105.0" layoutX="523.0" layoutY="28.0" onMouseClicked="#imv_onMouseMoved" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="imvBedroom" fitHeight="105.0" fitWidth="105.0" layoutX="523.0" layoutY="28.0" onMouseClicked="#imv_onMouseClicked" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../img/bedroom.png" />
                </image>
@@ -76,18 +76,18 @@
       <Pane layoutX="162.0" layoutY="411.0" prefHeight="150.0" prefWidth="700.0" style="-fx-background-color: rgba(0, 0, 0, 0.7); -fx-background-radius: 0;">
          <children>
 
-            <ToggleButton fx:id="tobKitchenTop" layoutX="60.5" layoutY="83.0" mnemonicParsing="false" onMouseClicked="#tob_onMouseMoved" prefHeight="52.0" prefWidth="52.0" />
-            <ToggleButton fx:id="tobKitchenTable" layoutX="99.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#tob_onMouseMoved" prefHeight="52.0" prefWidth="52.0" />
-            <ToggleButton fx:id="tobKitchenBottom" layoutX="137.5" layoutY="83.0" mnemonicParsing="false" onMouseClicked="#tob_onMouseMoved" prefHeight="52.0" prefWidth="52.0" />
+            <ToggleButton fx:id="tobKitchenTop" layoutX="60.5" layoutY="83.0" mnemonicParsing="false" onMouseClicked="#tob_onMouseClicked" prefHeight="52.0" prefWidth="52.0" />
+            <ToggleButton fx:id="tobKitchenTable" layoutX="99.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#tob_onMouseClicked" prefHeight="52.0" prefWidth="52.0" />
+            <ToggleButton fx:id="tobKitchenBottom" layoutX="137.5" layoutY="83.0" mnemonicParsing="false" onMouseClicked="#tob_onMouseClicked" prefHeight="52.0" prefWidth="52.0" />
 
-            <ToggleButton fx:id="tobLivingRoomLeft" layoutX="247.0" layoutY="83.0" mnemonicParsing="false" onMouseClicked="#tob_onMouseMoved" prefHeight="52.0" prefWidth="52.0" />
-            <ToggleButton fx:id="tobLivingRoomTruss" layoutX="285.5" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#tob_onMouseMoved" prefHeight="52.0" prefWidth="52.0" />
-            <ToggleButton fx:id="tobLivingRoomRight" layoutX="324.0" layoutY="83.0" mnemonicParsing="false" onMouseClicked="#tob_onMouseMoved" prefHeight="52.0" prefWidth="52.0" />
-            <ToggleButton fx:id="tobLivingRoomCouch" layoutX="362.5" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#tob_onMouseMoved" prefHeight="52.0" prefWidth="52.0" />
-            <ToggleButton fx:id="tobLivingRoomCloset" layoutX="401.0" layoutY="83.0" mnemonicParsing="false" onMouseClicked="#tob_onMouseMoved" prefHeight="52.0" prefWidth="52.0" />
+            <ToggleButton fx:id="tobLivingRoomLeft" layoutX="247.0" layoutY="83.0" mnemonicParsing="false" onMouseClicked="#tob_onMouseClicked" prefHeight="52.0" prefWidth="52.0" />
+            <ToggleButton fx:id="tobLivingRoomTruss" layoutX="285.5" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#tob_onMouseClicked" prefHeight="52.0" prefWidth="52.0" />
+            <ToggleButton fx:id="tobLivingRoomRight" layoutX="324.0" layoutY="83.0" mnemonicParsing="false" onMouseClicked="#tob_onMouseClicked" prefHeight="52.0" prefWidth="52.0" />
+            <ToggleButton fx:id="tobLivingRoomCouch" layoutX="362.5" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#tob_onMouseClicked" prefHeight="52.0" prefWidth="52.0" />
+            <ToggleButton fx:id="tobLivingRoomCloset" layoutX="401.0" layoutY="83.0" mnemonicParsing="false" onMouseClicked="#tob_onMouseClicked" prefHeight="52.0" prefWidth="52.0" />
 
-            <ToggleButton fx:id="tobBedroomBack" layoutX="509.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#tob_onMouseMoved" prefHeight="52.0" prefWidth="52.0" />
-            <ToggleButton fx:id="tobBedroomFront" layoutX="586.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#tob_onMouseMoved" prefHeight="52.0" prefWidth="52.0" />
+            <ToggleButton fx:id="tobBedroomBack" layoutX="509.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#tob_onMouseClicked" prefHeight="52.0" prefWidth="52.0" />
+            <ToggleButton fx:id="tobBedroomFront" layoutX="586.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#tob_onMouseClicked" prefHeight="52.0" prefWidth="52.0" />
 
          </children></Pane>
 
