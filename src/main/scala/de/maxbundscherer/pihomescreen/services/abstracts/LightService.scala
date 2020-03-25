@@ -4,6 +4,8 @@ import de.maxbundscherer.pihomescreen.utils.LightConfiguration
 
 abstract class LightService extends LightConfiguration {
 
+  //TODO: Improve error handling with webclient with Either
+
   /**
    * EntityState (for lights and rooms)
    * @param on Boolean
