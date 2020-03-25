@@ -10,7 +10,7 @@ abstract class CalendarService {
 
   /**
    * Get Date
-   * @return e.g. 01.02.
+   * @return e.g. Mo, 01.02.
    */
   def getDateToString: String
 

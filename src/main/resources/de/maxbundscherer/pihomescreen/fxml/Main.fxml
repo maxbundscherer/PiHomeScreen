@@ -13,12 +13,12 @@
 
    <children>
 
-      <Pane layoutX="162.0" layoutY="32.0" prefHeight="105.0" prefWidth="700.0" style="-fx-background-color: rgba(0, 0, 0, 0.7); -fx-background-radius: 0;">
+      <Pane layoutX="162.0" layoutY="41.0" prefHeight="105.0" prefWidth="700.0" style="-fx-background-color: rgba(0, 0, 0, 0.7); -fx-background-radius: 0;">
          <children>
       
-            <Label fx:id="lblDate" layoutX="68.0" layoutY="25.0" text="??.??." textFill="WHITE">
+            <Label fx:id="lblDate" layoutX="51.0" layoutY="28.0" text="??, ??.??." textFill="WHITE">
                <font>
-                  <Font size="45.0" />
+                  <Font size="40.0" />
                </font>
             </Label>
       
@@ -28,15 +28,15 @@
                </font>
             </Label>
       
-            <Label fx:id="lblWeather" layoutX="538.0" layoutY="25.0" text="?°C " textFill="WHITE">
+            <Label fx:id="lblWeather" layoutX="541.0" layoutY="28.0" text="?°C " textFill="WHITE">
                <font>
-                  <Font size="45.0" />
+                  <Font size="40.0" />
                </font>
             </Label>
          </children>
       </Pane>
 
-      <Pane layoutX="162.0" layoutY="162.0" prefHeight="215.0" prefWidth="700.0" style="-fx-background-color: rgba(0, 0, 0, 0.7); -fx-background-radius: 0;">
+      <Pane layoutX="162.0" layoutY="171.0" prefHeight="215.0" prefWidth="700.0" style="-fx-background-color: rgba(0, 0, 0, 0.7); -fx-background-radius: 0;">
 
          <children>
             <ProgressBar fx:id="prbKitchen" layoutX="25.0" layoutY="146.0" onMouseClicked="#prb_onMouseMoved" prefHeight="40.0" prefWidth="200.0" progress="0.5" style="-fx-accent: grey;" />
@@ -73,7 +73,7 @@
 
       </Pane>
 
-      <Pane layoutX="162.0" layoutY="402.0" prefHeight="150.0" prefWidth="700.0" style="-fx-background-color: rgba(0, 0, 0, 0.7); -fx-background-radius: 0;">
+      <Pane layoutX="162.0" layoutY="411.0" prefHeight="150.0" prefWidth="700.0" style="-fx-background-color: rgba(0, 0, 0, 0.7); -fx-background-radius: 0;">
          <children>
 
             <ToggleButton fx:id="tobKitchenTop" layoutX="60.5" layoutY="83.0" mnemonicParsing="false" onMouseClicked="#tob_onMouseMoved" prefHeight="52.0" prefWidth="52.0" />

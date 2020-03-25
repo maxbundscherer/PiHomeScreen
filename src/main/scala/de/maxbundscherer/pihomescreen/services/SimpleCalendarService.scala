@@ -7,7 +7,8 @@ import java.util.{Calendar, Date}
 
 class SimpleCalendarService extends CalendarService {
 
-  private def getTime: Date = Calendar.getInstance().getTime
+  private def getCalendar = Calendar.getInstance()
+  private def getTime: Date = this.getCalendar.getTime
 
   private val hourAndMinuteFormat = new SimpleDateFormat("HH:mm")
   private val dateFormat          = new SimpleDateFormat("dd.MM.")
@@ -20,8 +21,24 @@ class SimpleCalendarService extends CalendarService {
 
   /**
    * Get Date
-   * @return e.g. 01.02.
+   * @return e.g. Mo, 01.02.
    */
-  override def getDateToString: String = this.dateFormat.format(this.getTime)
+  override def getDateToString: String = {
+
+    val dayOfTheWeek: Int = this.getCalendar.get(Calendar.DAY_OF_WEEK) -1 //Sunday ist not the first day of the week
+
+    val dayString: String = dayOfTheWeek match {
+      case 1 => "Mo"
+      case 2 => "Di"
+      case 3 => "Mi"
+      case 4 => "Do"
+      case 5 => "Fr"
+      case 6 => "Sa"
+      case 7 => "So"
+      case _ => "??"
+    }
+
+    dayString + ", " + this.dateFormat.format(this.getTime)
+  }
 
 }
