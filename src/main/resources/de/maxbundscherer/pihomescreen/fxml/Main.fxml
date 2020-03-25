@@ -28,7 +28,7 @@
                </font>
             </Label>
       
-            <Label fx:id="lblWeather" alignment="CENTER_RIGHT" layoutX="568.0" layoutY="33.0" prefHeight="42.0" prefWidth="99.0" text="? °C " textFill="WHITE">
+            <Label fx:id="lblWeather" alignment="CENTER" layoutX="506.0" layoutY="33.0" prefHeight="42.0" prefWidth="147.0" text="? °C " textFill="WHITE">
                <font>
                   <Font size="34.0" />
                </font>
