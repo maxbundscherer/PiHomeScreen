@@ -74,7 +74,7 @@
          </children>
       </Pane>
 
-      <Pane layoutX="53.0" layoutY="444.0" prefHeight="84.0" prefWidth="84.0" onMouseClicked="#panArrowLeft_onMouseClicked" style="-fx-background-color: rgba(0, 0, 0, 0.7);">
+      <Pane layoutX="53.0" layoutY="444.0" onMouseClicked="#panArrowLeft_onMouseClicked" prefHeight="84.0" prefWidth="84.0" style="-fx-background-color: rgba(0, 0, 0, 0.7);">
          <children>
 
             <ImageView fitHeight="75.0" fitWidth="75.0" layoutX="5.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
@@ -86,7 +86,7 @@
          </children>
       </Pane>
 
-      <Pane layoutX="888.0" layoutY="444.0" prefHeight="84.0" prefWidth="84.0" onMouseClicked="#panArrowRight_onMouseClicked" style="-fx-background-color: rgba(0, 0, 0, 0.7);">
+      <Pane layoutX="888.0" layoutY="444.0" onMouseClicked="#panArrowRight_onMouseClicked" prefHeight="84.0" prefWidth="84.0" style="-fx-background-color: rgba(0, 0, 0, 0.7);">
          <children>
 
             <ImageView fitHeight="75.0" fitWidth="75.0" layoutX="5.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
