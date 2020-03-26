@@ -19,19 +19,19 @@
       
             <Label fx:id="lblDate" alignment="CENTER_LEFT" layoutX="29.0" layoutY="33.0" prefHeight="42.0" prefWidth="180.0" text="??, ??.??." textFill="WHITE">
                <font>
-                  <Font name="Verdana" size="13.0" />
+                  <Font name="Verdana" size="30.0" />
                </font>
             </Label>
       
             <Label fx:id="lblClock" alignment="CENTER" layoutX="207.0" layoutY="4.0" prefHeight="99.0" prefWidth="287.0" text="??:??" textFill="WHITE">
                <font>
-                  <Font name="Verdana" size="13.0" />
+                  <Font name="Verdana" size="80.0" />
                </font>
             </Label>
       
             <Label fx:id="lblWeather" alignment="CENTER" layoutX="506.0" layoutY="33.0" prefHeight="42.0" prefWidth="147.0" text="? °C " textFill="WHITE">
                <font>
-                  <Font name="Verdana" size="13.0" />
+                  <Font name="Verdana" size="30.0" />
                </font>
             </Label>
 
