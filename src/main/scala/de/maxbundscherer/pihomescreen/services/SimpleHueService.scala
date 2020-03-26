@@ -148,6 +148,13 @@ class SimpleHueService extends LightService with JsonWebclient with Configuratio
    */
   override def triggerRoutine(routine: (Vector[(Rooms.GroupId, String)], Vector[Rooms.Room])): Unit = {
 
+    //TODO: Toggle all lights synchronized
+
+    val scenes: Vector[Scenes.Scene]      = routine._1
+    val turnOfRooms: Vector[Rooms.Room]   = routine._2
+
+    scenes      .foreach(scene => this.setScene(scene))
+    turnOfRooms .foreach(room => this.toggleRoom(room = room, value = Some(false)))
   }
 
 }
