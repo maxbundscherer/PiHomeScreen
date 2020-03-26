@@ -44,6 +44,10 @@ class MainPresenter(
                       private val imvLivingRoom: ImageView,
                       private val imvBedroom: ImageView,
 
+                      //Pans
+                      private val panFirst: Pane,
+                      private val panSecond: Pane
+
                    ) extends InitPresenter with ProgressBarSlider with TimelineHelper with LightConfiguration {
 
   private val logger: Logger                    = new Logger(getClass.getSimpleName)
@@ -51,6 +55,11 @@ class MainPresenter(
   private val lightService: LightService        = new SimpleHueService()
   private val calendarService: CalendarService  = new SimpleCalendarService()
   private val weatherService: WeatherService    = new SimpleWeatherService()
+
+  /**
+   * Actual pane (firstPane=0)
+   */
+  private var actualPane: Int                   = 0
 
   /**
    * Maps Lights to ToggleButtons
@@ -168,6 +177,32 @@ class MainPresenter(
   }
 
   /**
+   * Switch pane
+   * @param right True = go right / False = go left
+   */
+  private def switchPane(right: Boolean): Unit = {
+
+    val newDirection: Int = if(right) 1 else -1
+
+    this.actualPane = ((this.actualPane + newDirection) % 2).abs
+
+    this.actualPane match {
+
+      case 0 =>
+
+        this.panFirst.setVisible(true)
+        this.panSecond.setVisible(false)
+
+      case _ =>
+
+        this.panFirst.setVisible(false)
+        this.panSecond.setVisible(true)
+
+    }
+
+  }
+
+  /**
    * Updates clock
    */
   private def updateClock(): Unit = {
@@ -232,8 +267,7 @@ class MainPresenter(
    */
   def panArrowLeft_onMouseClicked(event: MouseEvent): Unit = {
 
-    //TODO: Implement
-    ???
+    this.switchPane(right = false)
   }
 
   /**
@@ -242,8 +276,7 @@ class MainPresenter(
    */
   def panArrowRight_onMouseClicked(event: MouseEvent): Unit = {
 
-    //TODO: Implement
-    ???
+    this.switchPane(right = true)
   }
 
 }
