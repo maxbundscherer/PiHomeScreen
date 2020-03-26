@@ -123,54 +123,54 @@
 
             <Button fx:id="secondPane_btnSceneKitchenRead" layoutX="14.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#secondPane_btn_onMouseClicked" prefHeight="52.0" prefWidth="100.0" style="-fx-background-color: rgba(0, 0, 0, 0.0); -fx-text-fill: white; -fx-border-width: 3px; -fx-border-color: white;" text="Lesen">
                <font>
-                  <Font name="Verdana" size="13.0" />
+                  <Font name="Verdana" size="12.0" />
                </font>
             </Button>
             <Button fx:id="secondPane_btnSceneKitchenRelax" layoutX="129.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#secondPane_btn_onMouseClicked" prefHeight="52.0" prefWidth="100.0" style="-fx-background-color: rgba(0, 0, 0, 0.0); -fx-text-fill: white; -fx-border-width: 3px; -fx-border-color: white;" text="Entspannen">
                <font>
-                  <Font name="Verdana" size="13.0" />
+                  <Font name="Verdana" size="12.0" />
                </font>
             </Button>
 
             <Button fx:id="secondPane_btnSceneLivingRoomRead" layoutX="246.0" layoutY="19.0" mnemonicParsing="false" onMouseClicked="#secondPane_btn_onMouseClicked" prefHeight="52.0" prefWidth="100.0" style="-fx-background-color: rgba(0, 0, 0, 0.0); -fx-text-fill: white; -fx-border-width: 3px; -fx-border-color: white;" text="Lesen">
                <font>
-                  <Font name="Verdana" size="13.0" />
+                  <Font name="Verdana" size="12.0" />
                </font>
             </Button>
             <Button fx:id="secondPane_btnSceneLivingRoomDimmed" layoutX="246.0" layoutY="80.0" mnemonicParsing="false" onMouseClicked="#secondPane_btn_onMouseClicked" prefHeight="52.0" prefWidth="100.0" style="-fx-background-color: rgba(0, 0, 0, 0.0); -fx-text-fill: white; -fx-border-width: 3px; -fx-border-color: white;" text="Gedimmt">
                <font>
-                  <Font name="Verdana" size="13.0" />
+                  <Font name="Verdana" size="12.0" />
                </font>
             </Button>
             <Button fx:id="secondPane_btnSceneLivingRoomRelax" layoutX="355.0" layoutY="19.0" mnemonicParsing="false" onMouseClicked="#secondPane_btn_onMouseClicked" prefHeight="52.0" prefWidth="100.0" style="-fx-background-color: rgba(0, 0, 0, 0.0); -fx-text-fill: white; -fx-border-width: 3px; -fx-border-color: white;" text="Entspannen">
                <font>
-                  <Font name="Verdana" size="13.0" />
+                  <Font name="Verdana" size="12.0" />
                </font>
             </Button>
             <Button fx:id="secondPane_btnSceneLivingRoomDarkRed" layoutX="355.0" layoutY="80.0" mnemonicParsing="false" onMouseClicked="#secondPane_btn_onMouseClicked" prefHeight="52.0" prefWidth="100.0" style="-fx-background-color: rgba(0, 0, 0, 0.0); -fx-text-fill: white; -fx-border-width: 3px; -fx-border-color: white;" text="Dunkelrot">
                <font>
-                  <Font name="Verdana" size="13.0" />
+                  <Font name="Verdana" size="12.0" />
                </font>
             </Button>
 
             <Button fx:id="secondPane_btnSceneBedroomRead" layoutX="471.0" layoutY="19.0" mnemonicParsing="false" onMouseClicked="#secondPane_btn_onMouseClicked" prefHeight="52.0" prefWidth="100.0" style="-fx-background-color: rgba(0, 0, 0, 0.0); -fx-text-fill: white; -fx-border-width: 3px; -fx-border-color: white;" text="Lesen">
                <font>
-                  <Font name="Verdana" size="13.0" />
+                  <Font name="Verdana" size="12.0" />
                </font>
             </Button>
             <Button fx:id="secondPane_btnSceneBedroomNightLight" layoutX="471.0" layoutY="80.0" mnemonicParsing="false" onMouseClicked="#secondPane_btn_onMouseClicked" prefHeight="52.0" prefWidth="100.0" style="-fx-background-color: rgba(0, 0, 0, 0.0); -fx-text-fill: white; -fx-border-width: 3px; -fx-border-color: white;" text="Nachtlicht">
                <font>
-                  <Font name="Verdana" size="13.0" />
+                  <Font name="Verdana" size="12.0" />
                </font>
             </Button>
             <Button fx:id="secondPane_btnSceneBedroomRelax" layoutX="580.0" layoutY="19.0" mnemonicParsing="false" onMouseClicked="#secondPane_btn_onMouseClicked" prefHeight="52.0" prefWidth="100.0" style="-fx-background-color: rgba(0, 0, 0, 0.0); -fx-text-fill: white; -fx-border-width: 3px; -fx-border-color: white;" text="Entspannen">
                <font>
-                  <Font name="Verdana" size="13.0" />
+                  <Font name="Verdana" size="12.0" />
                </font>
             </Button>
             <Button fx:id="secondPane_btnSceneBedroomRed" layoutX="580.0" layoutY="80.0" mnemonicParsing="false" onMouseClicked="#secondPane_btn_onMouseClicked" prefHeight="52.0" prefWidth="100.0" style="-fx-background-color: rgba(0, 0, 0, 0.0); -fx-text-fill: white; -fx-border-width: 3px; -fx-border-color: white;" text="Rot">
                <font>
-                  <Font name="Verdana" size="13.0" />
+                  <Font name="Verdana" size="12.0" />
                </font>
             </Button>
 
