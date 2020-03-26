@@ -126,4 +126,13 @@ class SimpleHueService extends LightService with JsonWebclient with Configuratio
     room.foreach(light => this.toggleLightBulb(light, newState = Some(newState), newBrightness = Some(value)))
   }
 
+  /**
+   * Set scene
+   * @param scene Scene
+   */
+  override def setScene(scene: (Rooms.GroupId, String)): Unit = {
+
+    logger.debug(s"Should set $scene")
+  }
+
 }

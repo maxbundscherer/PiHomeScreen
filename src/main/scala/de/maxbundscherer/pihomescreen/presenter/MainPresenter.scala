@@ -7,7 +7,7 @@ import de.maxbundscherer.pihomescreen.utils.{InitPresenter, LightConfiguration, 
 
 import scalafx.Includes._
 import scala.language.postfixOps
-import scalafx.scene.control.{Label, ProgressBar, ToggleButton}
+import scalafx.scene.control.{Label, ProgressBar, ToggleButton, Button}
 import scalafx.scene.image.ImageView
 import scalafx.scene.input.MouseEvent
 import scalafx.scene.layout.Pane
@@ -122,6 +122,25 @@ class MainPresenter(
 
   )
 
+  /**
+   * Maps Scenes to Buttons
+   */
+  private val sceneMappingButtons: Map[Button, Scenes.Scene] = Map (
+
+    this.secondPane_btnSceneKitchenRead -> Scenes.KitchenRead,
+    this.secondPane_btnSceneKitchenRelax -> Scenes.KitchenRelax,
+    
+    this.secondPane_btnSceneLivingRoomRead -> Scenes.LivingRoomRead,
+    this.secondPane_btnSceneLivingRoomDimmed -> Scenes.LivingRoomDimmed,
+    this.secondPane_btnSceneLivingRoomRelax -> Scenes.LivingRoomRelax,
+    this.secondPane_btnSceneLivingRoomDarkRed -> Scenes.LivingRoomDarkRed,
+
+    this.secondPane_btnSceneBedroomRead -> Scenes.BedroomRead,
+    this.secondPane_btnSceneBedroomNightLight -> Scenes.BedroomNightLight,
+    this.secondPane_btnSceneBedroomRelax -> Scenes.BedroomRelax,
+    this.secondPane_btnSceneBedroomRed -> Scenes.BedroomRed,
+
+  )
 
   /**
    * Init Presenter
@@ -331,8 +350,12 @@ class MainPresenter(
    */
   def secondPane_btn_onMouseClicked(event: MouseEvent): Unit = {
 
+    val btn = event.getSource.asInstanceOf[javafx.scene.control.Button]
 
+    val scene: Scenes.Scene = this.sceneMappingButtons(btn)
 
+    this.lightService.setScene(scene)
+    this.updateLightStates()
   }
 
 }

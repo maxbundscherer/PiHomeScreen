@@ -48,4 +48,10 @@ abstract class LightService extends LightConfiguration {
    */
   def setRoomBrightness(room: Rooms.Room, value: Double)
 
+  /**
+   * Set scene
+   * @param scene Scene
+   */
+  def setScene(scene: Scenes.Scene): Unit
+
 }
