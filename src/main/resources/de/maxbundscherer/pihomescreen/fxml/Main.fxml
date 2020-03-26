@@ -121,5 +121,13 @@
 
       </Pane>
 
+      <Pane fx:id="panThird" layoutX="162.0" layoutY="411.0" prefHeight="150.0" prefWidth="700.0" style="-fx-background-color: rgba(0, 0, 0, 0.7); -fx-background-radius: 0;" visible="false">
+
+      </Pane>
+
+      <Pane fx:id="panFourth" layoutX="162.0" layoutY="411.0" prefHeight="150.0" prefWidth="700.0" style="-fx-background-color: rgba(0, 0, 0, 0.7); -fx-background-radius: 0;" visible="false">
+
+      </Pane>
+
    </children>
 </Pane>

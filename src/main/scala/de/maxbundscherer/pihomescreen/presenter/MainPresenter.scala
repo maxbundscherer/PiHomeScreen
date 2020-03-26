@@ -46,7 +46,9 @@ class MainPresenter(
 
                       //Pans
                       private val panFirst: Pane,
-                      private val panSecond: Pane
+                      private val panSecond: Pane,
+                      private val panThird: Pane,
+                      private val panFourth: Pane
 
                    ) extends InitPresenter with ProgressBarSlider with TimelineHelper with LightConfiguration {
 
@@ -57,9 +59,10 @@ class MainPresenter(
   private val weatherService: WeatherService    = new SimpleWeatherService()
 
   /**
-   * Actual pane (firstPane=0)
+   * Actual pane (firstPane=0) and maxPane
    */
   private var actualPane: Int                   = 0
+  private val maxPane: Int                      = 3
 
   /**
    * Maps Lights to ToggleButtons
@@ -183,8 +186,9 @@ class MainPresenter(
   private def switchPane(right: Boolean): Unit = {
 
     val newDirection: Int = if(right) 1 else -1
+    val result = this.actualPane + newDirection
 
-    this.actualPane = ((this.actualPane + newDirection) % 2).abs
+    this.actualPane = if(result < 0) this.maxPane else result % (this.maxPane + 1)
 
     this.actualPane match {
 
@@ -192,11 +196,29 @@ class MainPresenter(
 
         this.panFirst.setVisible(true)
         this.panSecond.setVisible(false)
+        this.panThird.setVisible(false)
+        this.panFourth.setVisible(false)
+
+      case 1 =>
+
+        this.panFirst.setVisible(false)
+        this.panSecond.setVisible(true)
+        this.panThird.setVisible(false)
+        this.panFourth.setVisible(false)
+
+      case 2 =>
+
+        this.panFirst.setVisible(false)
+        this.panSecond.setVisible(false)
+        this.panThird.setVisible(true)
+        this.panFourth.setVisible(false)
 
       case _ =>
 
         this.panFirst.setVisible(false)
-        this.panSecond.setVisible(true)
+        this.panSecond.setVisible(false)
+        this.panThird.setVisible(false)
+        this.panFourth.setVisible(true)
 
     }
 
