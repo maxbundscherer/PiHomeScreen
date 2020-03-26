@@ -226,4 +226,24 @@ class MainPresenter(
     this.updateLightStates()
   }
 
+  /**
+   * Click on pane (Arrow left)
+   * @param event MouseEvent
+   */
+  def panArrowLeft_onMouseClicked(event: MouseEvent): Unit = {
+
+    //TODO: Implement
+    ???
+  }
+
+  /**
+   * Click on pane (Arrow right)
+   * @param event MouseEvent
+   */
+  def panArrowRight_onMouseClicked(event: MouseEvent): Unit = {
+
+    //TODO: Implement
+    ???
+  }
+
 }

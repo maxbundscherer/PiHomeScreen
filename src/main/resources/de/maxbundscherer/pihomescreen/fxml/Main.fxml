@@ -33,12 +33,13 @@
                   <Font size="34.0" />
                </font>
             </Label>
+
          </children>
       </Pane>
 
       <Pane layoutX="162.0" layoutY="171.0" prefHeight="215.0" prefWidth="700.0" style="-fx-background-color: rgba(0, 0, 0, 0.7); -fx-background-radius: 0;">
-
          <children>
+
             <ProgressBar fx:id="prbKitchen" layoutX="25.0" layoutY="146.0" onMouseClicked="#prb_onMouseClicked" prefHeight="40.0" prefWidth="200.0" progress="0.5" style="-fx-accent: grey;" />
             <ProgressBar fx:id="prbLivingRoom" layoutX="250.0" layoutY="146.0" onMouseClicked="#prb_onMouseClicked" prefHeight="40.0" prefWidth="200.0" progress="0.5" style="-fx-accent: grey;" />
             <ProgressBar fx:id="prbBedroom" layoutX="475.0" layoutY="146.0" onMouseClicked="#prb_onMouseClicked" prefHeight="40.0" prefWidth="200.0" progress="0.5" style="-fx-accent: grey;" />
@@ -69,8 +70,32 @@
                   <ColorAdjust />
                </effect>
             </ImageView>
-         </children>
 
+         </children>
+      </Pane>
+
+      <Pane layoutX="53.0" layoutY="444.0" prefHeight="84.0" prefWidth="84.0" onMouseClicked="#panArrowLeft_onMouseClicked" style="-fx-background-color: rgba(0, 0, 0, 0.7);">
+         <children>
+
+            <ImageView fitHeight="75.0" fitWidth="75.0" layoutX="5.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../img/arrow_left.png" />
+               </image>
+            </ImageView>
+
+         </children>
+      </Pane>
+
+      <Pane layoutX="888.0" layoutY="444.0" prefHeight="84.0" prefWidth="84.0" onMouseClicked="#panArrowRight_onMouseClicked" style="-fx-background-color: rgba(0, 0, 0, 0.7);">
+         <children>
+
+            <ImageView fitHeight="75.0" fitWidth="75.0" layoutX="5.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../img/arrow_right.png" />
+               </image>
+            </ImageView>
+
+         </children>
       </Pane>
 
       <Pane layoutX="162.0" layoutY="411.0" prefHeight="150.0" prefWidth="700.0" style="-fx-background-color: rgba(0, 0, 0, 0.7); -fx-background-radius: 0;">
@@ -89,7 +114,8 @@
             <ToggleButton fx:id="tobBedroomBack" layoutX="509.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#tob_onMouseClicked" prefHeight="52.0" prefWidth="52.0" />
             <ToggleButton fx:id="tobBedroomFront" layoutX="586.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#tob_onMouseClicked" prefHeight="52.0" prefWidth="52.0" />
 
-         </children></Pane>
+         </children>
+      </Pane>
 
    </children>
 </Pane>
