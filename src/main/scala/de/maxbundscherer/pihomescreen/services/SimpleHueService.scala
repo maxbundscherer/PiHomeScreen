@@ -132,7 +132,14 @@ class SimpleHueService extends LightService with JsonWebclient with Configuratio
    */
   override def setScene(scene: (Rooms.GroupId, String)): Unit = {
 
-    logger.debug(s"Should set $scene")
+    val jsonRequestString = "{\"scene\": \"" + scene._2 + "\"}"
+
+    Webclient.putRequestToJSON(
+      decoder = None,
+      rawBody = jsonRequestString,
+      url     = this.targetUrl + s"groups/${scene._1}/action"
+    )
+
   }
 
 }
