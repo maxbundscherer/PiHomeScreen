@@ -12,6 +12,8 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 ![](./resources/screenshot.png)
 
+![](./resources/screenshot2.png)
+
 ## Overview
 
 - Control your [philips hue](https://www2.meethue.com/) light bulbs
