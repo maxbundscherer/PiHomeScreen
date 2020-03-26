@@ -54,4 +54,10 @@ abstract class LightService extends LightConfiguration {
    */
   def setScene(scene: Scenes.Scene): Unit
 
+  /**
+   * Trigger routine
+   * @param routine Routine
+   */
+  def triggerRoutine(routine: Routines.Routine)
+
 }

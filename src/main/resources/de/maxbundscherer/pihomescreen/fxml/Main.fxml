@@ -178,7 +178,40 @@
       </Pane>
 
       <Pane fx:id="panThird" layoutX="162.0" layoutY="411.0" prefHeight="150.0" prefWidth="700.0" style="-fx-background-color: rgba(0, 0, 0, 0.7); -fx-background-radius: 0;" visible="false">
+         <children>
 
+            <Button fx:id="thirdPane_btnRoutineWakeUp" layoutX="23.0" layoutY="39.0" mnemonicParsing="false" onMouseClicked="#thirdPane_btn_onMouseClicked" prefHeight="52.0" prefWidth="100.0" style="-fx-background-color: rgba(0, 0, 0, 0.0); -fx-text-fill: white; -fx-border-width: 3px; -fx-border-color: white;" text="Aufstehen">
+               <font>
+                  <Font name="Verdana" size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="thirdPane_btnRoutineRelax" layoutX="134.0" layoutY="56.0" mnemonicParsing="false" onMouseClicked="#thirdPane_btn_onMouseClicked" prefHeight="52.0" prefWidth="100.0" style="-fx-background-color: rgba(0, 0, 0, 0.0); -fx-text-fill: white; -fx-border-width: 3px; -fx-border-color: white;" text="Entspannen">
+               <font>
+                  <Font name="Verdana" size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="thirdPane_btnRoutineDarkRed" layoutX="245.0" layoutY="39.0" mnemonicParsing="false" onMouseClicked="#thirdPane_btn_onMouseClicked" prefHeight="52.0" prefWidth="100.0" style="-fx-background-color: rgba(0, 0, 0, 0.0); -fx-text-fill: white; -fx-border-width: 3px; -fx-border-color: white;" text="Dunkelrot">
+               <font>
+                  <Font name="Verdana" size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="thirdPane_btnRoutineAllOff" layoutX="356.0" layoutY="56.0" mnemonicParsing="false" onMouseClicked="#thirdPane_btn_onMouseClicked" prefHeight="52.0" prefWidth="100.0" style="-fx-background-color: rgba(0, 0, 0, 0.0); -fx-text-fill: white; -fx-border-width: 3px; -fx-border-color: white;" text="Alles aus">
+               <font>
+                  <Font name="Verdana" size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="thirdPane_btnClean" layoutX="467.0" layoutY="39.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="100.0" style="-fx-background-color: rgba(0, 0, 0, 0.0); -fx-text-fill: white; -fx-border-width: 3px; -fx-border-color: white;" text="Saugen">
+               <font>
+                  <Font name="Verdana" size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="thirdPane_btnExit" layoutX="578.0" layoutY="56.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="100.0" style="-fx-background-color: rgba(0, 0, 0, 0.0); -fx-text-fill: white; -fx-border-width: 3px; -fx-border-color: white;" text="Beenden">
+               <font>
+                  <Font name="Verdana" size="12.0" />
+               </font>
+            </Button>
+
+         </children>
       </Pane>
 
       <Pane fx:id="panFourth" layoutX="162.0" layoutY="411.0" prefHeight="150.0" prefWidth="700.0" style="-fx-background-color: rgba(0, 0, 0, 0.7); -fx-background-radius: 0;" visible="false">

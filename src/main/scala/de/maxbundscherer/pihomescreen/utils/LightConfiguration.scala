@@ -76,4 +76,18 @@ trait LightConfiguration {
 
   }
 
+  object Routines {
+
+    /**
+     * Tuple (Vector of scenes that should be activated, Vector of rooms that should be turned off)
+     */
+    type Routine = (Vector[Scenes.Scene], Vector[Rooms.Room])
+
+    val WakeUp  : Routine  = ( Vector(Scenes.LivingRoomRead, Scenes.KitchenRead), Vector(Rooms.Bedroom) )
+    val Relax   : Routine  = ( Vector(Scenes.LivingRoomRelax, Scenes.KitchenRelax), Vector(Rooms.Bedroom) )
+    val DarkRed : Routine  = ( Vector(Scenes.LivingRoomDarkRed), Vector(Rooms.Bedroom, Rooms.Kitchen) )
+    val AllOff  : Routine  = ( Vector(), Vector(Rooms.Bedroom, Rooms.Kitchen, Rooms.LivingRoom) )
+
+  }
+
 }

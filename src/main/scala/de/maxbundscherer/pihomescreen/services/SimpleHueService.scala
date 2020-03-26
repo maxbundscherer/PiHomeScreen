@@ -142,4 +142,12 @@ class SimpleHueService extends LightService with JsonWebclient with Configuratio
 
   }
 
+  /**
+   * Trigger routine
+   * @param routine Routine
+   */
+  override def triggerRoutine(routine: (Vector[(Rooms.GroupId, String)], Vector[Rooms.Room])): Unit = {
+
+  }
+
 }

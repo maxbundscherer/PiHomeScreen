@@ -64,7 +64,17 @@ class MainPresenter(
                       private val secondPane_btnSceneBedroomRead: Button,
                       private val secondPane_btnSceneBedroomRelax: Button,
                       private val secondPane_btnSceneBedroomNightLight: Button,
-                      private val secondPane_btnSceneBedroomRed: Button
+                      private val secondPane_btnSceneBedroomRed: Button,
+
+                      /*
+                      // Third Pane
+                       */
+                      private val thirdPane_btnRoutineWakeUp: Button,
+                      private val thirdPane_btnRoutineRelax: Button,
+                      private val thirdPane_btnRoutineDarkRed: Button,
+                      private val thirdPane_btnRoutineAllOff: Button,
+                      private val thirdPane_btnClean: Button, //TODO: Implement onMouseAction
+                      private val thirdPane_btnExit: Button, //TODO: Implement onMouseAction
 
                    ) extends InitPresenter with ProgressBarSlider with TimelineHelper with LightConfiguration {
 
@@ -78,10 +88,10 @@ class MainPresenter(
    * Actual pane (firstPane=0) and maxPane
    */
   private var actualPane: Int                   = 0
-  private val maxPane: Int                      = 3
+  private val maxPane: Int                      = 2 //TODO: Add third pane (3) - already in fxml
 
   /**
-   * Maps Lights to ToggleButtons
+   * Maps Lights to ToggleButtons (Global Pane)
    */
   private val lightsMapping: Map[ToggleButton, Lights.Light] = Map (
 
@@ -101,7 +111,7 @@ class MainPresenter(
   )
 
   /**
-   * Maps Rooms to ProgressBars
+   * Maps Rooms to ProgressBars (Global Pane)
    */
   private val roomsMappingProgressBars: Map[ProgressBar, Rooms.Room] = Map (
 
@@ -112,7 +122,7 @@ class MainPresenter(
   )
 
   /**
-   * Maps Rooms to ProgressBars
+   * Maps Rooms to ProgressBars (Global Pane)
    */
   private val roomsMappingImageViews: Map[ImageView, Rooms.Room] = Map (
 
@@ -123,7 +133,7 @@ class MainPresenter(
   )
 
   /**
-   * Maps Scenes to Buttons
+   * Maps Scenes to Buttons (Second Pane)
    */
   private val sceneMappingButtons: Map[Button, Scenes.Scene] = Map (
 
@@ -139,6 +149,18 @@ class MainPresenter(
     this.secondPane_btnSceneBedroomNightLight -> Scenes.BedroomNightLight,
     this.secondPane_btnSceneBedroomRelax -> Scenes.BedroomRelax,
     this.secondPane_btnSceneBedroomRed -> Scenes.BedroomRed,
+
+  )
+
+  /**
+   * Maps Routines to Buttons (Third Pane)
+   */
+  private val routineMappingButtons: Map[Button, Routines.Routine] = Map (
+
+    this.thirdPane_btnRoutineWakeUp -> Routines.WakeUp,
+    this.thirdPane_btnRoutineRelax -> Routines.Relax,
+    this.thirdPane_btnRoutineDarkRed -> Routines.DarkRed,
+    this.thirdPane_btnRoutineAllOff -> Routines.AllOff,
 
   )
 
@@ -355,6 +377,28 @@ class MainPresenter(
     val scene: Scenes.Scene = this.sceneMappingButtons(btn)
 
     this.lightService.setScene(scene)
+    this.updateLightStates()
+  }
+
+  /**
+   * #####################################################################################
+   * #####################################################################################
+   * ######################################## Third Pane #################################
+   * #####################################################################################
+   * #####################################################################################
+   */
+
+  /**
+   * Click on routine or quick action button
+   * @param event MouseEvent
+   */
+  def thirdPane_btn_onMouseClicked(event: MouseEvent): Unit = {
+
+    val btn = event.getSource.asInstanceOf[javafx.scene.control.Button]
+
+    val routine: Routines.Routine = this.routineMappingButtons(btn)
+
+    this.lightService.triggerRoutine(routine)
     this.updateLightStates()
   }
 
