@@ -48,7 +48,23 @@ class MainPresenter(
                       private val panFirst: Pane,
                       private val panSecond: Pane,
                       private val panThird: Pane,
-                      private val panFourth: Pane
+                      private val panFourth: Pane,
+
+                      /*
+                      // Second Pane
+                       */
+                      private val secondPane_btnSceneKitchenRead: Button,
+                      private val secondPane_btnSceneKitchenRelax: Button,
+
+                      private val secondPane_btnSceneLivingRoomRead: Button,
+                      private val secondPane_btnSceneLivingRoomDimmed: Button,
+                      private val secondPane_btnSceneLivingRoomRelax: Button,
+                      private val secondPane_btnSceneLivingRoomDarkRed: Button,
+
+                      private val secondPane_btnSceneBedroomRead: Button,
+                      private val secondPane_btnSceneBedroomRelax: Button,
+                      private val secondPane_btnSceneBedroomNightLight: Button,
+                      private val secondPane_btnSceneBedroomRed: Button
 
                    ) extends InitPresenter with ProgressBarSlider with TimelineHelper with LightConfiguration {
 
@@ -299,6 +315,24 @@ class MainPresenter(
   def panArrowRight_onMouseClicked(event: MouseEvent): Unit = {
 
     this.switchPane(right = true)
+  }
+
+  /**
+   * #####################################################################################
+   * #####################################################################################
+   * ######################################## Second Pane ################################
+   * #####################################################################################
+   * #####################################################################################
+   */
+
+  /**
+   * Click on scene button
+   * @param event MouseEvent
+   */
+  def secondPane_btn_onMouseClicked(event: MouseEvent): Unit = {
+
+
+
   }
 
 }
