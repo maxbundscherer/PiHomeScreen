@@ -421,7 +421,7 @@ class MainPresenter(
 
     this.lightService.triggerRoutine( Routines.Sleep )
 
-    this.startNewTimeline(interval = 3 m, repeat = false, title = "Sleep Mode", handler = () => {
+    this.startNewTimeline(interval = 3 m, repeat = false, title = "Sleep Routine", handler = () => {
       this.lightService.triggerRoutine( Routines.AllOff )
     })
 
