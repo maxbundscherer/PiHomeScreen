@@ -25,16 +25,16 @@ class SimpleCalendarService extends CalendarService {
    */
   override def getDateToString: String = {
 
-    val dayOfTheWeek: Int = this.getCalendar.get(Calendar.DAY_OF_WEEK) -1 //Sunday ist not the first day of the week
+    val dayOfTheWeek: Int = this.getCalendar.get(Calendar.DAY_OF_WEEK)
 
     val dayString: String = dayOfTheWeek match {
-      case 1 => "Mo"
-      case 2 => "Di"
-      case 3 => "Mi"
-      case 4 => "Do"
-      case 5 => "Fr"
-      case 6 => "Sa"
-      case 7 => "So"
+      case 1 => "So"
+      case 2 => "Mo"
+      case 3 => "Di"
+      case 4 => "Mi"
+      case 5 => "Do"
+      case 6 => "Fr"
+      case 7 => "Sa"
       case _ => "??"
     }
 
