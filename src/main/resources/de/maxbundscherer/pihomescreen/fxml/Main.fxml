@@ -205,7 +205,7 @@
                   <Font name="Verdana" size="12.0" />
                </font>
             </Button>
-            <Button fx:id="thirdPane_btnExit" layoutX="578.0" layoutY="56.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="100.0" style="-fx-background-color: rgba(0, 0, 0, 0.0); -fx-text-fill: white; -fx-border-width: 1px; -fx-border-color: white;" text="Beenden">
+            <Button fx:id="thirdPane_btnExit" layoutX="578.0" layoutY="56.0" onMouseClicked="#thirdPane_btnExit_onMouseClicked" mnemonicParsing="false" prefHeight="52.0" prefWidth="100.0" style="-fx-background-color: rgba(0, 0, 0, 0.0); -fx-text-fill: white; -fx-border-width: 1px; -fx-border-color: white;" text="Beenden">
                <font>
                   <Font name="Verdana" size="12.0" />
                </font>

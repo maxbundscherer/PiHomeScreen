@@ -6,8 +6,9 @@ import de.maxbundscherer.pihomescreen.services.abstracts.{CalendarService, Light
 import de.maxbundscherer.pihomescreen.utils.{InitPresenter, LightConfiguration, Logger, ProgressBarSlider, TimelineHelper}
 
 import scalafx.Includes._
+import scalafx.application.Platform
 import scala.language.postfixOps
-import scalafx.scene.control.{Label, ProgressBar, ToggleButton, Button}
+import scalafx.scene.control.{Button, Label, ProgressBar, ToggleButton}
 import scalafx.scene.image.ImageView
 import scalafx.scene.input.MouseEvent
 import scalafx.scene.layout.Pane
@@ -74,7 +75,7 @@ class MainPresenter(
                       private val thirdPane_btnRoutineDarkRed: Button,
                       private val thirdPane_btnSleep: Button,
                       private val thirdPane_btnRoutineAllOff: Button,
-                      private val thirdPane_btnExit: Button, //TODO: Implement onMouseAction
+                      private val thirdPane_btnExit: Button
 
                    ) extends InitPresenter with ProgressBarSlider with TimelineHelper with LightConfiguration {
 
@@ -427,6 +428,15 @@ class MainPresenter(
     })
 
     this.updateLightStates()
+  }
+
+  /**
+   * Click on exit button
+   * @param event MouseEvent
+   */
+  def thirdPane_btnExit_onMouseClicked(event: MouseEvent): Unit = {
+
+    Platform.exit()
   }
 
 }
