@@ -68,11 +68,13 @@ trait LightConfiguration {
     val LivingRoomRelax   : Scene = (LivingRoomGroupId, "2sy15kwZAhWZsAS")
     val LivingRoomDimmed  : Scene = (LivingRoomGroupId, "KU-raZZ4nh9BxNM")
     val LivingRoomDarkRed : Scene = (LivingRoomGroupId, "bS5U8wdOcJIEZED")
+    val LivingRoomSleep   : Scene = (LivingRoomGroupId, "vNwLwB2XeTVTZfn")
 
     val BedroomRead       : Scene = (BedroomGroupId, "hzovBAwEPoiMO9P")
     val BedroomNightLight : Scene = (BedroomGroupId, "pxX-dtLRGZ-lBTP")
     val BedroomRelax      : Scene = (BedroomGroupId, "jy0fpjxdpEhzKHz")
     val BedroomRed        : Scene = (BedroomGroupId, "0tVU-NjBn0BIZ4d")
+    val BedroomSleep      : Scene = (BedroomGroupId, "4yLVlXazhSV1xqw")
 
   }
 
@@ -86,6 +88,7 @@ trait LightConfiguration {
     val WakeUp  : Routine  = ( Vector(Scenes.LivingRoomRead, Scenes.KitchenRead), Vector(Rooms.Bedroom) )
     val Relax   : Routine  = ( Vector(Scenes.LivingRoomRelax, Scenes.KitchenRelax), Vector(Rooms.Bedroom) )
     val DarkRed : Routine  = ( Vector(Scenes.LivingRoomDarkRed), Vector(Rooms.Bedroom, Rooms.Kitchen) )
+    val Sleep   : Routine  = ( Vector(Scenes.LivingRoomSleep, Scenes.BedroomSleep), Vector(Rooms.Kitchen) )
     val AllOff  : Routine  = ( Vector(), Vector(Rooms.Bedroom, Rooms.Kitchen, Rooms.LivingRoom) )
 
   }

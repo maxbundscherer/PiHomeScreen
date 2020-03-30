@@ -195,12 +195,12 @@
                   <Font name="Verdana" size="12.0" />
                </font>
             </Button>
-            <Button fx:id="thirdPane_btnRoutineAllOff" layoutX="356.0" layoutY="56.0" mnemonicParsing="false" onMouseClicked="#thirdPane_btn_onMouseClicked" prefHeight="52.0" prefWidth="100.0" style="-fx-background-color: rgba(0, 0, 0, 0.0); -fx-text-fill: white; -fx-border-width: 1px; -fx-border-color: white;" text="Alles aus">
+            <Button fx:id="thirdPane_btnSleep" layoutX="356.0" layoutY="56.0" mnemonicParsing="false" onMouseClicked="#thirdPane_btnSleep_onMouseClicked" prefHeight="52.0" prefWidth="100.0" style="-fx-background-color: rgba(0, 0, 0, 0.0); -fx-text-fill: white; -fx-border-width: 1px; -fx-border-color: white;" text="Schlafen">
                <font>
                   <Font name="Verdana" size="12.0" />
                </font>
             </Button>
-            <Button fx:id="thirdPane_btnClean" layoutX="467.0" layoutY="39.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="100.0" style="-fx-background-color: rgba(0, 0, 0, 0.0); -fx-text-fill: white; -fx-border-width: 1px; -fx-border-color: white;" text="Saugen">
+            <Button fx:id="thirdPane_btnRoutineAllOff" layoutX="467.0" layoutY="39.0" onMouseClicked="#thirdPane_btn_onMouseClicked" mnemonicParsing="false" prefHeight="52.0" prefWidth="100.0" style="-fx-background-color: rgba(0, 0, 0, 0.0); -fx-text-fill: white; -fx-border-width: 1px; -fx-border-color: white;" text="Alles aus">
                <font>
                   <Font name="Verdana" size="12.0" />
                </font>

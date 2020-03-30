@@ -72,8 +72,8 @@ class MainPresenter(
                       private val thirdPane_btnRoutineWakeUp: Button,
                       private val thirdPane_btnRoutineRelax: Button,
                       private val thirdPane_btnRoutineDarkRed: Button,
+                      private val thirdPane_btnSleep: Button,
                       private val thirdPane_btnRoutineAllOff: Button,
-                      private val thirdPane_btnClean: Button, //TODO: Implement onMouseAction
                       private val thirdPane_btnExit: Button, //TODO: Implement onMouseAction
 
                    ) extends InitPresenter with ProgressBarSlider with TimelineHelper with LightConfiguration {
@@ -122,7 +122,7 @@ class MainPresenter(
   )
 
   /**
-   * Maps Rooms to ProgressBars (Global Pane)
+   * Maps Rooms to ImageViews (Global Pane)
    */
   private val roomsMappingImageViews: Map[ImageView, Rooms.Room] = Map (
 
@@ -133,45 +133,11 @@ class MainPresenter(
   )
 
   /**
-   * Maps Scenes to Buttons (Second Pane)
-   */
-  private val sceneMappingButtons: Map[Button, Scenes.Scene] = Map (
-
-    this.secondPane_btnSceneKitchenRead -> Scenes.KitchenRead,
-    this.secondPane_btnSceneKitchenRelax -> Scenes.KitchenRelax,
-    
-    this.secondPane_btnSceneLivingRoomRead -> Scenes.LivingRoomRead,
-    this.secondPane_btnSceneLivingRoomDimmed -> Scenes.LivingRoomDimmed,
-    this.secondPane_btnSceneLivingRoomRelax -> Scenes.LivingRoomRelax,
-    this.secondPane_btnSceneLivingRoomDarkRed -> Scenes.LivingRoomDarkRed,
-
-    this.secondPane_btnSceneBedroomRead -> Scenes.BedroomRead,
-    this.secondPane_btnSceneBedroomNightLight -> Scenes.BedroomNightLight,
-    this.secondPane_btnSceneBedroomRelax -> Scenes.BedroomRelax,
-    this.secondPane_btnSceneBedroomRed -> Scenes.BedroomRed,
-
-  )
-
-  /**
-   * Maps Routines to Buttons (Third Pane)
-   */
-  private val routineMappingButtons: Map[Button, Routines.Routine] = Map (
-
-    this.thirdPane_btnRoutineWakeUp -> Routines.WakeUp,
-    this.thirdPane_btnRoutineRelax -> Routines.Relax,
-    this.thirdPane_btnRoutineDarkRed -> Routines.DarkRed,
-    this.thirdPane_btnRoutineAllOff -> Routines.AllOff,
-
-  )
-
-  /**
    * Init Presenter
    */
   override def initPresenter(): Unit = {
 
     logger.info("Init Presenter")
-
-    this.panBackground.setBackground(ImageHelper.getBackground())
 
     val size: Int = 42
     
@@ -192,6 +158,10 @@ class MainPresenter(
       this.updateClock()
     })
 
+    this.startNewTimeline(interval = 15 m, repeat = true, title = "Background Timeline", handler = () => {
+      this.updateBackground()
+    })
+
     this.startNewTimeline(interval = 15 m, repeat = true, title = "Weather Timeline", handler = () => {
       this.updateWeather()
     })
@@ -201,6 +171,7 @@ class MainPresenter(
     })
 
     this.updateClock()
+    this.updateBackground()
     this.updateWeather()
     this.updateLightStates()
 
@@ -290,6 +261,14 @@ class MainPresenter(
   }
 
   /**
+   * Updates Background
+   */
+  private def updateBackground(): Unit = {
+
+    this.panBackground.setBackground(ImageHelper.getNextBackground())
+  }
+
+  /**
    * Updates weather
    */
   private def updateWeather(): Unit = {
@@ -367,6 +346,26 @@ class MainPresenter(
    */
 
   /**
+   * Maps Scenes to Buttons (Second Pane)
+   */
+  private val sceneMappingButtons: Map[Button, Scenes.Scene] = Map (
+
+    this.secondPane_btnSceneKitchenRead -> Scenes.KitchenRead,
+    this.secondPane_btnSceneKitchenRelax -> Scenes.KitchenRelax,
+
+    this.secondPane_btnSceneLivingRoomRead -> Scenes.LivingRoomRead,
+    this.secondPane_btnSceneLivingRoomDimmed -> Scenes.LivingRoomDimmed,
+    this.secondPane_btnSceneLivingRoomRelax -> Scenes.LivingRoomRelax,
+    this.secondPane_btnSceneLivingRoomDarkRed -> Scenes.LivingRoomDarkRed,
+
+    this.secondPane_btnSceneBedroomRead -> Scenes.BedroomRead,
+    this.secondPane_btnSceneBedroomNightLight -> Scenes.BedroomNightLight,
+    this.secondPane_btnSceneBedroomRelax -> Scenes.BedroomRelax,
+    this.secondPane_btnSceneBedroomRed -> Scenes.BedroomRed,
+
+  )
+
+  /**
    * Click on scene button
    * @param event MouseEvent
    */
@@ -389,6 +388,18 @@ class MainPresenter(
    */
 
   /**
+   * Maps Routines to Buttons (Third Pane)
+   */
+  private val routineMappingButtons: Map[Button, Routines.Routine] = Map (
+
+    this.thirdPane_btnRoutineWakeUp -> Routines.WakeUp,
+    this.thirdPane_btnRoutineRelax -> Routines.Relax,
+    this.thirdPane_btnRoutineDarkRed -> Routines.DarkRed,
+    this.thirdPane_btnRoutineAllOff -> Routines.AllOff,
+
+  )
+
+  /**
    * Click on routine or quick action button
    * @param event MouseEvent
    */
@@ -400,6 +411,20 @@ class MainPresenter(
 
     this.lightService.triggerRoutine(routine)
     this.updateLightStates()
+  }
+
+  /**
+   * Click on sleep button
+   * @param event MouseEvent
+   */
+  def thirdPane_btnSleep_onMouseClicked(event: MouseEvent): Unit = {
+
+    this.lightService.triggerRoutine( Routines.Sleep )
+
+    this.startNewTimeline(interval = 3 m, repeat = false, title = "Sleep Mode", handler = () => {
+      this.lightService.triggerRoutine( Routines.AllOff )
+    })
+
   }
 
 }
