@@ -9,13 +9,14 @@ class Logger(name: String) {
   private def getCalendar = Calendar.getInstance()
   private def getTime: Date = this.getCalendar.getTime
 
-  private val timeFormat = new SimpleDateFormat("dd-M-yyyy HH:mm:ss")
+  private val timeFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss")
 
-  private def echo(prefix: String, msg: String): Unit = println(s"[$prefix - ${this.timeFormat.format(getTime)}]\t" + this.name + ":\t'" + msg + "'")
+  //TODO: Implement async logger
+  private def echo(postfix: String, msg: String): Unit = println(s"[${this.timeFormat.format(getTime)} - $postfix]\t" + this.name + ":\t'" + msg + "'")
 
-  def error(msg: String): Unit = this.echo("Error", msg)
-  def warn(msg: String): Unit = this.echo("Warn", msg)
-  def info(msg: String): Unit = this.echo("Info", msg)
-  def debug(msg: String): Unit = this.echo("Debug", msg)
+  def error(msg: String): Unit = this.echo("ERROR", msg)
+  def warn(msg: String): Unit = this.echo("WARN", msg)
+  def info(msg: String): Unit = this.echo("INFO", msg)
+  def debug(msg: String): Unit = this.echo("DEBUG", msg)
 
 }
