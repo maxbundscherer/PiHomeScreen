@@ -261,7 +261,7 @@ class MainPresenter(
     val newDirection: Int = if(right) 1 else -1
     val result = this.actualPane + newDirection
 
-    this.actualPane = if(forceInfoPane) 4 else { if(result < 0) this.maxPane else result % (this.maxPane + 1) }
+    this.actualPane = if(forceInfoPane) this.maxPane else { if(result < 0) this.maxPane else result % (this.maxPane + 1) }
 
     this.actualPane match {
 
@@ -552,7 +552,7 @@ class MainPresenter(
 
       case Some(error) =>
 
-        this.fourthPane_labTop      .setText( error )
+        this.fourthPane_labTop      .setText( error + s" (${this.calendarService.getHourAndMinuteToString})" )
         this.fourthPane_labBottom   .setText( "" )
 
     }
