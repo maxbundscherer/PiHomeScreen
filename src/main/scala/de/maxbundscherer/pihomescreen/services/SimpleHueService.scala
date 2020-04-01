@@ -14,9 +14,9 @@ class SimpleHueService extends LightService with JsonWebclient with Configuratio
 
   /**
    * Get light bulbs states
-   * @return Map (Light, EntityState)
+   * @return Either Left = Error Message / Right = Map (Light, EntityState)
    */
-  override def getLightBulbStates: Map[Lights.Light, EntityState] = {
+  override def getLightBulbStates: Either[String, Map[Lights.Light, EntityState]] = {
 
     case class State(on: Boolean, bri: Int)
     case class HueLight(state: State)
@@ -26,19 +26,16 @@ class SimpleHueService extends LightService with JsonWebclient with Configuratio
       url     = this.targetUrl + "lights"
     ) match {
 
-      case None         =>
+      case Left(error)         => Left(error)
 
-        logger.error("No answer from webclient")
-        Map.empty
+      case Right(data) =>
 
-      case Some(answer) =>
-
-        Lights.ALL_LIGHTS.map(light =>
+        Right(Lights.ALL_LIGHTS.map(light =>
           light -> EntityState(
-            on = answer(light).state.on,
-            brightness = answer(light).state.bri / 255.0 //Norm to 0 to 1
+            on = data(light).state.on,
+            brightness = data(light).state.bri / 255.0 //Norm to 0 to 1
           )
-        ).toMap
+        ).toMap)
 
     }
 
@@ -47,24 +44,33 @@ class SimpleHueService extends LightService with JsonWebclient with Configuratio
   /**
    * Get room brightness
    * @param actualBulbStates Some = Cached light states / None = Calls getLightBulbStates
-   * @return Map (Room, EntityState)
+   * @return Either Left = Error Message / Right = Map (Room, EntityState)
    */
-  override def getRoomStates(actualBulbStates: Option[Map[Lights.Light, EntityState]]): Map[Rooms.Room, EntityState] = {
+  override def getRoomStates(actualBulbStates: Option[Map[Lights.Light, EntityState]]): Either[String, Map[Rooms.Room, EntityState]] = {
 
-    val bulbStates: Map[Lights.Light, EntityState] = actualBulbStates.getOrElse(this.getLightBulbStates)
+    //Get from cache or refresh
+    val bulbStates: Either[String, Map[Lights.Light, EntityState]] = actualBulbStates match { case Some(sth) => Right(sth) case None => this.getLightBulbStates }
 
-    val roomWithLightBulbStates: Map[Rooms.Room, Vector[EntityState]] = Rooms.ALL_ROOMS.map(room =>
+    bulbStates match {
 
-      room -> room.map(light => bulbStates(light))
+      case Left(error) => Left(error)
 
-    ).toMap
+      case Right(data) =>
 
-    roomWithLightBulbStates.map { case (room, lightBulbStates) =>
+        val roomWithLightBulbStates: Map[Rooms.Room, Vector[EntityState]] = Rooms.ALL_ROOMS.map(room =>
 
-      room -> EntityState(
-        on          = lightBulbStates.exists(_.on == true), //One bulb on is enough
-        brightness  = lightBulbStates.map(_.brightness).max //Take brightness from max bright bulb
-      )
+          room -> room.map(light => data(light))
+
+        ).toMap
+
+        Right(roomWithLightBulbStates.map { case (room, lightBulbStates) =>
+
+          room -> EntityState(
+            on          = lightBulbStates.exists(_.on == true), //One bulb on is enough
+            brightness  = lightBulbStates.map(_.brightness).max //Take brightness from max bright bulb
+          )
+
+        })
 
     }
 
@@ -78,7 +84,17 @@ class SimpleHueService extends LightService with JsonWebclient with Configuratio
    */
   def toggleLightBulb(light: Lights.Light, newState: Option[Boolean] = None, newBrightness: Option[Double] = None): Unit = {
 
-    val stateString      = if(newState.getOrElse(!this.getLightBulbStates(light).on)) "true" else "false"
+    val stateString      = if(newState.getOrElse(
+
+      this.getLightBulbStates match {
+        case Left(error) =>
+          logger.error(s"Can not get state from $light ($error)")
+          false
+        case Right(data) => !data(light).on
+      }
+
+    )) "true" else "false"
+
     val brightnessString = if(newBrightness.isDefined) ", \"bri\":" + (newBrightness.get * 255).toInt else ""
 
     val jsonRequestString = "{\"on\":" + stateString + brightnessString  + "}"
@@ -98,16 +114,16 @@ class SimpleHueService extends LightService with JsonWebclient with Configuratio
    */
   override def toggleRoom(room: Rooms.Room, value: Option[Boolean]): Unit = {
 
-    val newState: Boolean = value match {
+    val newState: Boolean = value.getOrElse(
 
-      case Some(sth) => sth
+      this.getRoomStates(None) match {
+        case Left(error) =>
+          logger.error(s"Can not get state from $room ($error)")
+          false
+        case Right(data) => !data(room).on
+      }
 
-      case None =>
-
-        val actualRoomsStates: Map[Rooms.Room, EntityState] = this.getRoomStates(None)
-        !actualRoomsStates(room).on
-
-    }
+    )
 
     //TODO: Toggle all lights synchronized
     room.foreach(light => this.toggleLightBulb(light, newState = Some(newState)))

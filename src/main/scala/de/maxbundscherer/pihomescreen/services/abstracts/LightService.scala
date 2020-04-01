@@ -4,8 +4,6 @@ import de.maxbundscherer.pihomescreen.utils.LightConfiguration
 
 abstract class LightService extends LightConfiguration {
 
-  //TODO: Improve error handling with webclient with Either
-
   /**
    * EntityState (for lights and rooms)
    * @param on Boolean
@@ -15,16 +13,16 @@ abstract class LightService extends LightConfiguration {
 
   /**
    * Get light bulbs states
-   * @return Map (Light, EntityState)
+   * @return Either Left = Error Message / Right = Map (Light, EntityState)
    */
-  def getLightBulbStates: Map[Lights.Light, EntityState]
+  def getLightBulbStates: Either[String, Map[Lights.Light, EntityState]]
 
   /**
    * Get room brightness
    * @param actualBulbStates Some = Cached light states / None = Calls getLightBulbStates
-   * @return Map (Room, EntityState)
+   * @return Either Left = Error Message / Right = Map (Room, EntityState)
    */
-  def getRoomStates(actualBulbStates: Option[Map[Lights.Light, EntityState]]): Map[Rooms.Room, EntityState]
+  def getRoomStates(actualBulbStates: Option[Map[Lights.Light, EntityState]]): Either[String, Map[Rooms.Room, EntityState]]
 
   /**
    * Toggle state from light bulb
@@ -52,7 +50,7 @@ abstract class LightService extends LightConfiguration {
    * Set scene
    * @param scene Scene
    */
-  def setScene(scene: Scenes.Scene): Unit
+  def setScene(scene: Scenes.Scene)
 
   /**
    * Trigger routine
