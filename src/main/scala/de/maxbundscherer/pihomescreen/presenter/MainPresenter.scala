@@ -75,7 +75,13 @@ class MainPresenter(
                       private val thirdPane_btnRoutineDarkRed: Button,
                       private val thirdPane_btnSleep: Button,
                       private val thirdPane_btnRoutineAllOff: Button,
-                      private val thirdPane_btnExit: Button
+                      private val thirdPane_btnExit: Button,
+
+                      /*
+                      // Fourth Pane
+                       */
+                      private val fourthPane_labTop: Label,
+                      private val fourthPane_labBottom: Label
 
                    ) extends InitPresenter with ProgressBarSlider with TimelineHelper with LightConfiguration {
 
@@ -155,6 +161,10 @@ class MainPresenter(
     this.tobBedroomBack.setGraphic(ImageHelper.getGetLightBulbImageView(lightType = 5, width = size, height = size))
     this.tobBedroomFront.setGraphic(ImageHelper.getGetLightBulbImageView(lightType = 5, width = size, height = size))
 
+    this.startNewTimeline(interval = 10 s, repeat = true, title = "Light States Timeline", handler = () => {
+      this.updateLightStates()
+    })
+
     this.startNewTimeline(interval = 1 m, repeat = true, title = "Clock Timeline", handler = () => {
       this.updateClock()
     })
@@ -167,14 +177,23 @@ class MainPresenter(
       this.updateWeather()
     })
 
-    this.startNewTimeline(interval = 10 s, repeat = true, title = "Light Timeline", handler = () => {
-      this.updateLightStates()
+    //TODO: Improve time
+    this.startNewTimeline(interval = 1 m, repeat = true, title = "Health check Timeline", handler = () => {
+      this.doHealthCheck()
     })
+
+    this.startNewTimeline(interval = 15 m, repeat = true, title = "Info Pane Timeline", handler = () => {
+      this.updateInfoPane(errorMessage = None)
+    })
+
+    this.updateLightStates()
 
     this.updateClock()
     this.updateBackground()
     this.updateWeather()
-    this.updateLightStates()
+    //this.doHealthCheck() //Skip on start
+
+    this.updateInfoPane(errorMessage = None)
 
     logger.info("End init presenter")
   }
@@ -276,7 +295,7 @@ class MainPresenter(
   }
 
   /**
-   * Updates clock
+   * Updates clock (global)
    */
   private def updateClock(): Unit = {
     this.lblClock.setText(this.calendarService.getHourAndMinuteToString)
@@ -284,7 +303,7 @@ class MainPresenter(
   }
 
   /**
-   * Updates Background
+   * Updates Background (global)
    */
   private def updateBackground(): Unit = {
 
@@ -292,7 +311,7 @@ class MainPresenter(
   }
 
   /**
-   * Updates weather
+   * Updates weather (global)
    */
   private def updateWeather(): Unit = {
 
@@ -304,6 +323,15 @@ class MainPresenter(
     }
 
     this.lblWeather.setText(ans + " C°")
+  }
+
+  /**
+   * Do health check
+   */
+  private def doHealthCheck(): Unit = {
+
+    logger.debug("Should do health check now")
+    //TODO: Implement
   }
 
   /**
@@ -467,6 +495,27 @@ class MainPresenter(
   def thirdPane_btnExit_onMouseClicked(event: MouseEvent): Unit = {
 
     Platform.exit()
+  }
+
+  /**
+   * #####################################################################################
+   * #####################################################################################
+   * ######################################## Fourth Pane ################################
+   * #####################################################################################
+   * #####################################################################################
+   */
+
+  /**
+   * Updates info pane
+   * @param errorMessage Optional error message (if set, show no jokes)
+   */
+  private def updateInfoPane(errorMessage: Option[String]): Unit = {
+
+    this.fourthPane_labTop.setText( this.calendarService.getDateToString )
+    this.fourthPane_labBottom.setText( this.calendarService.getHourAndMinuteToString )
+
+    logger.debug("Should update info pane now")
+    //TODO: Implement
   }
 
 }
