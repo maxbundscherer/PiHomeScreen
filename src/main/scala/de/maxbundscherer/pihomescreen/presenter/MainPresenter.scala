@@ -266,10 +266,6 @@ class MainPresenter(
 
     if(forceInfoPane) this.actualPane = 3
 
-      if(result < 0) this.maxPane else result % (this.maxPane + 1)
-
-    }
-
     this.actualPane match {
 
       case 0 =>
