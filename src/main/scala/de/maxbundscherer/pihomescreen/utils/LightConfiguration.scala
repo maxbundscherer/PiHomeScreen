@@ -89,7 +89,7 @@ trait LightConfiguration {
     val Relax   : Routine  = ( Vector(Scenes.LivingRoomRelax, Scenes.KitchenRelax), Vector(Rooms.Bedroom) )
     val DarkRed : Routine  = ( Vector(Scenes.LivingRoomDarkRed), Vector(Rooms.Bedroom, Rooms.Kitchen) )
     val Sleep   : Routine  = ( Vector(Scenes.LivingRoomSleep, Scenes.BedroomSleep), Vector(Rooms.Kitchen) )
-    val AllOff  : Routine  = ( Vector(), Vector(Rooms.Bedroom, Rooms.Kitchen, Rooms.LivingRoom) )
+    val AllOff  : Routine  = ( Vector(), Rooms.ALL_ROOMS )
 
   }
 
