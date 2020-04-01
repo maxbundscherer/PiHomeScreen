@@ -97,7 +97,8 @@ class MainPresenter(
   /**
    * Actual pane (firstPane=0) and maxPane
    */
-  private var actualPane: Int                   = 0
+  //TODO: Improve health check error reporting (maybe u can remove volatile)
+  @volatile private var actualPane: Int         = 0
   private val maxPane: Int                      = 3
 
   /**
@@ -259,13 +260,11 @@ class MainPresenter(
   private def switchPane(right: Boolean, forceInfoPane: Boolean = false): Unit = {
 
     val newDirection: Int = if(right) 1 else -1
-    val result = this.actualPane + newDirection
+    val result = (this.actualPane + newDirection) % (this.maxPane + 1)
 
-    this.actualPane = if(forceInfoPane) {
+    this.actualPane = if(result < 0) this.maxPane else result
 
-      this.maxPane
-
-    } else {
+    if(forceInfoPane) this.actualPane = 3
 
       if(result < 0) this.maxPane else result % (this.maxPane + 1)
 
