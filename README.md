@@ -2,8 +2,6 @@
 
 Raspberry Pi Home Screen
 
-**Not finished yet**
-
 ``scala - scalafx - javafx - philips hue - openWeatherMap``
 
 [![shields.io](http://img.shields.io/badge/license-Apache2-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.txt)
@@ -16,9 +14,10 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 ## Overview
 
-- Control your [philips hue](https://www2.meethue.com/) light bulbs
+- Control your [philips hue](https://www2.meethue.com/) light bulbs, scenes and rooms
 - Show clock (time and date)
 - Show weather info (data from [openWeatherMap](https://openweathermap.org/))
+- Dynamic backgrounds included
 
 ### Requirements
 
@@ -27,12 +26,12 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 ### Let's get started (local run for development)
 
-- Edit config (see section below)
+- (Optional) Edit config (see section below)
 - Run with ``sbt run``
 
 ### Let's get started (run on target)
 
-- Edit config (see section below)
+- (Optional) Edit config (see section below)
 - Generate jar file with ``sbt generate-jar``
 - Copy jar-file from ``./target/scala-2.12/PiHomeScreen-assembly-X.Y.jar`` to raspberry
 - Run on target with ``java -jar PiHomeScreen-assembly-X.Y.jar`` (use jdk from above)
