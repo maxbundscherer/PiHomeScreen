@@ -13,6 +13,7 @@ import scalafx.scene.image.ImageView
 import scalafx.scene.input.MouseEvent
 import scalafx.scene.layout.Pane
 import scalafxml.core.macros.sfxml
+import scalafx.geometry.Pos
 
 @sfxml
 class MainPresenter(
@@ -555,6 +556,10 @@ class MainPresenter(
         this.fourthPane_labBottom   .setText( "" )
 
     }
+
+    //Fix: Java FX Center Bug (Label alignment)
+    this.fourthPane_labTop.setAlignment(Pos.BaselineCenter)
+    this.fourthPane_labBottom.setAlignment(Pos.BaselineCenter)
 
   }
 
