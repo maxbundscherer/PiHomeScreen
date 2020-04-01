@@ -26,6 +26,14 @@ trait Configuration {
 
     }
 
+    object HealthCheck {
+
+      lazy private val c = config.getConfig("healthcheck")
+
+      lazy val targetUrl: String       = c.getString("target-url")
+
+    }
+
     object Joke {
 
       lazy private val c = config.getConfig("joke")

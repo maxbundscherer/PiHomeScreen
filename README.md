@@ -60,6 +60,13 @@ pihomescreen {
 
   }
 
+  healthcheck {
+
+    //Don't use it in production ;)
+    target-url = "http://google.de/"
+
+  }
+
   joke {
   
     first-name = "Maximilian"
