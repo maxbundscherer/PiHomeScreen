@@ -23,6 +23,7 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 - Raspberry Pi with touchscreen (1024x600 recommend)
 - [Liberica JDK 13.x.x for ARM](https://bell-sw.com/pages/java-13.0.1/) - don't works with Oracle jdk (no javaFX included)
+- (Optional - ui editor for fxml files) [Scene Builder](https://gluonhq.com/products/scene-builder/) 
 
 ### Let's get started (local run for development)
 
