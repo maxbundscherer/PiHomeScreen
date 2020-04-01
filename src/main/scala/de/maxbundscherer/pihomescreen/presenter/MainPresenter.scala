@@ -527,12 +527,22 @@ class MainPresenter(
       case None =>
 
         val firstJoke = this.jokeService.getFirstJoke() match {
-          case Left(error) => error
+
+          case Left(error) =>
+
+            logger.error(s"Can not get first joke ($error)")
+            "Error"
+
           case Right(joke) => joke
         }
 
         val secondJoke = this.jokeService.getSecondJoke() match {
-          case Left(error) => error
+
+          case Left(error) =>
+
+            logger.error(s"Can not get second joke ($error)")
+            "Error"
+
           case Right(joke) => joke
         }
 
