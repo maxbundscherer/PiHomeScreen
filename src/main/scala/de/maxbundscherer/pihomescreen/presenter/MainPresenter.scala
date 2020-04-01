@@ -193,7 +193,7 @@ class MainPresenter(
 
       case Left(error) =>
 
-        logger.error(s"Can not get light bulb states $error")
+        logger.error(s"Can not get light bulb states ($error)")
 
       case Right(actualBulbStates) =>
 
@@ -210,7 +210,7 @@ class MainPresenter(
 
           case Left(error) =>
 
-            logger.error(s"Can not get room states $error")
+            logger.error(s"Can not get room states ($error)")
 
           case Right(actualRoomStates) =>
 
@@ -298,7 +298,7 @@ class MainPresenter(
 
     val ans: String = this.weatherService.getActualTempInCelsius match {
       case Left(error) =>
-        logger.error(s"Can not get weather $error")
+        logger.error(s"Can not get weather ($error)")
         "??"
       case Right(data) => data
     }
