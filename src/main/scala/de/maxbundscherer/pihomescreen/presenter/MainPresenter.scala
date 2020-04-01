@@ -89,7 +89,7 @@ class MainPresenter(
    * Actual pane (firstPane=0) and maxPane
    */
   private var actualPane: Int                   = 0
-  private val maxPane: Int                      = 2 //TODO: Add third pane (3) - already in fxml
+  private val maxPane: Int                      = 3
 
   /**
    * Maps Lights to ToggleButtons (Global Pane)
