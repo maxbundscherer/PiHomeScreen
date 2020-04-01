@@ -18,6 +18,8 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 - Show clock (time and date)
 - Show weather info (data from [openWeatherMap](https://openweathermap.org/))
 - Dynamic backgrounds included
+- Automatic health check (network down) & active error reporting
+- Jokes (personalized chuck norris jokes & trump thinks jokes)
 
 ### Requirements
 
