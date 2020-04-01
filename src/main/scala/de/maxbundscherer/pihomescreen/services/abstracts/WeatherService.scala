@@ -2,12 +2,10 @@ package de.maxbundscherer.pihomescreen.services.abstracts
 
 abstract class WeatherService {
 
-  //TODO: Improve error handling with webclient with Either
-
   /**
    * Get acutal temperature in celsius
-   * @return Ceslsius
+   * @return Either Left = Error / Right = Celsius
    */
-  def getActualTempInCelsius: String
+  def getActualTempInCelsius: Either[String, String]
 
 }

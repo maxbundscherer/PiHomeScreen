@@ -1,22 +1,20 @@
 package de.maxbundscherer.pihomescreen.services
 
 import de.maxbundscherer.pihomescreen.services.abstracts.WeatherService
-import de.maxbundscherer.pihomescreen.utils.{Configuration, JsonWebclient, Logger}
+import de.maxbundscherer.pihomescreen.utils.{Configuration, JsonWebclient}
 
 class SimpleWeatherService extends WeatherService with JsonWebclient with Configuration {
 
   import io.circe.Decoder
   import io.circe.generic.auto._, io.circe.parser._, io.circe.syntax._
 
-  private val logger: Logger                    = new Logger(getClass.getSimpleName)
-
   private val targetUrl: String = s"https://api.openweathermap.org/data/2.5/weather?id=${Config.OpenWeatherMap.cityId}&appid=${Config.OpenWeatherMap.apiKey}"
 
   /**
    * Get actual temperature in celsius
-   * @return Celsius
+   * @return Either Left = Error / Right = Celsius
    */
-  override def getActualTempInCelsius: String = {
+  override def getActualTempInCelsius: Either[String, String] = {
 
     case class Main(temp: Double)
     case class WeatherModel(main: Main)
@@ -26,14 +24,11 @@ class SimpleWeatherService extends WeatherService with JsonWebclient with Config
       url     = this.targetUrl
     ) match {
 
-      case None         =>
+      case Left(error) => Left(error)
 
-        logger.error("No answer from webclient")
-        "?"
+      case Right(data) =>
 
-      case Some(answer) =>
-
-        (answer.main.temp - 273.15).toInt.toString
+        Right((data.main.temp - 273.15).toInt.toString)
 
     }
 

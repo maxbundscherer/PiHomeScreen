@@ -295,7 +295,15 @@ class MainPresenter(
    * Updates weather
    */
   private def updateWeather(): Unit = {
-    this.lblWeather.setText(this.weatherService.getActualTempInCelsius + " C°")
+
+    val ans: String = this.weatherService.getActualTempInCelsius match {
+      case Left(error) =>
+        logger.error(s"Can not get weather $error")
+        "??"
+      case Right(data) => data
+    }
+
+    this.lblWeather.setText(ans + " C°")
   }
 
   /**
