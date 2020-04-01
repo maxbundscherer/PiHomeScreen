@@ -179,7 +179,6 @@ class MainPresenter(
       this.updateWeather()
     })
 
-    //TODO: Improve time
     this.startNewTimeline(interval = 1 m, repeat = true, title = "Health check Timeline", handler = () => {
       this.doHealthCheck()
     })
