@@ -26,6 +26,15 @@ trait Configuration {
 
     }
 
+    object Joke {
+
+      lazy private val c = config.getConfig("joke")
+
+      lazy val firstName: String  = c.getString("first-name")
+      lazy val lastName: String   = c.getString("last-name")
+
+    }
+
   }
 
 }
