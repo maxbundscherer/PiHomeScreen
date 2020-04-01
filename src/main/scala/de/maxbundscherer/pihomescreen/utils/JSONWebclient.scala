@@ -1,6 +1,6 @@
 package de.maxbundscherer.pihomescreen.utils
 
-trait JsonWebclient {
+trait JSONWebclient {
 
   object Webclient {
 

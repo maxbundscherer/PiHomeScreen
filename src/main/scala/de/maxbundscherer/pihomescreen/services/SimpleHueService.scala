@@ -1,9 +1,9 @@
 package de.maxbundscherer.pihomescreen.services
 
 import de.maxbundscherer.pihomescreen.services.abstracts.LightService
-import de.maxbundscherer.pihomescreen.utils.{Configuration, JsonWebclient, Logger}
+import de.maxbundscherer.pihomescreen.utils.{Configuration, JSONWebclient, Logger}
 
-class SimpleHueService extends LightService with JsonWebclient with Configuration {
+class SimpleHueService extends LightService with JSONWebclient with Configuration {
 
   import io.circe.Decoder
   import io.circe.generic.auto._, io.circe.parser._, io.circe.syntax._

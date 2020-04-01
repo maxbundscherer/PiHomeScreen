@@ -1,9 +1,9 @@
 package de.maxbundscherer.pihomescreen.services
 
 import de.maxbundscherer.pihomescreen.services.abstracts.WeatherService
-import de.maxbundscherer.pihomescreen.utils.{Configuration, JsonWebclient}
+import de.maxbundscherer.pihomescreen.utils.{Configuration, JSONWebclient}
 
-class SimpleWeatherService extends WeatherService with JsonWebclient with Configuration {
+class SimpleWeatherService extends WeatherService with JSONWebclient with Configuration {
 
   import io.circe.Decoder
   import io.circe.generic.auto._, io.circe.parser._, io.circe.syntax._
