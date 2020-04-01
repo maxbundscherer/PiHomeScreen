@@ -1,7 +1,7 @@
 package de.maxbundscherer.pihomescreen.presenter
 
 import de.maxbundscherer.pihomescreen.img.ImageHelper
-import de.maxbundscherer.pihomescreen.services.{SimpleCalendarService, SimpleHueService, SimpleWeatherService}
+import de.maxbundscherer.pihomescreen.services.{SimpleCalendarService, SimpleHealthCheckService, SimpleHueService, SimpleJokeService, SimpleWeatherService}
 import de.maxbundscherer.pihomescreen.services.abstracts.{CalendarService, HealthCheckService, JokeService, LightService, WeatherService}
 import de.maxbundscherer.pihomescreen.utils.{InitPresenter, LightConfiguration, Logger, ProgressBarSlider, TimelineHelper}
 
@@ -85,13 +85,13 @@ class MainPresenter(
 
                    ) extends InitPresenter with ProgressBarSlider with TimelineHelper with LightConfiguration {
 
-  private val logger: Logger                    = new Logger(getClass.getSimpleName)
+  private val logger: Logger                              = new Logger(getClass.getSimpleName)
 
   private lazy val lightService: LightService             = new SimpleHueService()
   private lazy val calendarService: CalendarService       = new SimpleCalendarService()
   private lazy val weatherService: WeatherService         = new SimpleWeatherService()
-  private lazy val healthCheckService: HealthCheckService = ???
-  private lazy val jokeService: JokeService               = ???
+  private lazy val healthCheckService: HealthCheckService = new SimpleHealthCheckService()
+  private lazy val jokeService: JokeService               = new SimpleJokeService()
 
   /**
    * Actual pane (firstPane=0) and maxPane
