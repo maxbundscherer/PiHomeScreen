@@ -2,7 +2,7 @@ package de.maxbundscherer.pihomescreen.presenter
 
 import de.maxbundscherer.pihomescreen.img.ImageHelper
 import de.maxbundscherer.pihomescreen.services.{SimpleCalendarService, SimpleHueService, SimpleWeatherService}
-import de.maxbundscherer.pihomescreen.services.abstracts.{CalendarService, LightService, WeatherService}
+import de.maxbundscherer.pihomescreen.services.abstracts.{CalendarService, HealthCheckService, JokeService, LightService, WeatherService}
 import de.maxbundscherer.pihomescreen.utils.{InitPresenter, LightConfiguration, Logger, ProgressBarSlider, TimelineHelper}
 
 import scalafx.Includes._
@@ -87,9 +87,11 @@ class MainPresenter(
 
   private val logger: Logger                    = new Logger(getClass.getSimpleName)
 
-  private val lightService: LightService        = new SimpleHueService()
-  private val calendarService: CalendarService  = new SimpleCalendarService()
-  private val weatherService: WeatherService    = new SimpleWeatherService()
+  private lazy val lightService: LightService             = new SimpleHueService()
+  private lazy val calendarService: CalendarService       = new SimpleCalendarService()
+  private lazy val weatherService: WeatherService         = new SimpleWeatherService()
+  private lazy val healthCheckService: HealthCheckService = ???
+  private lazy val jokeService: JokeService               = ???
 
   /**
    * Actual pane (firstPane=0) and maxPane
@@ -331,8 +333,17 @@ class MainPresenter(
    */
   private def doHealthCheck(): Unit = {
 
-    logger.debug("Should do health check now")
-    //TODO: Implement
+    this.healthCheckService.doHealthCheck() match {
+
+      case Left(error) =>
+
+        this.updateInfoPane(errorMessage = Some(error))
+        this.switchPane(right = false, forceInfoPane = true)
+
+      case Right(_) =>
+
+    }
+
   }
 
   /**
@@ -516,14 +527,23 @@ class MainPresenter(
 
       case None =>
 
-        //TODO: Implement jokes
-        this.fourthPane_labTop.setText( this.calendarService.getDateToString )
-        this.fourthPane_labBottom.setText( this.calendarService.getHourAndMinuteToString )
+        val firstJoke = this.jokeService.getFirstJoke() match {
+          case Left(error) => error
+          case Right(joke) => joke
+        }
+
+        val secondJoke = this.jokeService.getSecondJoke() match {
+          case Left(error) => error
+          case Right(joke) => joke
+        }
+
+        this.fourthPane_labTop      .setText( firstJoke )
+        this.fourthPane_labBottom   .setText( secondJoke )
 
       case Some(error) =>
 
-        this.fourthPane_labTop.setText( error )
-        this.fourthPane_labBottom.setText( "" )
+        this.fourthPane_labTop      .setText( error )
+        this.fourthPane_labBottom   .setText( "" )
 
     }
 
