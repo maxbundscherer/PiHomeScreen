@@ -252,13 +252,14 @@ class MainPresenter(
   /**
    * Switch pane
    * @param right True = go right / False = go left
+   * @param forceInfoPane True = go to info pane
    */
-  private def switchPane(right: Boolean): Unit = {
+  private def switchPane(right: Boolean, forceInfoPane: Boolean = false): Unit = {
 
     val newDirection: Int = if(right) 1 else -1
     val result = this.actualPane + newDirection
 
-    this.actualPane = if(result < 0) this.maxPane else result % (this.maxPane + 1)
+    this.actualPane = if(forceInfoPane) 4 else { if(result < 0) this.maxPane else result % (this.maxPane + 1) }
 
     this.actualPane match {
 
@@ -511,11 +512,21 @@ class MainPresenter(
    */
   private def updateInfoPane(errorMessage: Option[String]): Unit = {
 
-    this.fourthPane_labTop.setText( this.calendarService.getDateToString )
-    this.fourthPane_labBottom.setText( this.calendarService.getHourAndMinuteToString )
+    errorMessage match {
 
-    logger.debug("Should update info pane now")
-    //TODO: Implement
+      case None =>
+
+        //TODO: Implement jokes
+        this.fourthPane_labTop.setText( this.calendarService.getDateToString )
+        this.fourthPane_labBottom.setText( this.calendarService.getHourAndMinuteToString )
+
+      case Some(error) =>
+
+        this.fourthPane_labTop.setText( error )
+        this.fourthPane_labBottom.setText( "" )
+
+    }
+
   }
 
 }
