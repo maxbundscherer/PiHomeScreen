@@ -187,22 +187,44 @@ class MainPresenter(
     def lightStyleTranslator(state: Boolean): String = if(state) "-fx-background-color: orange" else "-fx-background-color: grey"
     def roomStyleTranslator(state: Boolean): String = if(state) "-fx-accent: orange;" else "-fx-accent: grey;"
 
-    val actualBulbStates = this.lightService.getLightBulbStates
+    val actualBulbStates: Either[String, Map[lightService.Lights.Light, lightService.EntityState]] = this.lightService.getLightBulbStates
 
-    for ( (light, lightState) <- actualBulbStates) {
+    actualBulbStates match {
 
-      val targetToggleButton = this.lightsMapping.find(_._2 == light).get._1
-      targetToggleButton.setStyle(lightStyleTranslator(lightState.on))
+      case Left(error) =>
 
-    }
+        logger.error(s"Can not get light bulb states $error")
 
-    for ( (room, roomState) <- this.lightService.getRoomStates(Some(actualBulbStates))) {
+      case Right(actualBulbStates) =>
 
-      val targetProgressBar = this.roomsMappingProgressBars.find(_._2 == room).get._1
+        for ( (light, lightState) <- actualBulbStates) {
 
-      val newBrightness = if(roomState.brightness <= 0.20) 0.20 else roomState.brightness
-      targetProgressBar.setProgress(newBrightness)
-      targetProgressBar.setStyle(roomStyleTranslator(roomState.on))
+          val targetToggleButton = this.lightsMapping.find(_._2 == light).get._1
+          targetToggleButton.setStyle(lightStyleTranslator(lightState.on))
+
+        }
+
+        val actualRoomStates = this.lightService.getRoomStates(Some(actualBulbStates))
+
+        actualRoomStates match {
+
+          case Left(error) =>
+
+            logger.error(s"Can not get room states $error")
+
+          case Right(actualRoomStates) =>
+
+            for ( (room, roomState) <- actualRoomStates) {
+
+              val targetProgressBar = this.roomsMappingProgressBars.find(_._2 == room).get._1
+
+              val newBrightness = if(roomState.brightness <= 0.20) 0.20 else roomState.brightness
+              targetProgressBar.setProgress(newBrightness)
+              targetProgressBar.setStyle(roomStyleTranslator(roomState.on))
+
+            }
+
+        }
 
     }
 
