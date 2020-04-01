@@ -99,11 +99,13 @@ class SimpleHueService extends LightService with JsonWebclient with Configuratio
 
     val jsonRequestString = "{\"on\":" + stateString + brightnessString  + "}"
 
-    Webclient.putRequestToJSON(
+    val ans: Either[String, Option[Nothing]] = Webclient.putRequestToJSON(
       decoder = None,
       rawBody = jsonRequestString,
       url     = this.targetUrl + s"lights/$light/state"
     )
+
+    if(ans.isLeft) logger.error(s"Can not toggle light bulb (${ans.left.get})")
 
   }
 
@@ -150,11 +152,13 @@ class SimpleHueService extends LightService with JsonWebclient with Configuratio
 
     val jsonRequestString = "{\"scene\": \"" + scene._2 + "\"}"
 
-    Webclient.putRequestToJSON(
+    val ans: Either[String, Option[Nothing]] = Webclient.putRequestToJSON(
       decoder = None,
       rawBody = jsonRequestString,
       url     = this.targetUrl + s"groups/${scene._1}/action"
     )
+
+    if(ans.isLeft) logger.error(s"Can not set scene (${ans.left.get})")
 
   }
 
