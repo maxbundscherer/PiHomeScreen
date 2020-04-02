@@ -8,12 +8,13 @@ import de.maxbundscherer.pihomescreen.utils.{InitPresenter, LightConfiguration, 
 import scalafx.Includes._
 import scalafx.application.Platform
 import scala.language.postfixOps
-import scalafx.scene.control.{Button, Label, ProgressBar, ToggleButton}
+import scalafx.scene.control.{Alert, Button, ButtonType, Label, ProgressBar, ToggleButton}
 import scalafx.scene.image.ImageView
 import scalafx.scene.input.MouseEvent
 import scalafx.scene.layout.Pane
 import scalafxml.core.macros.sfxml
 import scalafx.geometry.Pos
+import scalafx.scene.control.Alert.AlertType
 
 @sfxml
 class MainPresenter(
@@ -98,9 +99,9 @@ class MainPresenter(
   /**
    * State
    */
-  private var actualPane: Int         = 0
-  private val maxPane: Int            = 3
-  private var lastError: String       = ""
+  private var actualPane: Int           = 0
+  private val maxPane: Int              = 3
+  private var lastError: Option[String] = None
 
   /**
    * Maps Lights to ToggleButtons (Global Pane)
@@ -338,13 +339,39 @@ class MainPresenter(
 
       case Left(error) =>
 
-        this.lastError = error + " (" + this.calendarService.getHourAndMinuteToString + ")"
+        this.lastError = Some( error + " (" + this.calendarService.getHourAndMinuteToString + ")" )
         this.imvWarning.setVisible(true)
 
       case Right(_) =>
 
         this.imvWarning.setVisible(false)
 
+    }
+
+  }
+
+  /**
+   * Shows error alert
+   */
+  def show_ErrorAlert(): Unit = {
+
+    val ButtonTypeOne = new ButtonType("Fortsetzen")
+    val ButtonTypeTwo = new ButtonType("Beenden")
+
+    val alert = new Alert(AlertType.Warning) {
+      title = "Programm beenden"
+      headerText = "Möchten Sie das Programm beenden?"
+      contentText = lastError.getOrElse("Es ist keine Warnung aufgetreten.")
+      buttonTypes = Seq(
+        ButtonTypeOne, ButtonTypeTwo)
+    }
+
+    val result = alert.showAndWait()
+
+    result match {
+      case Some(ButtonTypeOne)   => //Do nothing
+      case Some(ButtonTypeTwo)   => Platform.exit()
+      case _ => logger.error(s"Can not process $result")
     }
 
   }
@@ -501,15 +528,6 @@ class MainPresenter(
     })
 
     this.updateLightStates()
-  }
-
-  /**
-   * Click on exit button
-   * @param event MouseEvent
-   */
-  def thirdPane_btnExit_onMouseClicked(event: MouseEvent): Unit = {
-
-    Platform.exit()
   }
 
   /**

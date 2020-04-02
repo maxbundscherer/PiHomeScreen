@@ -14,7 +14,7 @@
 
    <children>
 
-      <ImageView fx:id="imvWarning" fitHeight="75.0" fitWidth="75.0" layoutX="892.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imvWarning" onMouseClicked="#show_ErrorAlert" fitHeight="75.0" fitWidth="75.0" layoutX="892.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../img/warning.png" />
          </image>
@@ -211,7 +211,7 @@
                   <Font name="Verdana" size="12.0" />
                </font>
             </Button>
-            <Button fx:id="thirdPane_btnExit" layoutX="578.0" layoutY="56.0" mnemonicParsing="false" onMouseClicked="#thirdPane_btnExit_onMouseClicked" prefHeight="52.0" prefWidth="100.0" style="-fx-background-color: rgba(0, 0, 0, 0.0); -fx-text-fill: white; -fx-border-width: 1px; -fx-border-color: white;" text="Beenden">
+            <Button fx:id="thirdPane_btnExit" layoutX="578.0" layoutY="56.0" mnemonicParsing="false" onMouseClicked="#show_ErrorAlert" prefHeight="52.0" prefWidth="100.0" style="-fx-background-color: rgba(0, 0, 0, 0.0); -fx-text-fill: white; -fx-border-width: 1px; -fx-border-color: white;" text="Beenden">
                <font>
                   <Font name="Verdana" size="12.0" />
                </font>
