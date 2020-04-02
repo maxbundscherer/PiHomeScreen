@@ -12,7 +12,7 @@ class Logger(name: String) {
   private val timeFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss")
 
   //TODO: Implement async logger
-  private def echo(postfix: String, msg: String): Unit = println(s"[${this.timeFormat.format(getTime)} - $postfix]\t" + this.name + ":\t'" + msg + "'")
+  private def echo(postfix: String, msg: String): Unit = println(s"[${this.timeFormat.format(this.getTime)} - $postfix]\t" + this.name + ":\t'" + msg + "'")
 
   def error(msg: String): Unit = this.echo("ERROR", msg)
   def warn(msg: String): Unit = this.echo("WARN", msg)

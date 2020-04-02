@@ -339,7 +339,7 @@ class MainPresenter(
 
       case Left(error) =>
 
-        this.lastError = Some( error + " (" + this.calendarService.getHourAndMinuteToString + ")" )
+        this.lastError = Some(error)
         this.imvWarning.setVisible(true)
 
       case Right(_) =>
@@ -355,7 +355,7 @@ class MainPresenter(
    */
   def show_ErrorAlert(): Unit = {
 
-    val ButtonTypeOne = new ButtonType("Fortsetzen")
+    val ButtonTypeOne = new ButtonType("Nicht beenden")
     val ButtonTypeTwo = new ButtonType("Beenden")
 
     val alert = new Alert(AlertType.Warning) {

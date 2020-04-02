@@ -15,6 +15,14 @@ class SimpleHealthCheckService() extends HealthCheckService with Configuration {
 
   private implicit val backend: SttpBackend[Identity, Nothing, NothingT] = HttpURLConnectionBackend()
 
+  import java.text.SimpleDateFormat
+  import java.util.{Calendar, Date}
+
+  private def getCalendar = Calendar.getInstance()
+  private def getTime: Date = this.getCalendar.getTime
+
+  private val timeFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss")
+
   /**
    * Do health check
    * @return Either Left = Error Message / Right = All okay
@@ -30,7 +38,7 @@ class SimpleHealthCheckService() extends HealthCheckService with Configuration {
         .send()
     } match {
 
-      case Failure(failure) => Left(s"Netzwerk-Fehler: ${failure.getLocalizedMessage}")
+      case Failure(failure) => Left(s"Netzwerk-Fehler: ${failure.getLocalizedMessage} (${this.timeFormat.format(this.getTime)})")
       case Success(_)       => Right()
 
     }
