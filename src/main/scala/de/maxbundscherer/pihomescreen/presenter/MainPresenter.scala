@@ -19,6 +19,7 @@ import scalafx.geometry.Pos
 class MainPresenter(
 
                       //System
+                      private val imvWarning: ImageView,
                       private val panBackground: Pane,
                       private val lblClock: Label,
                       private val lblDate: Label,
@@ -95,11 +96,11 @@ class MainPresenter(
   private lazy val jokeService: JokeService               = new SimpleJokeService()
 
   /**
-   * Actual pane (firstPane=0) and maxPane
+   * State
    */
-  //TODO: Improve health check error reporting (maybe u can remove volatile)
-  @volatile private var actualPane: Int         = 0
-  private val maxPane: Int                      = 3
+  private var actualPane: Int         = 0
+  private val maxPane: Int            = 3
+  private var lastError: String       = ""
 
   /**
    * Maps Lights to ToggleButtons (Global Pane)
@@ -185,8 +186,8 @@ class MainPresenter(
       this.doHealthCheck()
     })
 
-    this.startNewTimeline(interval = 15 m, repeat = true, title = "Info Pane Timeline", handler = () => {
-      this.updateInfoPane(errorMessage = None)
+    this.startNewTimeline(interval = 15 m, repeat = true, title = "Joke Timeline", handler = () => {
+      this.updateJokes()
     })
 
     this.updateLightStates()
@@ -194,9 +195,9 @@ class MainPresenter(
     this.updateClock()
     this.updateBackground()
     this.updateWeather()
-    //this.doHealthCheck() //Skip on start
+    this.doHealthCheck()
 
-    this.updateInfoPane(errorMessage = None)
+    this.updateJokes()
 
     logger.info("End init presenter")
   }
@@ -255,16 +256,13 @@ class MainPresenter(
   /**
    * Switch pane
    * @param right True = go right / False = go left
-   * @param forceInfoPane True = go to info pane
    */
-  private def switchPane(right: Boolean, forceInfoPane: Boolean = false): Unit = {
+  private def switchPane(right: Boolean): Unit = {
 
     val newDirection: Int = if(right) 1 else -1
     val result = (this.actualPane + newDirection) % (this.maxPane + 1)
 
     this.actualPane = if(result < 0) this.maxPane else result
-
-    if(forceInfoPane) this.actualPane = 3
 
     this.actualPane match {
 
@@ -340,10 +338,12 @@ class MainPresenter(
 
       case Left(error) =>
 
-        this.updateInfoPane(errorMessage = Some(error))
-        this.switchPane(right = false, forceInfoPane = true)
+        this.lastError = error + " (" + this.calendarService.getHourAndMinuteToString + ")"
+        this.imvWarning.setVisible(true)
 
       case Right(_) =>
+
+        this.imvWarning.setVisible(false)
 
     }
 
@@ -521,44 +521,32 @@ class MainPresenter(
    */
 
   /**
-   * Updates info pane
-   * @param errorMessage Optional error message (if set, show no jokes)
+   * Updates jokes (fourthPane)
    */
-  private def updateInfoPane(errorMessage: Option[String]): Unit = {
+  private def updateJokes(): Unit = {
 
-    errorMessage match {
+    val firstJoke = this.jokeService.getFirstJoke() match {
 
-      case None =>
+      case Left(error) =>
 
-        val firstJoke = this.jokeService.getFirstJoke() match {
+        logger.error(s"Can not get first joke ($error)")
+        "Fehler: Kann Witz nicht laden"
 
-          case Left(error) =>
-
-            logger.error(s"Can not get first joke ($error)")
-            "Error"
-
-          case Right(joke) => joke
-        }
-
-        val secondJoke = this.jokeService.getSecondJoke() match {
-
-          case Left(error) =>
-
-            logger.error(s"Can not get second joke ($error)")
-            "Error"
-
-          case Right(joke) => joke
-        }
-
-        this.fourthPane_labTop      .setText( firstJoke )
-        this.fourthPane_labBottom   .setText( secondJoke )
-
-      case Some(error) =>
-
-        this.fourthPane_labTop      .setText( error + s" (${this.calendarService.getHourAndMinuteToString})" )
-        this.fourthPane_labBottom   .setText( "" )
-
+      case Right(joke) => joke
     }
+
+    val secondJoke = this.jokeService.getSecondJoke() match {
+
+      case Left(error) =>
+
+        logger.error(s"Can not get second joke ($error)")
+        "Fehler: Kann Witz nicht laden"
+
+      case Right(joke) => joke
+    }
+
+    this.fourthPane_labTop      .setText( firstJoke )
+    this.fourthPane_labBottom   .setText( secondJoke )
 
     //Fix: Java FX Center Bug (Label alignment)
     this.fourthPane_labTop.setAlignment(Pos.BaselineCenter)
