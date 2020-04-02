@@ -1,12 +1,11 @@
 package de.maxbundscherer.pihomescreen.utils
 
+import org.apache.logging.log4j.scala.Logging
 import javafx.event.{ActionEvent, EventHandler}
 import scalafx.animation.{KeyFrame, Timeline}
 import scalafx.util.Duration
 
-trait TimelineHelper {
-
-  private val logger: Logger              = new Logger(getClass.getSimpleName)
+trait TimelineHelper extends Logging {
 
   /**
    * Start new timeline

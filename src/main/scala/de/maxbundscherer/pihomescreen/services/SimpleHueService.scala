@@ -1,14 +1,14 @@
 package de.maxbundscherer.pihomescreen.services
 
 import de.maxbundscherer.pihomescreen.services.abstracts.LightService
-import de.maxbundscherer.pihomescreen.utils.{Configuration, JSONWebclient, Logger}
+import de.maxbundscherer.pihomescreen.utils.{Configuration, JSONWebclient}
 
-class SimpleHueService extends LightService with JSONWebclient with Configuration {
+import org.apache.logging.log4j.scala.Logging
+
+class SimpleHueService extends LightService with JSONWebclient with Configuration with Logging {
 
   import io.circe.Decoder
   import io.circe.generic.auto._, io.circe.parser._, io.circe.syntax._
-
-  private val logger: Logger = new Logger(getClass.getSimpleName)
 
   private val targetUrl: String = s"${Config.PhilipsHue.bridgeApiUrl}${Config.PhilipsHue.bridgeApiUsername}/"
 

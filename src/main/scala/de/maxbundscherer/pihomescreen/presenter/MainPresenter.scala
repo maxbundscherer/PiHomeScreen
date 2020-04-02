@@ -3,8 +3,9 @@ package de.maxbundscherer.pihomescreen.presenter
 import de.maxbundscherer.pihomescreen.img.ImageHelper
 import de.maxbundscherer.pihomescreen.services.{SimpleCalendarService, SimpleHealthCheckService, SimpleHueService, SimpleJokeService, SimpleWeatherService}
 import de.maxbundscherer.pihomescreen.services.abstracts.{CalendarService, HealthCheckService, JokeService, LightService, WeatherService}
-import de.maxbundscherer.pihomescreen.utils.{InitPresenter, LightConfiguration, Logger, ProgressBarSlider, TimelineHelper}
+import de.maxbundscherer.pihomescreen.utils.{InitPresenter, LightConfiguration, ProgressBarSlider, TimelineHelper}
 
+import org.apache.logging.log4j.scala.Logging
 import scalafx.Includes._
 import scalafx.application.Platform
 import scala.language.postfixOps
@@ -86,9 +87,7 @@ class MainPresenter(
                       private val fourthPane_labTop: Label,
                       private val fourthPane_labBottom: Label
 
-                   ) extends InitPresenter with ProgressBarSlider with TimelineHelper with LightConfiguration {
-
-  private val logger: Logger                              = new Logger(getClass.getSimpleName)
+                   ) extends InitPresenter with ProgressBarSlider with TimelineHelper with LightConfiguration with Logging {
 
   private lazy val lightService: LightService             = new SimpleHueService()
   private lazy val calendarService: CalendarService       = new SimpleCalendarService()

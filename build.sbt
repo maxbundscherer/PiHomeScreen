@@ -47,5 +47,9 @@ assemblyMergeStrategy in assembly := {
 // Config Factory
 libraryDependencies += "com.typesafe" % "config" % "1.4.0"
 
+// Logger
+libraryDependencies += "org.apache.logging.log4j" % "log4j-core" % "2.13.1"
+libraryDependencies += "org.apache.logging.log4j" %% "log4j-api-scala" % "11.0"
+
 // Alias
 addCommandAlias("generate-jar", ";clean;assembly")

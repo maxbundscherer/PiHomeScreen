@@ -1,5 +1,6 @@
 package de.maxbundscherer.pihomescreen
 
+import org.apache.logging.log4j.scala.Logging
 import javafx.fxml.FXMLLoader
 import scalafx.application.JFXApp
 import scalafx.Includes._
@@ -9,7 +10,9 @@ import javafx.{fxml => jfxf}
 import javafx.{scene => jfxs}
 import scalafxml.core.{FXMLView, NoDependencyResolver}
 
-object Main extends JFXApp {
+object Main extends JFXApp with Logging {
+
+  logger.debug("Init JFX")
 
   private val resource = getClass.getResource("fxml/Main.fxml")
 
