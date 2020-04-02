@@ -43,7 +43,7 @@ class SimpleJokeService() extends JokeService with JSONWebclient with Configurat
     ) match {
 
       case Left(error) => Left(error)
-      case Right(data) => Right("Trump Thinks: " + data.message)
+      case Right(data) => Right("Trump thinks: " + data.message)
 
     }
 
