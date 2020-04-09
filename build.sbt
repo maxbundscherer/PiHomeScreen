@@ -23,6 +23,9 @@ libraryDependencies ++= javaFXModules.map( m =>
 // Scalafxml
 libraryDependencies += "org.scalafx" %% "scalafxml-core-sfx8" % "0.5"
 
+//TODO: Add -Ymacro-annotations in scala 12.13.x and higher
+addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
+
 // HTTP Client
 libraryDependencies += "com.softwaremill.sttp.client" %% "core" % "2.0.6"
 
@@ -34,9 +37,6 @@ libraryDependencies ++= Seq(
   "io.circe" %% "circe-generic",
   "io.circe" %% "circe-parser"
 ).map(_ % circeVersion)
-
-//TODO: Add -Ymacro-annotations in scala 12.13.x and higher
-addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
 
 // JAR Assembly
 assemblyMergeStrategy in assembly := {
