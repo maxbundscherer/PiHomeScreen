@@ -11,6 +11,26 @@ abstract class LightService extends LightConfiguration {
    */
   case class EntityState(on: Boolean, brightness: Double)
 
+  object Cache {
+
+    def buildCache: Option[Cache] = {
+
+      val newBulbStates = getLightBulbStates(useCache = false)
+      val newRoomStates = getRoomStates(useCache = false)
+
+      if(newBulbStates.isRight && newRoomStates.isRight) {
+
+        Some(Cache(
+          bulbStates = newBulbStates.right.get,
+          roomStates = newRoomStates.right.get
+        ))
+
+      } else None
+
+    }
+
+  }
+
   case class Cache(
                   bulbStates: Map[Lights.Light, EntityState],
                   roomStates: Map[Rooms.Room, EntityState]
@@ -48,7 +68,7 @@ abstract class LightService extends LightConfiguration {
 
   }
 
-  var cache: Option[Cache]
+  var cache: Option[Cache] = Cache.buildCache
 
   /**
    * Get light bulbs states
