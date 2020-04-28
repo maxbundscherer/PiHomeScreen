@@ -11,18 +11,58 @@ abstract class LightService extends LightConfiguration {
    */
   case class EntityState(on: Boolean, brightness: Double)
 
-  /**
-   * Get light bulbs states
-   * @return Either Left = Error Message / Right = Map (Light, EntityState)
-   */
-  def getLightBulbStates: Either[String, Map[Lights.Light, EntityState]]
+  case class Cache(
+                  bulbStates: Map[Lights.Light, EntityState],
+                  roomStates: Map[Rooms.Room, EntityState]
+                  ) {
+
+    def updateBulb(bulb: Lights.Light, newState: EntityState): Cache = {
+      copy( bulbStates = this.bulbStates + (bulb -> newState) )
+    }
+
+    def toggleBulb(bulb: Lights.Light): Cache = {
+
+      val oldState = this.bulbStates(bulb)
+
+      val newState: EntityState = oldState.copy(
+        on = !oldState.on
+      )
+
+      this.updateBulb(bulb, newState)
+    }
+
+    def updateRoom(room: Rooms.Room, newState: EntityState): Cache = {
+      copy( roomStates = this.roomStates + (room -> newState) )
+    }
+
+    def toggleRoom(room: Rooms.Room): Cache = {
+
+      val oldState = this.roomStates(room)
+
+      val newState: EntityState = oldState.copy(
+        on = !oldState.on
+      )
+
+      this.updateRoom(room, newState)
+    }
+
+  }
+
+  var cache: Option[Cache]
 
   /**
-   * Get room brightness
-   * @param actualBulbStates Some = Cached light states / None = Calls getLightBulbStates
+   * Get light bulbs states
+   * @param useCache Use local cache instead of online sync
+   * @return Either Left = Error Message / Right = Map (Light, EntityState)
+   */
+  def getLightBulbStates(useCache: Boolean): Either[String, Map[Lights.Light, EntityState]]
+
+  /**
+   * Get room states
+   * @param useCache Use local cache instead of online sync
    * @return Either Left = Error Message / Right = Map (Room, EntityState)
    */
-  def getRoomStates(actualBulbStates: Option[Map[Lights.Light, EntityState]]): Either[String, Map[Rooms.Room, EntityState]]
+  def getRoomStates(useCache: Boolean): Either[String, Map[Rooms.Room, EntityState]]
 
   /**
    * Toggle state from light bulb
