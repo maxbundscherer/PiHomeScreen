@@ -36,34 +36,20 @@ abstract class LightService extends LightConfiguration {
                   roomStates: Map[Rooms.Room, EntityState]
                   ) {
 
-    def updateBulb(bulb: Lights.Light, newState: EntityState): Cache = {
-      copy( bulbStates = this.bulbStates + (bulb -> newState) )
+    def setBulb(bulb: Lights.Light, newOnState: Boolean): Cache = {
+
+      val oldState: EntityState = this.bulbStates(bulb)
+      val newState: EntityState = oldState.copy(on = newOnState)
+
+      copy(bulbStates = this.bulbStates + (bulb -> newState))
     }
 
-    def toggleBulb(bulb: Lights.Light): Cache = {
+    def setRoom(room: Rooms.Room, newOnState: Boolean): Cache = {
 
-      val oldState = this.bulbStates(bulb)
+      val oldState: EntityState = this.roomStates(room)
+      val newState: EntityState = oldState.copy(on = newOnState)
 
-      val newState: EntityState = oldState.copy(
-        on = !oldState.on
-      )
-
-      this.updateBulb(bulb, newState)
-    }
-
-    def updateRoom(room: Rooms.Room, newState: EntityState): Cache = {
-      copy( roomStates = this.roomStates + (room -> newState) )
-    }
-
-    def toggleRoom(room: Rooms.Room): Cache = {
-
-      val oldState = this.roomStates(room)
-
-      val newState: EntityState = oldState.copy(
-        on = !oldState.on
-      )
-
-      this.updateRoom(room, newState)
+      copy(roomStates = this.roomStates + (room -> newState))
     }
 
   }

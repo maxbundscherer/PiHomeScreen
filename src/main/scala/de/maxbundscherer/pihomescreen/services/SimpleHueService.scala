@@ -96,16 +96,20 @@ class SimpleHueService extends LightService with JSONWebclient with Configuratio
    */
   def toggleLightBulb(light: Lights.Light, newState: Option[Boolean] = None, newBrightness: Option[Double] = None): Unit = {
 
-    val stateString      = if(newState.getOrElse(
+    val newStateBoolean = newState.getOrElse(
 
-      this.getLightBulbStates match {
+      this.getLightBulbStates(useCache = false) match {
         case Left(error) =>
           logger.error(s"Can not get state from $light ($error)")
           false
         case Right(data) => !data(light).on
       }
 
-    )) "true" else "false"
+    )
+
+    this.cache = this.cache.map(_.setBulb(bulb = light, newOnState = newStateBoolean))
+
+    val stateString      = if(newStateBoolean) "true" else "false"
 
     val brightnessString = if(newBrightness.isDefined) ", \"bri\":" + (newBrightness.get * 255).toInt else ""
 
@@ -130,7 +134,7 @@ class SimpleHueService extends LightService with JSONWebclient with Configuratio
 
     val newState: Boolean = value.getOrElse(
 
-      this.getRoomStates(None) match {
+      this.getRoomStates(useCache = false) match {
         case Left(error) =>
           logger.error(s"Can not get state from $room ($error)")
           false
@@ -138,6 +142,8 @@ class SimpleHueService extends LightService with JSONWebclient with Configuratio
       }
 
     )
+
+    this.cache = this.cache.map(_.setRoom(room, newState))
 
     //TODO: Toggle all lights synchronized
     room.foreach(light => this.toggleLightBulb(light, newState = Some(newState)))
@@ -152,6 +158,8 @@ class SimpleHueService extends LightService with JSONWebclient with Configuratio
 
     val newState = if(value == 0) false else true
 
+    this.cache = this.cache.map(_.setRoom(room, newState))
+
     //TODO: Toggle all lights synchronized
     room.foreach(light => this.toggleLightBulb(light, newState = Some(newState), newBrightness = Some(value)))
   }
@@ -161,6 +169,8 @@ class SimpleHueService extends LightService with JSONWebclient with Configuratio
    * @param scene Scene
    */
   override def setScene(scene: (Rooms.GroupId, String)): Unit = {
+
+    //TODO: Implement cache
 
     val jsonRequestString = "{\"scene\": \"" + scene._2 + "\"}"
 
@@ -180,6 +190,7 @@ class SimpleHueService extends LightService with JSONWebclient with Configuratio
    */
   override def triggerRoutine(routine: (Vector[(Rooms.GroupId, String)], Vector[Rooms.Room])): Unit = {
 
+    //TODO: Implement cache
     //TODO: Toggle all lights synchronized
 
     val scenes: Vector[Scenes.Scene]      = routine._1
