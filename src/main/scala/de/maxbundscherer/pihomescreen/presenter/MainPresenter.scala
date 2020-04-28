@@ -167,7 +167,7 @@ class MainPresenter(
     this.tobBedroomFront.setGraphic(ImageHelper.getGetLightBulbImageView(lightType = 5, width = size, height = size))
 
     this.startNewTimeline(interval = 10 s, repeat = true, title = "Light States Timeline", handler = () => {
-      this.updateLightStates(useCache = false)
+      this.updateLightStates()
     })
 
     this.startNewTimeline(interval = 1 m, repeat = true, title = "Clock Timeline", handler = () => {
@@ -190,7 +190,7 @@ class MainPresenter(
       this.updateJokes()
     })
 
-    this.updateLightStates(useCache = false)
+    this.updateLightStates()
 
     this.updateClock()
     this.updateBackground()
@@ -204,15 +204,15 @@ class MainPresenter(
 
   /**
    * Updates states from toggle buttons
-   * @param useCache use local cache
    */
-  private def updateLightStates(useCache: Boolean): Unit = {
+  private def updateLightStates(): Unit = {
 
     def lightStyleTranslator(state: Boolean): String = if(state) "-fx-background-color: orange" else "-fx-background-color: grey"
     def roomStyleTranslator(state: Boolean): String = if(state) "-fx-accent: orange;" else "-fx-accent: grey;"
 
-    //Updates cache too
-    this.lightService.getLightBulbStates(useCache) match {
+    val actualBulbStates: Either[String, Map[lightService.Lights.Light, lightService.EntityState]] = this.lightService.getLightBulbStates
+
+    actualBulbStates match {
 
       case Left(error) =>
 
@@ -227,24 +227,25 @@ class MainPresenter(
 
         }
 
-    }
+        val actualRoomStates = this.lightService.getRoomStates(Some(actualBulbStates))
 
-    //Should be already in cache (see above)
-    this.lightService.getRoomStates(useCache = true) match {
+        actualRoomStates match {
 
-      case Left(error) =>
+          case Left(error) =>
 
-        logger.error(s"Can not get room states ($error)")
+            logger.error(s"Can not get room states ($error)")
 
-      case Right(actualRoomStates) =>
+          case Right(actualRoomStates) =>
 
-        for ( (room, roomState) <- actualRoomStates) {
+            for ( (room, roomState) <- actualRoomStates) {
 
-          val targetProgressBar = this.roomsMappingProgressBars.find(_._2 == room).get._1
+              val targetProgressBar = this.roomsMappingProgressBars.find(_._2 == room).get._1
 
-          val newBrightness = if(roomState.brightness <= 0.20) 0.20 else roomState.brightness
-          targetProgressBar.setProgress(newBrightness)
-          targetProgressBar.setStyle(roomStyleTranslator(roomState.on))
+              val newBrightness = if(roomState.brightness <= 0.20) 0.20 else roomState.brightness
+              targetProgressBar.setProgress(newBrightness)
+              targetProgressBar.setStyle(roomStyleTranslator(roomState.on))
+
+            }
 
         }
 
@@ -387,7 +388,7 @@ class MainPresenter(
     val room: Rooms.Room = this.roomsMappingProgressBars(prb)
 
     this.lightService.setRoomBrightness(room, newRoomBrightness)
-    this.updateLightStates(useCache = true)
+    this.updateLightStates()
   }
 
   /**
@@ -401,7 +402,7 @@ class MainPresenter(
     val room: Rooms.Room = this.roomsMappingImageViews(imv)
 
     this.lightService.toggleRoom(room)
-    this.updateLightStates(useCache = true)
+    this.updateLightStates()
   }
 
   /**
@@ -415,7 +416,7 @@ class MainPresenter(
     val light: Lights.Light = this.lightsMapping(tob)
 
     this.lightService.toggleLightBulb(light)
-    this.updateLightStates(useCache = true)
+    this.updateLightStates()
   }
 
   /**
@@ -475,7 +476,7 @@ class MainPresenter(
     val scene: Scenes.Scene = this.sceneMappingButtons(btn)
 
     this.lightService.setScene(scene)
-    this.updateLightStates(useCache = true)
+    this.updateLightStates()
   }
 
   /**
@@ -509,7 +510,7 @@ class MainPresenter(
     val routine: Routines.Routine = this.routineMappingButtons(btn)
 
     this.lightService.triggerRoutine(routine)
-    this.updateLightStates(useCache = true)
+    this.updateLightStates()
   }
 
   /**
@@ -522,10 +523,10 @@ class MainPresenter(
 
     this.startNewTimeline(interval = 3 m, repeat = false, title = "Sleep Routine", handler = () => {
       this.lightService.triggerRoutine( Routines.AllOff )
-      this.updateLightStates(useCache = true)
+      this.updateLightStates()
     })
 
-    this.updateLightStates(useCache = true)
+    this.updateLightStates()
   }
 
   /**

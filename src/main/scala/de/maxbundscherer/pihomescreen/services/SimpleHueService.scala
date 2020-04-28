@@ -14,17 +14,9 @@ class SimpleHueService extends LightService with JSONWebclient with Configuratio
 
   /**
    * Get light bulbs states
-   * @param useCache Use local cache instead of online sync
    * @return Either Left = Error Message / Right = Map (Light, EntityState)
    */
-  def getLightBulbStates(useCache: Boolean): Either[String, Map[Lights.Light, EntityState]] = {
-
-    if(useCache) {
-      cache match {
-        case Some(c)  => return Right(c.bulbStates)
-        case None     => //No Cache
-      }
-    }
+  override def getLightBulbStates: Either[String, Map[Lights.Light, EntityState]] = {
 
     case class State(on: Boolean, bri: Int)
     case class HueLight(state: State)
@@ -50,20 +42,16 @@ class SimpleHueService extends LightService with JSONWebclient with Configuratio
   }
 
   /**
-   * Get room states
-   * @param useCache Use local cache instead of online sync
+   * Get room brightness
+   * @param actualBulbStates Some = Cached light states / None = Calls getLightBulbStates
    * @return Either Left = Error Message / Right = Map (Room, EntityState)
    */
-  def getRoomStates(useCache: Boolean): Either[String, Map[Rooms.Room, EntityState]] = {
+  override def getRoomStates(actualBulbStates: Option[Map[Lights.Light, EntityState]]): Either[String, Map[Rooms.Room, EntityState]] = {
 
-    if(useCache) {
-      cache match {
-        case Some(c)  => return Right(c.roomStates)
-        case None     => //No Cache
-      }
-    }
+    //Get from cache or refresh
+    val bulbStates: Either[String, Map[Lights.Light, EntityState]] = actualBulbStates match { case Some(sth) => Right(sth) case None => this.getLightBulbStates }
 
-    this.getLightBulbStates(useCache = false) match {
+    bulbStates match {
 
       case Left(error) => Left(error)
 
@@ -96,20 +84,16 @@ class SimpleHueService extends LightService with JSONWebclient with Configuratio
    */
   def toggleLightBulb(light: Lights.Light, newState: Option[Boolean] = None, newBrightness: Option[Double] = None): Unit = {
 
-    val newStateBoolean = newState.getOrElse(
+    val stateString      = if(newState.getOrElse(
 
-      this.getLightBulbStates(useCache = false) match {
+      this.getLightBulbStates match {
         case Left(error) =>
           logger.error(s"Can not get state from $light ($error)")
           false
         case Right(data) => !data(light).on
       }
 
-    )
-
-    this.cache = this.cache.map(_.setBulb(bulb = light, newOnState = newStateBoolean))
-
-    val stateString      = if(newStateBoolean) "true" else "false"
+    )) "true" else "false"
 
     val brightnessString = if(newBrightness.isDefined) ", \"bri\":" + (newBrightness.get * 255).toInt else ""
 
@@ -134,7 +118,7 @@ class SimpleHueService extends LightService with JSONWebclient with Configuratio
 
     val newState: Boolean = value.getOrElse(
 
-      this.getRoomStates(useCache = false) match {
+      this.getRoomStates(None) match {
         case Left(error) =>
           logger.error(s"Can not get state from $room ($error)")
           false
@@ -142,8 +126,6 @@ class SimpleHueService extends LightService with JSONWebclient with Configuratio
       }
 
     )
-
-    this.cache = this.cache.map(_.setRoom(room, newState))
 
     //TODO: Toggle all lights synchronized
     room.foreach(light => this.toggleLightBulb(light, newState = Some(newState)))
@@ -158,8 +140,6 @@ class SimpleHueService extends LightService with JSONWebclient with Configuratio
 
     val newState = if(value == 0) false else true
 
-    this.cache = this.cache.map(_.setRoom(room, newState))
-
     //TODO: Toggle all lights synchronized
     room.foreach(light => this.toggleLightBulb(light, newState = Some(newState), newBrightness = Some(value)))
   }
@@ -169,8 +149,6 @@ class SimpleHueService extends LightService with JSONWebclient with Configuratio
    * @param scene Scene
    */
   override def setScene(scene: (Rooms.GroupId, String)): Unit = {
-
-    //TODO: Implement cache
 
     val jsonRequestString = "{\"scene\": \"" + scene._2 + "\"}"
 
@@ -190,7 +168,6 @@ class SimpleHueService extends LightService with JSONWebclient with Configuratio
    */
   override def triggerRoutine(routine: (Vector[(Rooms.GroupId, String)], Vector[Rooms.Room])): Unit = {
 
-    //TODO: Implement cache
     //TODO: Toggle all lights synchronized
 
     val scenes: Vector[Scenes.Scene]      = routine._1

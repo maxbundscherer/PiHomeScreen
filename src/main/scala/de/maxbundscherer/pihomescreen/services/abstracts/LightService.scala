@@ -11,64 +11,18 @@ abstract class LightService extends LightConfiguration {
    */
   case class EntityState(on: Boolean, brightness: Double)
 
-  object Cache {
-
-    def buildCache: Option[Cache] = {
-
-      val newBulbStates = getLightBulbStates(useCache = false)
-      val newRoomStates = getRoomStates(useCache = false)
-
-      if(newBulbStates.isRight && newRoomStates.isRight) {
-
-        Some(Cache(
-          bulbStates = newBulbStates.right.get,
-          roomStates = newRoomStates.right.get
-        ))
-
-      } else None
-
-    }
-
-  }
-
-  case class Cache(
-                  bulbStates: Map[Lights.Light, EntityState],
-                  roomStates: Map[Rooms.Room, EntityState]
-                  ) {
-
-    def setBulb(bulb: Lights.Light, newOnState: Boolean): Cache = {
-
-      val oldState: EntityState = this.bulbStates(bulb)
-      val newState: EntityState = oldState.copy(on = newOnState)
-
-      copy(bulbStates = this.bulbStates + (bulb -> newState))
-    }
-
-    def setRoom(room: Rooms.Room, newOnState: Boolean): Cache = {
-
-      val oldState: EntityState = this.roomStates(room)
-      val newState: EntityState = oldState.copy(on = newOnState)
-
-      copy(roomStates = this.roomStates + (room -> newState))
-    }
-
-  }
-
-  var cache: Option[Cache] = Cache.buildCache
-
   /**
    * Get light bulbs states
-   * @param useCache Use local cache instead of online sync
    * @return Either Left = Error Message / Right = Map (Light, EntityState)
    */
-  def getLightBulbStates(useCache: Boolean): Either[String, Map[Lights.Light, EntityState]]
+  def getLightBulbStates: Either[String, Map[Lights.Light, EntityState]]
 
   /**
-   * Get room states
-   * @param useCache Use local cache instead of online sync
+   * Get room brightness
+   * @param actualBulbStates Some = Cached light states / None = Calls getLightBulbStates
    * @return Either Left = Error Message / Right = Map (Room, EntityState)
    */
-  def getRoomStates(useCache: Boolean): Either[String, Map[Rooms.Room, EntityState]]
+  def getRoomStates(actualBulbStates: Option[Map[Lights.Light, EntityState]]): Either[String, Map[Rooms.Room, EntityState]]
 
   /**
    * Toggle state from light bulb
