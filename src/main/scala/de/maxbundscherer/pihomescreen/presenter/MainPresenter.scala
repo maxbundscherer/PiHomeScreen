@@ -485,20 +485,20 @@ class MainPresenter(
   /**
    * Maps Scenes to Buttons (Second Pane)
    */
-  private val sceneMappingButtons: Map[Button, Scenes.Scene] = Map (
+  private val sceneMappingButtons: Map[Button, (Scenes.Scene, Rooms.Room)] = Map (
 
-    this.secondPane_btnSceneKitchenRead -> Scenes.KitchenRead,
-    this.secondPane_btnSceneKitchenRelax -> Scenes.KitchenRelax,
+    this.secondPane_btnSceneKitchenRead -> (Scenes.KitchenRead, Rooms.Kitchen),
+    this.secondPane_btnSceneKitchenRelax -> (Scenes.KitchenRelax, Rooms.Kitchen),
 
-    this.secondPane_btnSceneLivingRoomRead -> Scenes.LivingRoomRead,
-    this.secondPane_btnSceneLivingRoomDimmed -> Scenes.LivingRoomDimmed,
-    this.secondPane_btnSceneLivingRoomRelax -> Scenes.LivingRoomRelax,
-    this.secondPane_btnSceneLivingRoomDarkRed -> Scenes.LivingRoomDarkRed,
+    this.secondPane_btnSceneLivingRoomRead -> (Scenes.LivingRoomRead, Rooms.LivingRoom),
+    this.secondPane_btnSceneLivingRoomDimmed -> (Scenes.LivingRoomDimmed, Rooms.LivingRoom),
+    this.secondPane_btnSceneLivingRoomRelax -> (Scenes.LivingRoomRelax, Rooms.LivingRoom),
+    this.secondPane_btnSceneLivingRoomDarkRed -> (Scenes.LivingRoomDarkRed, Rooms.LivingRoom),
 
-    this.secondPane_btnSceneBedroomRead -> Scenes.BedroomRead,
-    this.secondPane_btnSceneBedroomNightLight -> Scenes.BedroomNightLight,
-    this.secondPane_btnSceneBedroomRelax -> Scenes.BedroomRelax,
-    this.secondPane_btnSceneBedroomRed -> Scenes.BedroomRed,
+    this.secondPane_btnSceneBedroomRead -> (Scenes.BedroomRead, Rooms.Bedroom),
+    this.secondPane_btnSceneBedroomNightLight -> (Scenes.BedroomNightLight, Rooms.Bedroom),
+    this.secondPane_btnSceneBedroomRelax -> (Scenes.BedroomRelax, Rooms.Bedroom),
+    this.secondPane_btnSceneBedroomRed -> (Scenes.BedroomRed, Rooms.Bedroom)
 
   )
 
@@ -510,11 +510,18 @@ class MainPresenter(
 
     val btn = event.getSource.asInstanceOf[javafx.scene.control.Button]
 
-    val scene: Scenes.Scene = this.sceneMappingButtons(btn)
+    val mapped = this.sceneMappingButtons(btn)
 
-    //TODO: Implement with future handler
-    this.lightService.setScene(scene)
-    this.updateLightStates()
+    val scene: Scenes.Scene = mapped._1
+    val room: Rooms.Room   = mapped._2
+
+    val temporaryTarget = this.roomsMappingProgressBars.find(_._2.equals(room)).get._1
+    temporaryTarget.setStyle( this.roomStyleTranslator(true) )
+
+    Future {
+      this.lightService.setScene(scene)
+      this.updateLightStates()
+    }
   }
 
   /**
