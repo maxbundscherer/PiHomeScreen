@@ -14,6 +14,7 @@ class SimpleHueService extends LightService with JSONWebclient with Configuratio
 
   /**
    * Get light bulbs states
+   * @param useCache Use local cache instead of online sync
    * @return Either Left = Error Message / Right = Map (Light, EntityState)
    */
   override def getLightBulbStates: Either[String, Map[Lights.Light, EntityState]] = {
@@ -42,8 +43,8 @@ class SimpleHueService extends LightService with JSONWebclient with Configuratio
   }
 
   /**
-   * Get room brightness
-   * @param actualBulbStates Some = Cached light states / None = Calls getLightBulbStates
+   * Get room states
+   * @param useCache Use local cache instead of online sync
    * @return Either Left = Error Message / Right = Map (Room, EntityState)
    */
   override def getRoomStates(actualBulbStates: Option[Map[Lights.Light, EntityState]]): Either[String, Map[Rooms.Room, EntityState]] = {
