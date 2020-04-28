@@ -109,20 +109,20 @@ class MainPresenter(
   /**
    * Maps Lights to ToggleButtons (Global Pane)
    */
-  private val lightsMapping: Map[ToggleButton, Lights.Light] = Map (
+  private val lightsMapping: Map[ToggleButton, (Lights.Light, Rooms.Room)] = Map (
 
-    this.tobKitchenTop    -> Lights.KitchenTop,
-    this.tobKitchenTable  -> Lights.KitchenTable,
-    this.tobKitchenBottom -> Lights.KitchenBottom,
+    this.tobKitchenTop    -> (Lights.KitchenTop, Rooms.Kitchen),
+    this.tobKitchenTable  -> (Lights.KitchenTable, Rooms.Kitchen),
+    this.tobKitchenBottom -> (Lights.KitchenBottom, Rooms.Kitchen),
 
-    this.tobLivingRoomLeft    -> Lights.LivingRoomLeft,
-    this.tobLivingRoomTruss   -> Lights.LivingRoomTruss,
-    this.tobLivingRoomRight   -> Lights.LivingRoomRight,
-    this.tobLivingRoomCouch   -> Lights.LivingRoomCouch,
-    this.tobLivingRoomCloset  -> Lights.LivingRoomCloset,
+    this.tobLivingRoomLeft    -> (Lights.LivingRoomLeft, Rooms.LivingRoom),
+    this.tobLivingRoomTruss   -> (Lights.LivingRoomTruss, Rooms.LivingRoom),
+    this.tobLivingRoomRight   -> (Lights.LivingRoomRight, Rooms.LivingRoom),
+    this.tobLivingRoomCouch   -> (Lights.LivingRoomCouch, Rooms.LivingRoom),
+    this.tobLivingRoomCloset  -> (Lights.LivingRoomCloset, Rooms.LivingRoom),
 
-    this.tobBedroomBack   -> Lights.BedroomBack,
-    this.tobBedroomFront  -> Lights.BedroomFront,
+    this.tobBedroomBack   -> (Lights.BedroomBack, Rooms.Bedroom),
+    this.tobBedroomFront  -> (Lights.BedroomFront, Rooms.Bedroom)
 
   )
 
@@ -232,7 +232,7 @@ class MainPresenter(
 
         for ( (light, lightState) <- actualBulbStates) {
 
-          val targetToggleButton = this.lightsMapping.find(_._2 == light).get._1
+          val targetToggleButton = this.lightsMapping.find(_._2._1.equals(light)).get._1
           targetToggleButton.setStyle(this.lightStyleTranslator(lightState.on))
 
         }
@@ -440,15 +440,23 @@ class MainPresenter(
 
     val tob = event.getSource.asInstanceOf[javafx.scene.control.ToggleButton]
 
-    val light: Lights.Light = this.lightsMapping(tob)
+    val light: Lights.Light = this.lightsMapping(tob)._1
 
     val temporaryNewState: Boolean = this.lastSeenBulbStates match {
       case None         => true
       case Some(cache)  => !cache(light).on
     }
 
-    val temporaryTarget = this.lightsMapping.find(_._2.equals(light)).get._1
-    temporaryTarget.setStyle( this.lightStyleTranslator(temporaryNewState) )
+    val selected = this.lightsMapping.find(_._2._1.equals(light)).get
+
+    val temporaryTargetTB: ToggleButton = selected._1
+    temporaryTargetTB.setStyle( this.lightStyleTranslator(temporaryNewState) )
+
+    if(temporaryNewState) {
+      val temporaryRoom = selected._2._2
+      val temporaryTargetPB = this.roomsMappingProgressBars.find(_._2.equals(temporaryRoom)).get._1
+      temporaryTargetPB.setStyle( this.roomStyleTranslator(state = true) )
+    }
 
     Future {
       this.lightService.toggleLightBulb(light)
