@@ -16,6 +16,7 @@ import scalafx.scene.layout.Pane
 import scalafxml.core.macros.sfxml
 import scalafx.geometry.Pos
 import scalafx.scene.control.Alert.AlertType
+import scala.concurrent.Future
 
 @sfxml
 class MainPresenter(
@@ -88,6 +89,9 @@ class MainPresenter(
                       private val fourthPane_labBottom: Label
 
                    ) extends InitPresenter with ProgressBarSlider with TimelineHelper with LightConfiguration with Logging {
+
+  //TODO: Improve and remove this shit
+  import scala.concurrent.ExecutionContext.Implicits.global
 
   private lazy val lightService: LightService             = new SimpleHueService()
   private lazy val calendarService: CalendarService       = new SimpleCalendarService()
@@ -202,13 +206,17 @@ class MainPresenter(
     logger.info("End init presenter")
   }
 
+  //TODO: Improve cache
+  private var lastSeenBulbStates: Option[Map[lightService.Lights.Light, lightService.EntityState]] = None
+  private var lastSeenRoomStates: Option[Map[lightService.Rooms.Room, lightService.EntityState]] = None
+
+  private def lightStyleTranslator(state: Boolean): String = if(state) "-fx-background-color: orange" else "-fx-background-color: grey"
+  private def roomStyleTranslator(state: Boolean): String = if(state) "-fx-accent: orange;" else "-fx-accent: grey;"
+
   /**
    * Updates states from toggle buttons
    */
   private def updateLightStates(): Unit = {
-
-    def lightStyleTranslator(state: Boolean): String = if(state) "-fx-background-color: orange" else "-fx-background-color: grey"
-    def roomStyleTranslator(state: Boolean): String = if(state) "-fx-accent: orange;" else "-fx-accent: grey;"
 
     val actualBulbStates: Either[String, Map[lightService.Lights.Light, lightService.EntityState]] = this.lightService.getLightBulbStates
 
@@ -220,10 +228,12 @@ class MainPresenter(
 
       case Right(actualBulbStates) =>
 
+        this.lastSeenBulbStates = Some(actualBulbStates)
+
         for ( (light, lightState) <- actualBulbStates) {
 
           val targetToggleButton = this.lightsMapping.find(_._2 == light).get._1
-          targetToggleButton.setStyle(lightStyleTranslator(lightState.on))
+          targetToggleButton.setStyle(this.lightStyleTranslator(lightState.on))
 
         }
 
@@ -237,13 +247,15 @@ class MainPresenter(
 
           case Right(actualRoomStates) =>
 
+            this.lastSeenRoomStates = Some(actualRoomStates)
+
             for ( (room, roomState) <- actualRoomStates) {
 
               val targetProgressBar = this.roomsMappingProgressBars.find(_._2 == room).get._1
 
               val newBrightness = if(roomState.brightness <= 0.20) 0.20 else roomState.brightness
               targetProgressBar.setProgress(newBrightness)
-              targetProgressBar.setStyle(roomStyleTranslator(roomState.on))
+              targetProgressBar.setStyle(this.roomStyleTranslator(roomState.on))
 
             }
 
@@ -387,8 +399,13 @@ class MainPresenter(
 
     val room: Rooms.Room = this.roomsMappingProgressBars(prb)
 
-    this.lightService.setRoomBrightness(room, newRoomBrightness)
-    this.updateLightStates()
+    val temporaryTarget = this.roomsMappingProgressBars.find(_._2.equals(room)).get._1
+    temporaryTarget.setStyle( this.roomStyleTranslator(true) )
+
+    Future {
+      this.lightService.setRoomBrightness(room, newRoomBrightness)
+      this.updateLightStates()
+    }
   }
 
   /**
@@ -401,8 +418,18 @@ class MainPresenter(
 
     val room: Rooms.Room = this.roomsMappingImageViews(imv)
 
-    this.lightService.toggleRoom(room)
-    this.updateLightStates()
+    val temporaryNewState: Boolean = this.lastSeenRoomStates match {
+      case None         => true
+      case Some(cache)  => !cache(room).on
+    }
+
+    val temporaryTarget = this.roomsMappingProgressBars.find(_._2.equals(room)).get._1
+    temporaryTarget.setStyle( this.roomStyleTranslator(temporaryNewState) )
+
+    Future {
+      this.lightService.toggleRoom(room)
+      this.updateLightStates()
+    }
   }
 
   /**
@@ -415,8 +442,18 @@ class MainPresenter(
 
     val light: Lights.Light = this.lightsMapping(tob)
 
-    this.lightService.toggleLightBulb(light)
-    this.updateLightStates()
+    val temporaryNewState: Boolean = this.lastSeenBulbStates match {
+      case None         => true
+      case Some(cache)  => !cache(light).on
+    }
+
+    val temporaryTarget = this.lightsMapping.find(_._2.equals(light)).get._1
+    temporaryTarget.setStyle( this.lightStyleTranslator(temporaryNewState) )
+
+    Future {
+      this.lightService.toggleLightBulb(light)
+      this.updateLightStates()
+    }
   }
 
   /**
@@ -475,6 +512,7 @@ class MainPresenter(
 
     val scene: Scenes.Scene = this.sceneMappingButtons(btn)
 
+    //TODO: Implement with future handler
     this.lightService.setScene(scene)
     this.updateLightStates()
   }
@@ -509,6 +547,7 @@ class MainPresenter(
 
     val routine: Routines.Routine = this.routineMappingButtons(btn)
 
+    //TODO: Implement with future handler
     this.lightService.triggerRoutine(routine)
     this.updateLightStates()
   }
@@ -523,9 +562,11 @@ class MainPresenter(
 
     this.startNewTimeline(interval = 3 m, repeat = false, title = "Sleep Routine", handler = () => {
       this.lightService.triggerRoutine( Routines.AllOff )
+      //TODO: Implement with future handler
       this.updateLightStates()
     })
 
+    //TODO: Implement with future handler
     this.updateLightStates()
   }
 
