@@ -17,7 +17,14 @@ class SimpleHueService extends LightService with JSONWebclient with Configuratio
    * @param useCache Use local cache instead of online sync
    * @return Either Left = Error Message / Right = Map (Light, EntityState)
    */
-  override def getLightBulbStates: Either[String, Map[Lights.Light, EntityState]] = {
+  def getLightBulbStates(useCache: Boolean): Either[String, Map[Lights.Light, EntityState]] = {
+
+    if(useCache) {
+      cache match {
+        case Some(c)  => return Right(c.bulbStates)
+        case None     => //No Cache
+      }
+    }
 
     case class State(on: Boolean, bri: Int)
     case class HueLight(state: State)
@@ -47,12 +54,16 @@ class SimpleHueService extends LightService with JSONWebclient with Configuratio
    * @param useCache Use local cache instead of online sync
    * @return Either Left = Error Message / Right = Map (Room, EntityState)
    */
-  override def getRoomStates(actualBulbStates: Option[Map[Lights.Light, EntityState]]): Either[String, Map[Rooms.Room, EntityState]] = {
+  def getRoomStates(useCache: Boolean): Either[String, Map[Rooms.Room, EntityState]] = {
 
-    //Get from cache or refresh
-    val bulbStates: Either[String, Map[Lights.Light, EntityState]] = actualBulbStates match { case Some(sth) => Right(sth) case None => this.getLightBulbStates }
+    if(useCache) {
+      cache match {
+        case Some(c)  => return Right(c.roomStates)
+        case None     => //No Cache
+      }
+    }
 
-    bulbStates match {
+    this.getLightBulbStates(useCache = false) match {
 
       case Left(error) => Left(error)
 
