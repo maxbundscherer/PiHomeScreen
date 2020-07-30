@@ -16,77 +16,80 @@ import scalafx.scene.layout.Pane
 import scalafxml.core.macros.sfxml
 import scalafx.geometry.Pos
 import scalafx.scene.control.Alert.AlertType
+import scalafx.scene.web.WebView
+
 import scala.concurrent.Future
 
 @sfxml
 class MainPresenter(
 
-                      //System
-                      private val imvWarning: ImageView,
-                      private val panBackground: Pane,
-                      private val lblClock: Label,
-                      private val lblDate: Label,
-                      private val lblWeather: Label,
+                     //System
+                     private val imvWarning: ImageView,
+                     private val panBackground: Pane,
+                     private val lblClock: Label,
+                     private val lblDate: Label,
+                     private val lblWeather: Label,
+                     private val wevBackground: WebView,
 
-                      //ToggleButtons (bulbs)
-                      private val tobKitchenTop: ToggleButton,
-                      private val tobKitchenTable: ToggleButton,
-                      private val tobKitchenBottom: ToggleButton,
-                      private val tobLivingRoomLeft: ToggleButton,
-                      private val tobLivingRoomTruss: ToggleButton,
-                      private val tobLivingRoomRight: ToggleButton,
-                      private val tobLivingRoomCouch: ToggleButton,
-                      private val tobLivingRoomCloset: ToggleButton,
-                      private val tobBedroomBack: ToggleButton,
-                      private val tobBedroomFront: ToggleButton,
+                     //ToggleButtons (bulbs)
+                     private val tobKitchenTop: ToggleButton,
+                     private val tobKitchenTable: ToggleButton,
+                     private val tobKitchenBottom: ToggleButton,
+                     private val tobLivingRoomLeft: ToggleButton,
+                     private val tobLivingRoomTruss: ToggleButton,
+                     private val tobLivingRoomRight: ToggleButton,
+                     private val tobLivingRoomCouch: ToggleButton,
+                     private val tobLivingRoomCloset: ToggleButton,
+                     private val tobBedroomBack: ToggleButton,
+                     private val tobBedroomFront: ToggleButton,
 
-                      //Fake sliders (rooms)
-                      private val prbKitchen: ProgressBar,
-                      private val prbLivingRoom: ProgressBar,
-                      private val prbBedroom: ProgressBar,
+                     //Fake sliders (rooms)
+                     private val prbKitchen: ProgressBar,
+                     private val prbLivingRoom: ProgressBar,
+                     private val prbBedroom: ProgressBar,
 
-                      //Image views (rooms)
-                      private val imvKitchen: ImageView,
-                      private val imvLivingRoom: ImageView,
-                      private val imvBedroom: ImageView,
+                     //Image views (rooms)
+                     private val imvKitchen: ImageView,
+                     private val imvLivingRoom: ImageView,
+                     private val imvBedroom: ImageView,
 
-                      //Pans
-                      private val panFirst: Pane,
-                      private val panSecond: Pane,
-                      private val panThird: Pane,
-                      private val panFourth: Pane,
+                     //Pans
+                     private val panFirst: Pane,
+                     private val panSecond: Pane,
+                     private val panThird: Pane,
+                     private val panFourth: Pane,
 
-                      /*
-                      // Second Pane
-                       */
-                      private val secondPane_btnSceneKitchenRead: Button,
-                      private val secondPane_btnSceneKitchenRelax: Button,
+                     /*
+                     // Second Pane
+                      */
+                     private val secondPane_btnSceneKitchenRead: Button,
+                     private val secondPane_btnSceneKitchenRelax: Button,
 
-                      private val secondPane_btnSceneLivingRoomRead: Button,
-                      private val secondPane_btnSceneLivingRoomDimmed: Button,
-                      private val secondPane_btnSceneLivingRoomRelax: Button,
-                      private val secondPane_btnSceneLivingRoomDarkRed: Button,
+                     private val secondPane_btnSceneLivingRoomRead: Button,
+                     private val secondPane_btnSceneLivingRoomDimmed: Button,
+                     private val secondPane_btnSceneLivingRoomRelax: Button,
+                     private val secondPane_btnSceneLivingRoomDarkRed: Button,
 
-                      private val secondPane_btnSceneBedroomRead: Button,
-                      private val secondPane_btnSceneBedroomRelax: Button,
-                      private val secondPane_btnSceneBedroomNightLight: Button,
-                      private val secondPane_btnSceneBedroomRed: Button,
+                     private val secondPane_btnSceneBedroomRead: Button,
+                     private val secondPane_btnSceneBedroomRelax: Button,
+                     private val secondPane_btnSceneBedroomNightLight: Button,
+                     private val secondPane_btnSceneBedroomRed: Button,
 
-                      /*
-                      // Third Pane
-                       */
-                      private val thirdPane_btnRoutineWakeUp: Button,
-                      private val thirdPane_btnRoutineRelax: Button,
-                      private val thirdPane_btnRoutineDarkRed: Button,
-                      private val thirdPane_btnSleep: Button,
-                      private val thirdPane_btnRoutineAllOff: Button,
-                      private val thirdPane_btnExit: Button,
+                     /*
+                     // Third Pane
+                      */
+                     private val thirdPane_btnRoutineWakeUp: Button,
+                     private val thirdPane_btnRoutineRelax: Button,
+                     private val thirdPane_btnRoutineDarkRed: Button,
+                     private val thirdPane_btnSleep: Button,
+                     private val thirdPane_btnRoutineAllOff: Button,
+                     private val thirdPane_btnExit: Button,
 
-                      /*
-                      // Fourth Pane
-                       */
-                      private val fourthPane_labTop: Label,
-                      private val fourthPane_labBottom: Label
+                     /*
+                     // Fourth Pane
+                      */
+                     private val fourthPane_labTop: Label,
+                     private val fourthPane_labBottom: Label
 
                    ) extends InitPresenter with ProgressBarSlider with TimelineHelper with LightConfiguration with Logging {
 
@@ -178,7 +181,7 @@ class MainPresenter(
       this.updateClock()
     })
 
-    this.startNewTimeline(interval = 15 m, repeat = true, title = "Background Timeline", handler = () => {
+    this.startNewTimeline(interval = 8 h, repeat = true, title = "Background Timeline", handler = () => {
       this.updateBackground()
     })
 
@@ -323,7 +326,9 @@ class MainPresenter(
    */
   private def updateBackground(): Unit = {
 
-    this.panBackground.setBackground(ImageHelper.getNextBackground())
+    this.wevBackground.getEngine.load("https://www.youtube.com/embed/9Ej-0VRWmI8?autoplay=1")
+
+    //this.panBackground.setBackground(ImageHelper.getNextBackground())
   }
 
   /**
