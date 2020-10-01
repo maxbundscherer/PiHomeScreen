@@ -23,9 +23,14 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 ### Requirements
 
-- [Liberica JDK 13.x.x for ARM](https://bell-sw.com/pages/java-13.0.1/) - don't works with Oracle jdk (no javaFX included)
+- [FULL! Liberica JDK 13.0.2 for ARM (64-bit)](https://bell-sw.com/pages/java-13.0.2/) - don't works with Oracle jdk (no javaFX included)
 - (Optional - on target deploy) Raspberry Pi with touchscreen (1024x600 recommend)
 - (Optional - ui editor for fxml files) [Scene Builder](https://gluonhq.com/products/scene-builder/) 
+
+### Debug-Note
+
+- javaFx required
+- javaFx  jfxWebkit required (e.g. ``<JDK_DIR>/jdk-13.0.2/lib/libjfxwebkit.so``)
 
 ### Let's get started (local run for development)
 
