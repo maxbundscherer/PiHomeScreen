@@ -53,3 +53,5 @@ libraryDependencies += "org.apache.logging.log4j" %% "log4j-api-scala" % "11.0"
 
 // Alias
 addCommandAlias("generate-jar", ";clean;assembly")
+
+logLevel in assembly := Level.Debug
