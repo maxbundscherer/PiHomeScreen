@@ -323,7 +323,8 @@ class MainPresenter(
    */
   private def updateBackground(): Unit = {
 
-    this.panBackground.setBackground(ImageHelper.getNextBackground())
+    //Disabled (transparent mode)
+    //this.panBackground.setBackground(ImageHelper.getNextBackground())
   }
 
   /**
