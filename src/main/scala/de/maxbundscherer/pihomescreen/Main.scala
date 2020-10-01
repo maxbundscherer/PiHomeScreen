@@ -25,12 +25,12 @@ object Main extends JFXApp with Logging {
   //use scene2
 
   val scene2 = new Scene(root)
-  scene2.setFill(Color.Transparent)
+  //scene2.setFill(Color.Transparent)
 
   val stage2 = new PrimaryStage()
   stage2.setFullScreen(true)
   stage2.setScene(scene2)
-  stage2.initStyle(StageStyle.Transparent)
+  //stage2.initStyle(StageStyle.Transparent)
 
   stage2.show()
 
