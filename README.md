@@ -41,40 +41,6 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 ## Config
 
-- Edit [philips hue](https://www2.meethue.com/) mapping  under ``./src/main/scala/de/maxbundscherer/pihomescreen/utils/LightConfiguration.scala``
 - Edit config file under ``./src/main/resources/application.conf``
+- Edit [philips hue](https://www2.meethue.com/) mapping  under ``./src/main/scala/de/maxbundscherer/pihomescreen/utils/LightConfiguration.scala``
 - Add [philips hue](https://www2.meethue.com/) bridge secrets and your [openWeatherMap](https://openweathermap.org/) and joke config.
-
-```
-pihomescreen {
-
-  openweathermap {
-
-    api-key = ""
-    city-id = 0
-
-  }
-
-   philipshue {
-
-    bridge-api-url = "http://192.168.x.y/api/"
-    bridge-api-username = ""
-
-  }
-
-  healthcheck {
-
-    //Don't use it in production ;)
-    target-url = "http://google.de/"
-
-  }
-
-  joke {
-  
-    first-name = "Maximilian"
-    last-name = "Bundscherer"
-  
-  }
-
-}
-```
