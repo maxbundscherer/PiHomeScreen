@@ -20,6 +20,7 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 - Dynamic backgrounds included
 - Automatic health check (network down) & active error reporting
 - Jokes (personalized chuck norris jokes & trump thinks jokes)
+- ISS Location Check (set alert on light bulb if iss is over your house)
 
 ### Requirements
 

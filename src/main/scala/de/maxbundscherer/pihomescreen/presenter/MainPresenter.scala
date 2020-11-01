@@ -1,8 +1,8 @@
 package de.maxbundscherer.pihomescreen.presenter
 
 import de.maxbundscherer.pihomescreen.img.ImageHelper
-import de.maxbundscherer.pihomescreen.services.{SimpleCalendarService, SimpleHealthCheckService, SimpleHueService, SimpleJokeService, SimpleWeatherService}
-import de.maxbundscherer.pihomescreen.services.abstracts.{CalendarService, HealthCheckService, JokeService, LightService, WeatherService}
+import de.maxbundscherer.pihomescreen.services.{SimpleCalendarService, SimpleHealthCheckService, SimpleHueService, SimpleIssLocationService, SimpleJokeService, SimpleWeatherService}
+import de.maxbundscherer.pihomescreen.services.abstracts.{CalendarService, HealthCheckService, IssLocationService, JokeService, LightService, WeatherService}
 import de.maxbundscherer.pihomescreen.utils.{InitPresenter, LightConfiguration, ProgressBarSlider, TimelineHelper}
 
 import org.apache.logging.log4j.scala.Logging
@@ -98,6 +98,7 @@ class MainPresenter(
   private lazy val weatherService: WeatherService         = new SimpleWeatherService()
   private lazy val healthCheckService: HealthCheckService = new SimpleHealthCheckService()
   private lazy val jokeService: JokeService               = new SimpleJokeService()
+  private lazy val issLocationService: IssLocationService = new SimpleIssLocationService()
 
   /**
    * State
@@ -178,6 +179,10 @@ class MainPresenter(
       this.updateClock()
     })
 
+    this.startNewTimeline(interval = 1 m, repeat = true, title = "ISS Location Timeline", handler = () => {
+      this.issLocationCheck()
+    })
+
     this.startNewTimeline(interval = 15 m, repeat = true, title = "Background Timeline", handler = () => {
       this.updateBackground()
     })
@@ -197,10 +202,10 @@ class MainPresenter(
     this.updateLightStates()
 
     this.updateClock()
+    this.issLocationCheck()
     this.updateBackground()
     this.updateWeather()
     this.doHealthCheck()
-
     this.updateJokes()
 
     logger.info("End init presenter")
@@ -316,6 +321,20 @@ class MainPresenter(
   private def updateClock(): Unit = {
     this.lblClock.setText(this.calendarService.getHourAndMinuteToString)
     this.lblDate.setText(this.calendarService.getDateToString)
+  }
+
+  /**
+   * Iss location check (global)
+   */
+  private def issLocationCheck(): Unit = {
+
+    if(this.issLocationService.isIssOverMyHouse.right.getOrElse(false)) {
+      logger.info("ISS is over my house")
+      this.lightService.setAlarmOnBulb(Lights.LivingRoomRight)
+    } else {
+      logger.info("ISS is not over my house")
+    }
+
   }
 
   /**
