@@ -60,4 +60,10 @@ abstract class LightService extends LightConfiguration {
    */
   def triggerRoutine(routine: Routines.Routine)
 
+  /**
+   * Set long alarm on room
+   * @param light Light
+   */
+  def setAlarmOnBulb(light: Lights.Light)
+
 }

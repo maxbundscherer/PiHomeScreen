@@ -177,4 +177,21 @@ class SimpleHueService extends LightService with JSONWebclient with Configuratio
     turnOfRooms .foreach(room => this.toggleRoom(room = room, value = Some(false)))
   }
 
+  /**
+   * Set long alarm on room
+   * @param light Light
+   */
+  override def setAlarmOnBulb(light: Lights.Light): Unit = {
+
+    val jsonRequestString = "{\"alert\": \"lselect\"}"
+
+    val ans: Either[String, Option[Nothing]] = Webclient.putRequestToJSON(
+      decoder = None,
+      rawBody = jsonRequestString,
+      url     = this.targetUrl + s"lights/${light}/state"
+    )
+
+    if(ans.isLeft) logger.error(s"Can not set alarm (${ans.left.get})")
+
+  }
 }
