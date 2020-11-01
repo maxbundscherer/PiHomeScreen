@@ -328,11 +328,17 @@ class MainPresenter(
    */
   private def issLocationCheck(): Unit = {
 
-    if(this.issLocationService.isIssOverMyHouse.right.getOrElse(false)) {
-      logger.info("ISS is over my house")
-      this.lightService.setAlarmOnBulb(Lights.LivingRoomRight)
-    } else {
-      logger.info("ISS is not over my house")
+    this.issLocationService.isIssOverMyHouse match {
+      case Left(error) => logger.error(s"Error check iss location ($error)")
+      case Right(isOverHouse) =>
+
+        if(isOverHouse) {
+          logger.info("ISS is over my house")
+          this.lightService.setAlarmOnBulb(Lights.LivingRoomRight)
+        } else {
+          logger.info("ISS is not over my house")
+        }
+
     }
 
   }
