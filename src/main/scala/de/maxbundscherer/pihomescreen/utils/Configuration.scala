@@ -43,6 +43,16 @@ trait Configuration {
 
     }
 
+    object IssLocation {
+
+      lazy private val c = config.getConfig("iss-location")
+
+      lazy val myHomeLatitude: Double = c.getDouble("my-home-latitude")
+      lazy val myHomeLongitude: Double = c.getDouble("my-home-longitude")
+      lazy val kilometerThreshold: Double = c.getDouble("kilometer-threshold")
+
+    }
+
   }
 
 }
