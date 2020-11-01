@@ -179,7 +179,7 @@ class MainPresenter(
       this.updateClock()
     })
 
-    this.startNewTimeline(interval = 1 m, repeat = true, title = "ISS Location Timeline", handler = () => {
+    this.startNewTimeline(interval = 30 m, repeat = true, title = "ISS Location Timeline", handler = () => {
       this.issLocationCheck()
     })
 
