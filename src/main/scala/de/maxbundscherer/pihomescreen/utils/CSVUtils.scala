@@ -19,10 +19,9 @@ class CSVUtils extends TimeHelper {
 
     val f: ScalaFile = ScalaFile.apply(filePath)
 
-    //Append to file
-    //if (f.exists()) f.delete()
+    if (f.exists()) f.delete()
 
-    f.createFileIfNotExists()
+    f.createFile()
 
     implicit object MyFormat extends DefaultCSVFormat {
       override val delimiter = ';'
