@@ -218,14 +218,17 @@ class MainPresenter(
       }
     )
 
-    this.startNewTimeline(
-      interval = 10 m,
-      repeat = true,
-      title = "ISS Location Timeline",
-      handler = () => {
-        this.issLocationCheck()
-      }
-    )
+    if (Config.IssLocation.isEnabled) {
+      logger.info("Start Iss Location Service")
+      this.startNewTimeline(
+        interval = 10 m,
+        repeat = true,
+        title = "ISS Location Timeline",
+        handler = () => {
+          this.issLocationCheck()
+        }
+      )
+    }
 
     if (Config.PhilipsHueReporting.isEnabled) {
       logger.info("Start Hue Reporting")
@@ -278,7 +281,6 @@ class MainPresenter(
     this.updateLightStates()
 
     this.updateClock()
-    this.issLocationCheck()
     this.updateBackground()
     this.updateWeather()
     this.doHealthCheck()
@@ -405,7 +407,7 @@ class MainPresenter(
       case Right(isOverHouse) =>
         if (isOverHouse) {
           logger.debug("ISS is over my house")
-          if (Config.IssLocation.isEnabled) this.lightService.setAlarmOnBulb(Lights.LivingRoomRight)
+          this.lightService.setAlarmOnBulb(Lights.LivingRoomRight)
         }
 
     }
