@@ -233,7 +233,7 @@ class MainPresenter(
         repeat = true,
         title = "Hue Report Timeline",
         handler = () => {
-          this.hueReporting()
+          this.hueReporting(new CSVUtils(Config.PhilipsHueReporting.reportFilepath))
         }
       )
     }
@@ -412,11 +412,9 @@ class MainPresenter(
   /**
     * Hue Reporting (global)
     */
-  private def hueReporting(): Unit = {
+  private def hueReporting(csvUtils: CSVUtils): Unit = {
 
     logger.debug("Report hue bulbs now")
-
-    val csvUtils = new CSVUtils(Config.PhilipsHueReporting.reportFilepath)
 
     this.lightService.getLightBulbStates match {
       case Left(error) => logger.error(s"Error in getLightBulbStates ($error)")
