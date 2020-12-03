@@ -4,7 +4,17 @@ trait TimeHelper {
 
   object Time {
 
-    def getCurrentTimeForReport: String = "no-data"
+    def getCurrentTimeForReport: String = {
+
+      import java.util.Date
+      import java.text.SimpleDateFormat
+
+      val df   = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+      val date = new Date()
+
+      df.format(date)
+
+    }
 
   }
 
