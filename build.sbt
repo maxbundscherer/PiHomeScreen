@@ -32,6 +32,9 @@ libraryDependencies += "com.softwaremill.sttp.client" %% "core" % "2.0.6"
 //CSV
 libraryDependencies += "com.github.tototoshi" %% "scala-csv" % "1.3.6"
 
+//Better Files
+libraryDependencies += "com.github.pathikrit" %% "better-files" % "3.9.1"
+
 // JSON
 val circeVersion = "0.13.0"
 
