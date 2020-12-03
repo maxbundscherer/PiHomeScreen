@@ -17,7 +17,9 @@ import de.maxbundscherer.pihomescreen.services.abstracts.{
   LightService,
   WeatherService
 }
+import de.maxbundscherer.pihomescreen.utils.CSVUtils.CSVItem
 import de.maxbundscherer.pihomescreen.utils.{
+  CSVUtils,
   Configuration,
   InitPresenter,
   LightConfiguration,
@@ -224,6 +226,18 @@ class MainPresenter(
       }
     )
 
+    if (Config.PhilipsHueReporting.isEnabled) {
+      logger.info("Start Hue Reporting")
+      this.startNewTimeline(
+        interval = 10 m,
+        repeat = true,
+        title = "Hue Report Timeline",
+        handler = () => {
+          this.hueReporting()
+        }
+      )
+    }
+
     this.startNewTimeline(
       interval = 15 m,
       repeat = true,
@@ -394,6 +408,34 @@ class MainPresenter(
         }
 
     }
+
+  /**
+    * Hue Reporting (global)
+    */
+  private def hueReporting(): Unit = {
+
+    logger.debug("Report hue bulbs now")
+
+    val csvUtils = new CSVUtils()
+
+    this.lightService.getLightBulbStates match {
+      case Left(error) => logger.error(s"Error in getLightBulbStates ($error)")
+      case Right(data) =>
+        val ans = data map {
+            case (bulbId, state) =>
+              CSVItem(
+                bulbId = bulbId.toString,
+                isOn = state.on.toString,
+                brightness = state.brightness.toString
+              )
+          }
+        csvUtils.writeToCSVFile(
+          filePath = Config.PhilipsHueReporting.reportFilepath,
+          data = ans.toVector
+        )
+    }
+
+  }
 
   /**
     * Updates Background (global)
