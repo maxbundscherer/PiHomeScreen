@@ -4,7 +4,19 @@ import org.apache.logging.log4j.scala.Logging
 
 object CSVUtils {
 
-  case class CSVItem(bulbId: String, isOn: String, brightness: String, saturation: Option[Int])
+  case class CSVItem(
+      bulbId: String,
+      isOn: String,
+      brightness: String,
+      saturation: Option[Int],
+      stateX: Option[Float],
+      stateY: Option[Float],
+      miredColor: Option[Int],
+      stateColorMode: Option[String],
+      stateReachable: Option[Boolean],
+      stateEffect: Option[String],
+      stateMode: Option[String]
+  )
 
 }
 
@@ -34,7 +46,20 @@ class CSVUtils(filePath: String) extends TimeHelper with Logging {
     val writer = CSVWriter.open(file.toJava, append = true)
 
     val header: List[List[String]] = List(
-      List("timestamp", "bulbId", "isOn", "brightness", "saturation")
+      List(
+        "timestamp",
+        "bulbId",
+        "isOn",
+        "brightness",
+        "saturation",
+        "stateX",
+        "stateY",
+        "miredColor",
+        "stateColorMode",
+        "stateReachable",
+        "stateEffect",
+        "stateMode"
+      )
     )
     val items: List[List[String]] =
       data
@@ -46,6 +71,34 @@ class CSVUtils(filePath: String) extends TimeHelper with Logging {
             d.brightness,
             d.saturation match {
               case Some(value) => value.toString
+              case None        => "no-data"
+            },
+            d.stateX match {
+              case Some(value) => value.toString
+              case None        => "no-data"
+            },
+            d.stateY match {
+              case Some(value) => value.toString
+              case None        => "no-data"
+            },
+            d.miredColor match {
+              case Some(value) => value.toString
+              case None        => "no-data"
+            },
+            d.stateColorMode match {
+              case Some(value) => value
+              case None        => "no-data"
+            },
+            d.stateReachable match {
+              case Some(value) => value.toString
+              case None        => "no-data"
+            },
+            d.stateEffect match {
+              case Some(value) => value
+              case None        => "no-data"
+            },
+            d.stateMode match {
+              case Some(value) => value
               case None        => "no-data"
             }
           )
