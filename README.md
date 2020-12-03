@@ -21,6 +21,7 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 - Automatic health check (network down) & active error reporting
 - Jokes (personalized chuck norris jokes & trump thinks jokes)
 - ISS Location Check (set alert on light bulb if iss is over your house)
+- Recurring report of your light bulb states to a csv-files
 
 ### Requirements
 

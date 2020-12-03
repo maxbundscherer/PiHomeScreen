@@ -29,6 +29,9 @@ addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.fu
 // HTTP Client
 libraryDependencies += "com.softwaremill.sttp.client" %% "core" % "2.0.6"
 
+//CSV
+libraryDependencies += "com.github.tototoshi" %% "scala-csv" % "1.3.6"
+
 // JSON
 val circeVersion = "0.13.0"
 
