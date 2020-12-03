@@ -19,7 +19,17 @@ class SimpleHueService extends LightService with JSONWebclient with Configuratio
     */
   override def getLightBulbStates: Either[String, Map[Lights.Light, EntityState]] = {
 
-    case class State(on: Boolean, bri: Int, sat: Option[Int])
+    case class State(
+        on: Boolean,
+        bri: Int,
+        sat: Option[Int],
+        xy: Option[Vector[Float]],
+        ct: Option[Int],
+        colormode: Option[String],
+        mode: Option[String],
+        effect: Option[String],
+        reachable: Option[Boolean]
+    )
     case class HueLight(state: State)
 
     Webclient.getRequestToJson(
@@ -31,15 +41,30 @@ class SimpleHueService extends LightService with JSONWebclient with Configuratio
 
       case Right(data) =>
         Right(
-          Lights.ALL_LIGHTS
-            .map(light =>
-              light -> EntityState(
-                on = data(light).state.on,
-                brightness = data(light).state.bri / 255.0, //Norm to 0 to 1
-                saturation = data(light).state.sat
-              )
+          Lights.ALL_LIGHTS.map { light =>
+            val stateXYTuple: Option[(Float, Float)] = data(light).state.xy match {
+              case Some(value) => if (value.size == 2) Some((value(0), value(1))) else None
+              case None        => None
+            }
+            light -> EntityState(
+              on = data(light).state.on,
+              brightness = data(light).state.bri / 255.0, //Norm to 0 to 1
+              saturation = data(light).state.sat,
+              stateX = stateXYTuple match {
+                case Some(value) => Some(value._1)
+                case None        => None
+              },
+              stateY = stateXYTuple match {
+                case Some(value) => Some(value._2)
+                case None        => None
+              },
+              miredColor = data(light).state.ct,
+              stateColorMode = data(light).state.colormode,
+              stateReachable = data(light).state.reachable,
+              stateEffect = data(light).state.effect,
+              stateMode = data(light).state.mode
             )
-            .toMap
+          }.toMap
         )
 
     }
@@ -75,7 +100,14 @@ class SimpleHueService extends LightService with JSONWebclient with Configuratio
               on = lightBulbStates.exists(_.on == true), //One bulb on is enough
               brightness =
                 lightBulbStates.map(_.brightness).max, //Take brightness from max bright bulb
-              saturation = ???
+              saturation = None,
+              stateX = None,
+              stateY = None,
+              miredColor = None,
+              stateColorMode = None,
+              stateReachable = None,
+              stateEffect = None,
+              stateMode = None
             )
 
         })

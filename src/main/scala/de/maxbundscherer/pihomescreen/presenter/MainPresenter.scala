@@ -428,7 +428,14 @@ class MainPresenter(
                 bulbId = bulbId.toString,
                 isOn = state.on.toString,
                 brightness = state.brightness.toString,
-                saturation = state.saturation
+                saturation = state.saturation,
+                stateX = state.stateX,
+                stateY = state.stateY,
+                miredColor = state.miredColor,
+                stateColorMode = state.stateColorMode,
+                stateReachable = state.stateReachable,
+                stateEffect = state.stateEffect,
+                stateMode = state.stateMode
               )
           }
         csvUtils.writeToCSVFile(
