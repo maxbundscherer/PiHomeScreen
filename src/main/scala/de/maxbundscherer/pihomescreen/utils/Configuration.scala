@@ -26,6 +26,15 @@ trait Configuration {
 
     }
 
+    object PhilipsHueReporting {
+
+      lazy private val c = config.getConfig("philipshue-reporting")
+
+      lazy val isEnabled: Boolean = c.getBoolean("is-enabled")
+      lazy val reportFilepath: String  = c.getString("report-filepath")
+
+    }
+
     object HealthCheck {
 
       lazy private val c = config.getConfig("healthcheck")
