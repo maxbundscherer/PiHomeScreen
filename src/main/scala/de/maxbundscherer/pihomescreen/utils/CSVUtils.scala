@@ -2,7 +2,7 @@ package de.maxbundscherer.pihomescreen.utils
 
 object CSVUtils {
 
-  case class CSVItem(bulbId: String, state: String, brightness: String)
+  case class CSVItem(bulbId: String, isOn: String, brightness: String)
 
 }
 
@@ -29,8 +29,8 @@ class CSVUtils {
 
     val writer = CSVWriter.open(f.toJava, append = true)
 
-    val header: List[List[String]] = List(List("bulbId", "state", "brightness"))
-    val items: List[List[String]]  = data.map(d => List(d.bulbId, d.state, d.brightness)).toList
+    val header: List[List[String]] = List(List("bulbId", "isOn", "brightness"))
+    val items: List[List[String]]  = data.map(d => List(d.bulbId, d.isOn, d.brightness)).toList
 
     writer.writeAll(header ++ items)
     writer.close()
