@@ -6,7 +6,7 @@ object CSVUtils {
 
 }
 
-class CSVUtils {
+class CSVUtils extends TimeHelper {
 
   import CSVUtils._
 
@@ -29,8 +29,9 @@ class CSVUtils {
 
     val writer = CSVWriter.open(f.toJava, append = true)
 
-    val header: List[List[String]] = List(List("bulbId", "isOn", "brightness"))
-    val items: List[List[String]]  = data.map(d => List(d.bulbId, d.isOn, d.brightness)).toList
+    val header: List[List[String]] = List(List("timestamp", "bulbId", "isOn", "brightness"))
+    val items: List[List[String]] =
+      data.map(d => List(Time.getCurrentTimeForReport, d.bulbId, d.isOn, d.brightness)).toList
 
     writer.writeAll(header ++ items)
     writer.close()
