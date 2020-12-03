@@ -9,7 +9,7 @@ abstract class LightService extends LightConfiguration {
     * @param on Boolean
     * @param brightness Double 0 to 1
     */
-  case class EntityState(on: Boolean, brightness: Double)
+  case class EntityState(on: Boolean, brightness: Double, saturation: String)
 
   /**
     * Get light bulbs states

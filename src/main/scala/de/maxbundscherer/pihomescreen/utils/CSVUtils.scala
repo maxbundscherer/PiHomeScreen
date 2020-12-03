@@ -4,7 +4,7 @@ import org.apache.logging.log4j.scala.Logging
 
 object CSVUtils {
 
-  case class CSVItem(bulbId: String, isOn: String, brightness: String)
+  case class CSVItem(bulbId: String, isOn: String, brightness: String, saturation: String)
 
 }
 

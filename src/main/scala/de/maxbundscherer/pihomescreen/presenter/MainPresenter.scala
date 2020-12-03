@@ -427,7 +427,8 @@ class MainPresenter(
               CSVItem(
                 bulbId = bulbId.toString,
                 isOn = state.on.toString,
-                brightness = state.brightness.toString
+                brightness = state.brightness.toString,
+                saturation = state.saturation
               )
           }
         csvUtils.writeToCSVFile(
