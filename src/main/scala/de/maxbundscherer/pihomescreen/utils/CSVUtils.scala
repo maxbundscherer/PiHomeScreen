@@ -33,9 +33,13 @@ class CSVUtils(filePath: String) extends TimeHelper with Logging {
 
     val writer = CSVWriter.open(file.toJava, append = true)
 
-    val header: List[List[String]] = List(List("timestamp", "bulbId", "isOn", "brightness"))
+    val header: List[List[String]] = List(
+      List("timestamp", "bulbId", "isOn", "brightness", "saturation")
+    )
     val items: List[List[String]] =
-      data.map(d => List(Time.getCurrentTimeForReport, d.bulbId, d.isOn, d.brightness)).toList
+      data
+        .map(d => List(Time.getCurrentTimeForReport, d.bulbId, d.isOn, d.brightness, d.saturation))
+        .toList
 
     val ans = if (!isFileAlreadyPrepared) {
       this.isFileAlreadyPrepared = true
