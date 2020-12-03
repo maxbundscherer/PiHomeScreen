@@ -115,6 +115,7 @@ class MainPresenter(
   private lazy val healthCheckService: HealthCheckService = new SimpleHealthCheckService()
   private lazy val jokeService: JokeService               = new SimpleJokeService()
   private lazy val issLocationService: IssLocationService = new SimpleIssLocationService()
+  private lazy val csvUtils: CSVUtils                     = new CSVUtils(Config.PhilipsHueReporting.reportFilepath)
 
   /**
     * State
@@ -233,7 +234,7 @@ class MainPresenter(
         repeat = true,
         title = "Hue Report Timeline",
         handler = () => {
-          this.hueReporting(new CSVUtils(Config.PhilipsHueReporting.reportFilepath))
+          this.hueReporting(this.csvUtils)
         }
       )
     }

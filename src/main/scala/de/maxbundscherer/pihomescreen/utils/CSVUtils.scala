@@ -1,12 +1,14 @@
 package de.maxbundscherer.pihomescreen.utils
 
+import org.apache.logging.log4j.scala.Logging
+
 object CSVUtils {
 
   case class CSVItem(bulbId: String, isOn: String, brightness: String)
 
 }
 
-class CSVUtils(filePath: String) extends TimeHelper {
+class CSVUtils(filePath: String) extends TimeHelper with Logging {
 
   import CSVUtils._
 
@@ -16,9 +18,12 @@ class CSVUtils(filePath: String) extends TimeHelper {
   import java.io.{ File => JFile }
 
   //Init File
-  val file: ScalaFile = ScalaFile.apply(filePath)
-  if (file.exists()) file.delete()
-  file.createFile()
+  val file: ScalaFile                = ScalaFile.apply(filePath)
+  var isFileAlreadyPrepared: Boolean = false;
+  if (file.exists) {
+    logger.debug(s"Remove file ($filePath)")
+    file.delete()
+  }
 
   def writeToCSVFile(data: Vector[CSVItem]): Unit = {
 
@@ -26,13 +31,18 @@ class CSVUtils(filePath: String) extends TimeHelper {
       override val delimiter = ';'
     }
 
-    val writer = CSVWriter.open(this.file.toJava, append = true)
+    val writer = CSVWriter.open(file.toJava, append = true)
 
     val header: List[List[String]] = List(List("timestamp", "bulbId", "isOn", "brightness"))
     val items: List[List[String]] =
       data.map(d => List(Time.getCurrentTimeForReport, d.bulbId, d.isOn, d.brightness)).toList
 
-    writer.writeAll(header ++ items)
+    val ans = if (!isFileAlreadyPrepared) {
+      this.isFileAlreadyPrepared = true
+      header ++ items
+    } else items
+
+    writer.writeAll(ans)
     writer.close()
   }
 
