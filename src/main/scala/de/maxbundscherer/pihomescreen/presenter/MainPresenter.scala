@@ -3,7 +3,7 @@ package de.maxbundscherer.pihomescreen.presenter
 import de.maxbundscherer.pihomescreen.img.ImageHelper
 import de.maxbundscherer.pihomescreen.services.{SimpleCalendarService, SimpleHealthCheckService, SimpleHueService, SimpleIssLocationService, SimpleJokeService, SimpleWeatherService}
 import de.maxbundscherer.pihomescreen.services.abstracts.{CalendarService, HealthCheckService, IssLocationService, JokeService, LightService, WeatherService}
-import de.maxbundscherer.pihomescreen.utils.{InitPresenter, LightConfiguration, ProgressBarSlider, TimelineHelper}
+import de.maxbundscherer.pihomescreen.utils.{Configuration, InitPresenter, LightConfiguration, ProgressBarSlider, TimelineHelper}
 
 import org.apache.logging.log4j.scala.Logging
 import scalafx.Includes._
@@ -88,7 +88,7 @@ class MainPresenter(
                       private val fourthPane_labTop: Label,
                       private val fourthPane_labBottom: Label
 
-                   ) extends InitPresenter with ProgressBarSlider with TimelineHelper with LightConfiguration with Logging {
+                   ) extends InitPresenter with ProgressBarSlider with TimelineHelper with LightConfiguration with Logging with Configuration {
 
   //TODO: Improve and remove this shit
   import scala.concurrent.ExecutionContext.Implicits.global
@@ -333,10 +333,8 @@ class MainPresenter(
       case Right(isOverHouse) =>
 
         if(isOverHouse) {
-          logger.info("ISS is over my house")
-          this.lightService.setAlarmOnBulb(Lights.LivingRoomRight)
-        } else {
-          logger.info("ISS is not over my house")
+          logger.debug("ISS is over my house")
+          if(Config.IssLocation.isEnabled) this.lightService.setAlarmOnBulb(Lights.LivingRoomRight)
         }
 
     }

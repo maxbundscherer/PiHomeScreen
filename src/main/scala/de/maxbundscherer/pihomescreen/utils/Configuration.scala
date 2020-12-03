@@ -50,6 +50,7 @@ trait Configuration {
       lazy val myHomeLatitude: Double = c.getDouble("my-home-latitude")
       lazy val myHomeLongitude: Double = c.getDouble("my-home-longitude")
       lazy val kilometerThreshold: Double = c.getDouble("kilometer-threshold")
+      lazy val isEnabled: Boolean = c.getBoolean("is-enabled")
 
     }
 
