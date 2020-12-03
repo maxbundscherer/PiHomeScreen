@@ -6,7 +6,7 @@ object CSVUtils {
 
 }
 
-class CSVUtils extends TimeHelper {
+class CSVUtils(filePath: String) extends TimeHelper {
 
   import CSVUtils._
 
@@ -15,19 +15,18 @@ class CSVUtils extends TimeHelper {
   import better.files.{ File => ScalaFile, _ }
   import java.io.{ File => JFile }
 
-  def writeToCSVFile(data: Vector[CSVItem], filePath: String): Unit = {
+  //Init File
+  val file: ScalaFile = ScalaFile.apply(filePath)
+  if (file.exists()) file.delete()
+  file.createFile()
 
-    val f: ScalaFile = ScalaFile.apply(filePath)
-
-    if (f.exists()) f.delete()
-
-    f.createFile()
+  def writeToCSVFile(data: Vector[CSVItem]): Unit = {
 
     implicit object MyFormat extends DefaultCSVFormat {
       override val delimiter = ';'
     }
 
-    val writer = CSVWriter.open(f.toJava, append = true)
+    val writer = CSVWriter.open(this.file.toJava, append = true)
 
     val header: List[List[String]] = List(List("timestamp", "bulbId", "isOn", "brightness"))
     val items: List[List[String]] =

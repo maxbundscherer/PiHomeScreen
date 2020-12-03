@@ -416,7 +416,7 @@ class MainPresenter(
 
     logger.debug("Report hue bulbs now")
 
-    val csvUtils = new CSVUtils()
+    val csvUtils = new CSVUtils(Config.PhilipsHueReporting.reportFilepath)
 
     this.lightService.getLightBulbStates match {
       case Left(error) => logger.error(s"Error in getLightBulbStates ($error)")
@@ -430,7 +430,6 @@ class MainPresenter(
               )
           }
         csvUtils.writeToCSVFile(
-          filePath = Config.PhilipsHueReporting.reportFilepath,
           data = ans.toVector
         )
     }
