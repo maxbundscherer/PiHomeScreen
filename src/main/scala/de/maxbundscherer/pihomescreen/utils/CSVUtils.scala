@@ -4,7 +4,7 @@ import org.apache.logging.log4j.scala.Logging
 
 object CSVUtils {
 
-  case class CSVItem(bulbId: String, isOn: String, brightness: String, saturation: String)
+  case class CSVItem(bulbId: String, isOn: String, brightness: String, saturation: Option[Int])
 
 }
 
@@ -38,7 +38,18 @@ class CSVUtils(filePath: String) extends TimeHelper with Logging {
     )
     val items: List[List[String]] =
       data
-        .map(d => List(Time.getCurrentTimeForReport, d.bulbId, d.isOn, d.brightness, d.saturation))
+        .map(d =>
+          List(
+            Time.getCurrentTimeForReport,
+            d.bulbId,
+            d.isOn,
+            d.brightness,
+            d.saturation match {
+              case Some(value) => value.toString
+              case None        => "no-data"
+            }
+          )
+        )
         .toList
 
     val ans = if (!isFileAlreadyPrepared) {

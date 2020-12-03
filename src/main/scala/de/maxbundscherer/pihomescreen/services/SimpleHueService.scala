@@ -19,7 +19,7 @@ class SimpleHueService extends LightService with JSONWebclient with Configuratio
     */
   override def getLightBulbStates: Either[String, Map[Lights.Light, EntityState]] = {
 
-    case class State(on: Boolean, bri: Int, sat: String)
+    case class State(on: Boolean, bri: Int, sat: Option[Int])
     case class HueLight(state: State)
 
     Webclient.getRequestToJson(
