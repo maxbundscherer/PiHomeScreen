@@ -21,8 +21,8 @@ trait Configuration {
 
       lazy private val c = config.getConfig("philipshue")
 
-      lazy val bridgeApiUrl: String       = c.getString("bridge-api-url")
-      lazy val bridgeApiUsername: String  = c.getString("bridge-api-username")
+      lazy val bridgeApiUrl: String      = c.getString("bridge-api-url")
+      lazy val bridgeApiUsername: String = c.getString("bridge-api-username")
 
     }
 
@@ -30,8 +30,8 @@ trait Configuration {
 
       lazy private val c = config.getConfig("philipshue-reporting")
 
-      lazy val isEnabled: Boolean = c.getBoolean("is-enabled")
-      lazy val reportFilepath: String  = c.getString("report-filepath")
+      lazy val isEnabled: Boolean     = c.getBoolean("is-enabled")
+      lazy val reportFilepath: String = c.getString("report-filepath")
 
     }
 
@@ -39,7 +39,15 @@ trait Configuration {
 
       lazy private val c = config.getConfig("healthcheck")
 
-      lazy val targetUrl: String       = c.getString("target-url")
+      lazy val targetUrl: String = c.getString("target-url")
+
+    }
+
+    object BackgroundVideoFilePaths {
+
+      lazy private val c = config.getConfig("background-video-file-paths")
+
+      lazy val pexelsToken: String = c.getString("pexels-token")
 
     }
 
@@ -47,8 +55,8 @@ trait Configuration {
 
       lazy private val c = config.getConfig("joke")
 
-      lazy val firstName: String  = c.getString("first-name")
-      lazy val lastName: String   = c.getString("last-name")
+      lazy val firstName: String = c.getString("first-name")
+      lazy val lastName: String  = c.getString("last-name")
 
     }
 
@@ -56,10 +64,10 @@ trait Configuration {
 
       lazy private val c = config.getConfig("iss-location")
 
-      lazy val myHomeLatitude: Double = c.getDouble("my-home-latitude")
-      lazy val myHomeLongitude: Double = c.getDouble("my-home-longitude")
+      lazy val myHomeLatitude: Double     = c.getDouble("my-home-latitude")
+      lazy val myHomeLongitude: Double    = c.getDouble("my-home-longitude")
       lazy val kilometerThreshold: Double = c.getDouble("kilometer-threshold")
-      lazy val isEnabled: Boolean = c.getBoolean("is-enabled")
+      lazy val isEnabled: Boolean         = c.getBoolean("is-enabled")
 
     }
 

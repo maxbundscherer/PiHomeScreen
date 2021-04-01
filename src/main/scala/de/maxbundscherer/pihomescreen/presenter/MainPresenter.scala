@@ -7,6 +7,7 @@ import de.maxbundscherer.pihomescreen.services.{
   SimpleHueService,
   SimpleIssLocationService,
   SimpleJokeService,
+  SimpleVideoService,
   SimpleWeatherService
 }
 import de.maxbundscherer.pihomescreen.services.abstracts.{
@@ -15,6 +16,7 @@ import de.maxbundscherer.pihomescreen.services.abstracts.{
   IssLocationService,
   JokeService,
   LightService,
+  VideoService,
   WeatherService
 }
 import de.maxbundscherer.pihomescreen.utils.CSVUtils.CSVItem
@@ -26,7 +28,7 @@ import de.maxbundscherer.pihomescreen.utils.{
   ProgressBarSlider,
   TimelineHelper
 }
-
+import javafx.scene.media.{ Media, MediaPlayer, MediaView }
 import org.apache.logging.log4j.scala.Logging
 import scalafx.Includes._
 import scalafx.application.Platform
@@ -45,6 +47,7 @@ class MainPresenter(
     //System
     private val imvWarning: ImageView,
     private val panBackground: Pane,
+    private val cMediaView: MediaView,
     private val lblClock: Label,
     private val lblDate: Label,
     private val lblWeather: Label,
@@ -73,7 +76,7 @@ class MainPresenter(
     private val panThird: Pane,
     private val panFourth: Pane,
     /*
-                      // Second Pane
+                                       // Second Pane
      */
     private val secondPane_btnSceneKitchenRead: Button,
     private val secondPane_btnSceneKitchenRelax: Button,
@@ -86,7 +89,7 @@ class MainPresenter(
     private val secondPane_btnSceneBedroomNightLight: Button,
     private val secondPane_btnSceneBedroomRed: Button,
     /*
-                      // Third Pane
+                                       // Third Pane
      */
     private val thirdPane_btnRoutineWakeUp: Button,
     private val thirdPane_btnRoutineRelax: Button,
@@ -95,7 +98,7 @@ class MainPresenter(
     private val thirdPane_btnRoutineAllOff: Button,
     private val thirdPane_btnExit: Button,
     /*
-                      // Fourth Pane
+                                       // Fourth Pane
      */
     private val fourthPane_labTop: Label,
     private val fourthPane_labBottom: Label
@@ -116,6 +119,7 @@ class MainPresenter(
   private lazy val jokeService: JokeService               = new SimpleJokeService()
   private lazy val issLocationService: IssLocationService = new SimpleIssLocationService()
   private lazy val csvUtils: CSVUtils                     = new CSVUtils(Config.PhilipsHueReporting.reportFilepath)
+  private lazy val videoService: VideoService             = new SimpleVideoService()
 
   /**
     * State
@@ -445,11 +449,48 @@ class MainPresenter(
 
   }
 
+  var showedVideo = false
+
   /**
     * Updates Background (global)
     */
-  private def updateBackground(): Unit =
-    this.panBackground.setBackground(ImageHelper.getNextBackground())
+  private def updateBackground(): Unit = {
+
+    if (showedVideo) {
+      logger.debug("Remove video files")
+      videoService.rmWorkingFiles()
+    }
+
+    if (videoService.isVideoReady) {
+
+      logger.debug("Video is ready")
+
+      this.cMediaView.visible = true
+      this.showedVideo = true
+
+      val m = new Media(
+        new java.io.File(videoService.TARGET_FILENAME).toURI.toString
+      )
+
+      val p = new MediaPlayer(m)
+      p.setAutoPlay(true)
+
+      this.cMediaView.setSmooth(true)
+      this.cMediaView.mediaPlayer.set(p)
+
+    } else {
+
+      logger.debug("Video is not ready")
+
+      this.panBackground.setBackground(ImageHelper.getNextBackground())
+
+      this.cMediaView.visible = false
+      this.showedVideo = false
+
+      videoService.downloadNextVideoFile
+    }
+
+  }
 
   /**
     * Updates weather (global)

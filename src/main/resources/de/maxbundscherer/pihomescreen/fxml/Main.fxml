@@ -8,11 +8,14 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.media.MediaView?>
 <?import javafx.scene.text.Font?>
 
 <Pane fx:id="panBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.maxbundscherer.pihomescreen.presenter.MainPresenter">
 
    <children>
+
+      <MediaView fx:id="cMediaView" fitHeight="600.0" fitWidth="1024.0" visible="false" />
 
       <ImageView fx:id="imvWarning" fitHeight="75.0" fitWidth="75.0" layoutX="892.0" layoutY="56.0" onMouseClicked="#show_ErrorAlert" pickOnBounds="true" preserveRatio="true">
          <image>

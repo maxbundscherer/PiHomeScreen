@@ -22,6 +22,8 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 - Jokes (personalized chuck norris jokes & trump thinks jokes)
 - ISS Location Check (set alert on light bulb if iss is over your house)
 - Recurring report of your light bulb states to a csv-files
+- Video backgrounds (from pexels)
+- Random photo backgrounds (from pexels)
 
 ### Requirements
 
@@ -33,6 +35,7 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 - (Optional) Edit config (see section below)
 - Run with ``sbt run``
+- Install ``ffmpeg``
 
 ### Let's get started (run on target)
 
@@ -40,6 +43,7 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 - Generate jar file with ``sbt generate-jar``
 - Copy jar-file from ``./target/scala-2.12/PiHomeScreen-assembly-X.Y.jar`` to raspberry
 - Run on target with ``java -jar PiHomeScreen-assembly-X.Y.jar`` (use jdk from above)
+- Install ``ffmpeg``
 
 ## Config
 
