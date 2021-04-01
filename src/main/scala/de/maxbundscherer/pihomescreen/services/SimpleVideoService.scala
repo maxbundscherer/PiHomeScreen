@@ -61,6 +61,7 @@ class SimpleVideoService extends VideoService with JSONWebclient with Configurat
 
           case Left(error) =>
             isDownloading = false
+            this.rmWorkingFiles()
             logger.error(error)
 
           case Right(data) =>
@@ -82,6 +83,7 @@ class SimpleVideoService extends VideoService with JSONWebclient with Configurat
             } match {
               case Failure(exception) =>
                 isDownloading = false
+                this.rmWorkingFiles()
                 logger.error(exception.getLocalizedMessage)
 
               case Success(_) =>
