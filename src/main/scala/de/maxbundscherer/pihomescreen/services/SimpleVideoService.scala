@@ -51,7 +51,7 @@ class SimpleVideoService extends VideoService with JSONWebclient with Configurat
 
         logger.debug("Start download video")
 
-        Webclient.getRequestToJson(
+        Webclient.getCachedRequestToJson(
           decoder = Decoder[JsonModel],
           url = this.targetUrl,
           headerParams = Map(
