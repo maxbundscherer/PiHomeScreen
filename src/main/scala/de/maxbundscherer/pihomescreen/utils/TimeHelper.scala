@@ -16,6 +16,9 @@ trait TimeHelper {
 
     }
 
+    def internalGetCurrentDay: Int =
+      java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_MONTH)
+
   }
 
 }
