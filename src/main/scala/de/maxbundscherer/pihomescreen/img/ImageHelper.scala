@@ -3,7 +3,7 @@ package de.maxbundscherer.pihomescreen.img
 import scalafx.scene.image.{ Image, ImageView }
 import scalafx.scene.layout.{ Background, BackgroundImage }
 
-object ImageHelper {
+object ImageHelper extends RandomImageDownloader {
 
   /**
     * Helper shuffle background image
