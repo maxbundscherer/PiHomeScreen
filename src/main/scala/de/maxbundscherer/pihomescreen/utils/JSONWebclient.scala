@@ -4,7 +4,7 @@ trait JSONWebclient {
 
   object Webclient {
 
-    import scala.util.{Failure, Success, Try}
+    import scala.util.{ Failure, Success, Try }
 
     import io.circe.Decoder
     import io.circe.generic.auto._, io.circe.parser._, io.circe.syntax._
@@ -12,41 +12,37 @@ trait JSONWebclient {
     import sttp.client._
 
     private val sort: Option[String] = None
-    private val query = "http language:scala"
+    private val query                = "http language:scala"
 
-    private implicit val backend: SttpBackend[Identity, Nothing, NothingT] = HttpURLConnectionBackend()
+    private implicit val backend: SttpBackend[Identity, Nothing, NothingT] =
+      HttpURLConnectionBackend()
 
     /**
-     * Blocks calls (not to much calls to bridge)
-     */
-    private def blockedWait(): Unit = {
-
+      * Blocks calls (not to much calls to bridge)
+      */
+    private def blockedWait(): Unit =
       //TODO: Remove this function and implement synchronized toggle and single click ui
       Thread.sleep(100)
-    }
 
     /**
-     * Convert response (body) to response
-     * @param decoder Decoder (from response)
-     * @param rsp Body from Response
-     * @tparam ResponseType classOf Response
-     * @return Either Left = Error message / Right = response
-     */
-    private def convertResponse[ResponseType](rsp: Either[String, String]
-                                             )(implicit decoder: Decoder[ResponseType]): Either[String, ResponseType] = {
-
+      * Convert response (body) to response
+      * @param decoder Decoder (from response)
+      * @param rsp Body from Response
+      * @tparam ResponseType classOf Response
+      * @return Either Left = Error message / Right = response
+      */
+    private def convertResponse[ResponseType](
+        rsp: Either[String, String]
+    )(implicit decoder: Decoder[ResponseType]): Either[String, ResponseType] =
       rsp match {
 
         case Left(error) =>
-
           Left(s"Network $error")
 
         case Right(body) =>
-
           decode[ResponseType](body) match {
 
             case Left(error) =>
-
               Left(s"JSON ${error.getLocalizedMessage}")
 
             case Right(model) => Right(model)
@@ -55,20 +51,19 @@ trait JSONWebclient {
 
       }
 
-    }
-
     /**
-     * Send get request and convert response to json model
-     * @param decoder Decoder (from response)
-     * @param url Endpoint (e.g. http://example.org)
-     * @param headerParams Map (key -> value)
-     * @tparam ResponseType classOf Response
-     * @return Either Left = Error message / Right = response
-     */
-    def getRequestToJson[ResponseType]( decoder: Decoder[ResponseType],
-                                        url: String,
-                                        headerParams: Map[String, String] = Map.empty
-                                         ): Either[String, ResponseType] = {
+      * Send get request and convert response to json model
+      * @param decoder Decoder (from response)
+      * @param url Endpoint (e.g. http://example.org)
+      * @param headerParams Map (key -> value)
+      * @tparam ResponseType classOf Response
+      * @return Either Left = Error message / Right = response
+      */
+    def getRequestToJson[ResponseType](
+        decoder: Decoder[ResponseType],
+        url: String,
+        headerParams: Map[String, String] = Map.empty
+    ): Either[String, ResponseType] = {
 
       //TODO: Remove this function and implement synchronized toggle and single click ui
       this.blockedWait()
@@ -81,11 +76,9 @@ trait JSONWebclient {
       } match {
 
         case Failure(exception) =>
-
           Left(exception.getLocalizedMessage)
 
         case Success(res) =>
-
           this.convertResponse[ResponseType](res.body)(decoder)
 
       }
@@ -93,19 +86,20 @@ trait JSONWebclient {
     }
 
     /**
-     * Send put request and convert response to json model
-     * @param decoder Decoder (from response) (Some = response / None = no response)
-     * @param url Endpoint (e.g. http://example.org)
-     * @param headerParams Map (key -> value)
-     * @param rawBody Body
-     * @tparam ResponseType classOf Response
-     * @return Either Left = Error Message / Right = Option (Some = response (with decoder) / None = no response (no decoder))
-     */
-    def putRequestToJSON[ResponseType](    decoder: Option[Decoder[ResponseType]],
-                                            url: String,
-                                            headerParams: Map[String, String] = Map.empty,
-                                            rawBody: String
-                                         ): Either[String, Option[ResponseType]] = {
+      * Send put request and convert response to json model
+      * @param decoder Decoder (from response) (Some = response / None = no response)
+      * @param url Endpoint (e.g. http://example.org)
+      * @param headerParams Map (key -> value)
+      * @param rawBody Body
+      * @tparam ResponseType classOf Response
+      * @return Either Left = Error Message / Right = Option (Some = response (with decoder) / None = no response (no decoder))
+      */
+    def putRequestToJSON[ResponseType](
+        decoder: Option[Decoder[ResponseType]],
+        url: String,
+        headerParams: Map[String, String] = Map.empty,
+        rawBody: String
+    ): Either[String, Option[ResponseType]] = {
 
       //TODO: Remove this function and implement synchronized toggle and single click ui
       this.blockedWait()
@@ -119,30 +113,24 @@ trait JSONWebclient {
       } match {
 
         case Failure(exception) =>
-
           Left(exception.getLocalizedMessage)
 
         case Success(res) =>
-
           decoder match {
 
             case None =>
-
-              if(res.body.isLeft) {
+              if (res.body.isLeft)
                 Left("Request failed (not 200)")
-              } else {
+              else
                 Right(None)
-              }
 
             case Some(sthDecoder) =>
-
               this.convertResponse[ResponseType](res.body)(sthDecoder) match {
                 case Left(left)   => Left(left)
                 case Right(right) => Right(Some(right))
               }
 
           }
-
 
       }
 
