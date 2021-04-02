@@ -2,7 +2,9 @@ package de.maxbundscherer.pihomescreen.utils
 
 trait JSONWebclient {
 
-  object Webclient {
+  import org.apache.logging.log4j.scala.Logging
+
+  object Webclient extends TimeHelper with Logging {
 
     import scala.util.{ Failure, Success, Try }
 
@@ -81,6 +83,38 @@ trait JSONWebclient {
         case Success(res) =>
           this.convertResponse[ResponseType](res.body)(decoder)
 
+      }
+
+    }
+
+    var resetDayCache: Int             = Time.internalGetCurrentDay
+    var requestCache: Map[String, Any] = Map.empty
+
+    //Cached for one day
+    def getCachedRequestToJson[ResponseType](
+        decoder: Decoder[ResponseType],
+        url: String,
+        headerParams: Map[String, String] = Map.empty
+    ): Either[String, ResponseType] = {
+
+      //Invalid cache
+      if (resetDayCache != Time.internalGetCurrentDay) {
+        logger.info("Clean request cache")
+        resetDayCache = Time.internalGetCurrentDay
+        requestCache = Map.empty
+      }
+
+      requestCache.get(url) match {
+        case Some(value) =>
+          //logger.debug("Return cached")
+          value.asInstanceOf[Either[String, ResponseType]]
+
+        case None =>
+          val ans: Either[String, ResponseType] = this.getRequestToJson(decoder, url, headerParams)
+
+          requestCache = requestCache + (url -> ans)
+          //logger.debug("Return new")
+          ans
       }
 
     }
