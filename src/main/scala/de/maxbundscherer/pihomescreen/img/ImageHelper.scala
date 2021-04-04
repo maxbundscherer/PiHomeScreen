@@ -1,9 +1,11 @@
 package de.maxbundscherer.pihomescreen.img
 
-import scalafx.scene.image.{ Image, ImageView }
-import scalafx.scene.layout.{ Background, BackgroundImage }
-
 object ImageHelper extends RandomImageDownloader {
+
+  import scala.util.{ Failure, Success }
+  import scalafx.scene.image.{ Image, ImageView }
+  import scalafx.scene.layout.{ Background, BackgroundImage }
+  import sys.process._
 
   /**
     * Helper shuffle background image
@@ -40,11 +42,27 @@ object ImageHelper extends RandomImageDownloader {
   //TODO: Set up image size auto
   private val imageShuffler = new ImageShuffler(size = 27)
 
+  var randomImageShown = false
+
   /**
     * Converts image to Background
     * @return Background
     */
   def getNextBackground(): Background = {
+
+    if (!randomImageShown)
+      getRandomImage match {
+        case Failure(exception) =>
+          logger.warn(s"Error download random image (${exception.getLocalizedMessage})")
+        case Success(rUrl) =>
+          s"curl $rUrl --output background.jpeg" !
+
+          val img = new Image(new java.io.FileInputStream("background.jpeg"))
+
+          randomImageShown = true
+          return new Background(Array(new BackgroundImage(img, null, null, null, null)))
+
+      }
 
     val number = this.imageShuffler.getNext
 
@@ -54,6 +72,7 @@ object ImageHelper extends RandomImageDownloader {
 
     val img = new Image(res)
 
+    randomImageShown = false
     new Background(Array(new BackgroundImage(img, null, null, null, null)))
   }
 
