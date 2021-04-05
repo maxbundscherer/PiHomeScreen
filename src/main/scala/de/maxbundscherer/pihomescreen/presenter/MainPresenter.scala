@@ -274,7 +274,7 @@ class MainPresenter(
     )
 
     this.startNewTimeline(
-      interval = 15 m,
+      interval = 1 h,
       repeat = true,
       title = "Joke Timeline",
       handler = () => {
