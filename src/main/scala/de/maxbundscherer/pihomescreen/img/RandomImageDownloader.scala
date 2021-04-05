@@ -3,52 +3,74 @@ package de.maxbundscherer.pihomescreen.img
 import de.maxbundscherer.pihomescreen.utils.{ Configuration, JSONWebclient }
 import org.apache.logging.log4j.scala.Logging
 
-import scala.util.{ Failure, Success, Try }
-
 trait RandomImageDownloader extends Configuration with JSONWebclient with Logging {
 
-  import io.circe.Decoder
-  import io.circe.generic.auto._, io.circe.parser._, io.circe.syntax._
+  object RandomImage {
 
-  private val targetUrl: String =
-    s"https://api.pexels.com/v1/curated?per_page=100"
+    import java.nio.file.{ Files, Paths }
+    import sys.process._
+    import scala.util.Try
 
-  def getRandomImage: Try[String] =
-    Try {
+    import io.circe.Decoder
+    import io.circe.generic.auto._, io.circe.parser._, io.circe.syntax._
 
-      case class JsonModelPhotoSrc(
-          landscape: Option[String]
-      )
+    private val targetUrl: String =
+      s"https://api.pexels.com/v1/curated?per_page=100"
 
-      case class JsonModelPhoto(
-          id: Long,
-          src: Option[JsonModelPhotoSrc],
-          width: Int,
-          height: Int
-      )
+    case class RandomImage(url: String, id: Long)
 
-      case class JsonModel(photos: Vector[JsonModelPhoto])
+    def getRandomImage: Try[RandomImage] =
+      Try {
 
-      val data = Webclient
-        .getCachedRequestToJson(
-          decoder = Decoder[JsonModel],
-          url = this.targetUrl,
-          headerParams = Map(
-            "Authorization" -> Config.BackgroundVideoFilePaths.pexelsToken
-          )
+        case class JsonModelPhotoSrc(
+            landscape: Option[String]
         )
-        .right
-        .get
 
-      val selection: Vector[String] =
-        data.photos
-          .filter(_.src.isDefined)
-          .map(_.src.get)
-          .flatMap(_.landscape)
+        case class JsonModelPhoto(
+            id: Long,
+            src: Option[JsonModelPhotoSrc],
+            width: Int,
+            height: Int
+        )
 
-      val sUrl: String = selection(scala.util.Random.nextInt(selection.size))
+        case class JsonModel(photos: Vector[JsonModelPhoto])
 
-      sUrl
-    }
+        val data = Webclient
+          .getCachedRequestToJson(
+            decoder = Decoder[JsonModel],
+            url = this.targetUrl,
+            headerParams = Map(
+              "Authorization" -> Config.Pexels.pexelsToken
+            )
+          )
+          .right
+          .get
+
+        val selection: Vector[JsonModelPhoto] =
+          data.photos
+            .filter(_.src.isDefined)
+            .filter(_.src.get.landscape.isDefined)
+
+        val t: JsonModelPhoto = selection(scala.util.Random.nextInt(selection.size))
+
+        RandomImage(url = t.src.get.landscape.get, id = t.id)
+      }
+
+    def isAlreadyDownloaded(filePath: String): Boolean =
+      Files.exists(Paths.get(filePath))
+
+    def downloadImage(filePath: String, url: String): Try[Unit] =
+      Try {
+
+        val cmd =
+          s"curl $url --max-time 2 --output $filePath --silent"
+
+        //logger.debug(s"Run cmd ($cmd)")
+
+        cmd !
+
+      }
+
+  }
 
 }

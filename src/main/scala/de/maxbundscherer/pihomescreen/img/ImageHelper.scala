@@ -51,16 +51,25 @@ object ImageHelper extends RandomImageDownloader {
   def getNextBackground(): Background = {
 
     if (!randomImageShown)
-      getRandomImage match {
+      RandomImage.getRandomImage match {
         case Failure(exception) =>
-          logger.warn(s"Error download random image (${exception.getLocalizedMessage})")
-        case Success(rUrl) =>
-          s"curl $rUrl --max-time 2 --output /tmp/background.jpeg --silent" !!
-          val img = new Image(new java.io.FileInputStream("/tmp/background.jpeg"))
+          logger.warn(s"Error get random image (${exception.getLocalizedMessage})")
+        case Success(imageData) =>
+          val localFilePath = Config.Pexels.localWorkDir + s"background-${imageData.id}.jpeg"
+
+          if (!RandomImage.isAlreadyDownloaded(localFilePath))
+            RandomImage.downloadImage(localFilePath, imageData.url) match {
+              case Failure(exception) =>
+                logger.warn(s"Error download random image (${exception.getLocalizedMessage})")
+              case Success(_) =>
+            }
+          else
+            logger.debug("Skip download photo (is already downloaded)")
+
+          val img = new Image(new java.io.FileInputStream(localFilePath))
 
           randomImageShown = true
           return new Background(Array(new BackgroundImage(img, null, null, null, null)))
-
       }
 
     val number = this.imageShuffler.getNext
