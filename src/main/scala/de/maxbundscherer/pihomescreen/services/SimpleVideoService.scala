@@ -32,7 +32,8 @@ class SimpleVideoService extends VideoService with JSONWebclient with Configurat
   def downloadNextVideoFile: Future[Unit] =
     Future {
 
-      if (!isDownloading) {
+      //TODO: Enable simple video service and add cache for downloaded videos
+      if (!isDownloading && false) {
 
         isDownloading = true
 
@@ -55,7 +56,7 @@ class SimpleVideoService extends VideoService with JSONWebclient with Configurat
           decoder = Decoder[JsonModel],
           url = this.targetUrl,
           headerParams = Map(
-            "Authorization" -> Config.BackgroundVideoFilePaths.pexelsToken
+            "Authorization" -> Config.Pexels.pexelsToken
           )
         ) match {
 
