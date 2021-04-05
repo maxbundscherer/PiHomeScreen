@@ -21,7 +21,7 @@ class SimpleNightModeService(calendarService: CalendarService)
 
     val cHour: Int = calendarService.getCurrentHour24
 
-    if (cHour > Config.NightMode.startHour && cHour < Config.NightMode.stopHour) true else false
+    if (cHour >= Config.NightMode.startHour && cHour <= Config.NightMode.stopHour) true else false
 
   }
 
@@ -32,7 +32,8 @@ class SimpleNightModeService(calendarService: CalendarService)
     Future { this.lastInteractionTime = calendarService.getCurrentDate }
 
   override def shouldHideScreen: Boolean =
-    if (!this.isNight) false
+    if (!this.isNight)
+      false
     else
       calcDurationMin(
         this.lastInteractionTime,
