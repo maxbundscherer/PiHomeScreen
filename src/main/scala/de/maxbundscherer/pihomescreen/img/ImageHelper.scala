@@ -62,14 +62,34 @@ object ImageHelper extends RandomImageDownloader {
               case Failure(exception) =>
                 logger.warn(s"Error download random image (${exception.getLocalizedMessage})")
               case Success(_) =>
+                randomImageShown = true
+                return new Background(
+                  Array(
+                    new BackgroundImage(
+                      new Image(new java.io.FileInputStream(localFilePath)),
+                      null,
+                      null,
+                      null,
+                      null
+                    )
+                  )
+                )
             }
-          else
-            logger.debug("Skip download photo (is already downloaded)")
+          else {
+            randomImageShown = true
+            return new Background(
+              Array(
+                new BackgroundImage(
+                  new Image(new java.io.FileInputStream(localFilePath)),
+                  null,
+                  null,
+                  null,
+                  null
+                )
+              )
+            )
+          }
 
-          val img = new Image(new java.io.FileInputStream(localFilePath))
-
-          randomImageShown = true
-          return new Background(Array(new BackgroundImage(img, null, null, null, null)))
       }
 
     val number = this.imageShuffler.getNext
