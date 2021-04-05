@@ -24,6 +24,7 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 - Recurring report of your light bulb states to a csv-files
 - Video backgrounds (from pexels)
 - Random photo backgrounds (from pexels)
+- Auto night mode (diashow mode)
 
 ### Requirements
 
