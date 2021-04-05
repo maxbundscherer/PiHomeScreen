@@ -53,6 +53,21 @@ trait JSONWebclient {
 
       }
 
+    def downloadFileGetRequest(
+        filePath: String,
+        url: String,
+        headerParams: Map[String, String]
+    ): Try[Unit] =
+      Try {
+
+        basicRequest
+          .get(uri"$url")
+          .headers(headerParams)
+          .response(asFile(new java.io.File(filePath)))
+          .send()
+
+      }
+
     /**
       * Send get request and convert response to json model
       * @param decoder Decoder (from response)

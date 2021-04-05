@@ -55,10 +55,10 @@ object ImageHelper extends RandomImageDownloader {
         case Failure(exception) =>
           logger.warn(s"Error get random image (${exception.getLocalizedMessage})")
         case Success(imageData) =>
-          val localFilePath = Config.Pexels.localWorkDir + s"background-${imageData.id}.jpeg"
+          val localFilePath = Config.Pexels.localWorkDir + s"background-${imageData.id}.png"
 
           if (!RandomImage.isAlreadyDownloaded(localFilePath))
-            RandomImage.downloadImage(localFilePath, imageData.url) match {
+            RandomImage.downloadImageAndConvert(localFilePath, imageData.url) match {
               case Failure(exception) =>
                 logger.warn(s"Error download random image (${exception.getLocalizedMessage})")
               case Success(_) =>

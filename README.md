@@ -36,6 +36,7 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 - (Optional) Edit config (see section below)
 - Run with ``sbt run``
 - Install ``ffmpeg``
+- Install ``imageMagick``
 
 ### Let's get started (run on target)
 
@@ -44,6 +45,7 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 - Copy jar-file from ``./target/scala-2.12/PiHomeScreen-assembly-X.Y.jar`` to raspberry
 - Run on target with ``java -jar PiHomeScreen-assembly-X.Y.jar`` (use jdk from above)
 - Install ``ffmpeg``
+- Install ``imageMagick``
 
 ## Config
 

@@ -59,15 +59,18 @@ trait RandomImageDownloader extends Configuration with JSONWebclient with Loggin
     def isAlreadyDownloaded(filePath: String): Boolean =
       Files.exists(Paths.get(filePath))
 
-    def downloadImage(filePath: String, url: String): Try[Unit] =
+    def downloadImageAndConvert(filePath: String, url: String): Try[Unit] =
       Try {
+        val agent =
+          "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.79 Safari/537.36"
 
-        val cmd =
-          s"curl $url --max-time 2 --output $filePath --silent"
+        val modFilepath = filePath.replace(".png", ".jpeg")
 
-        //logger.debug(s"Run cmd ($cmd)")
+        Webclient.downloadFileGetRequest(modFilepath, url, Map("User-Agent" -> agent))
 
-        cmd !
+        s"convert $modFilepath $filePath" !!
+
+        s"rm $modFilepath" !!
 
       }
 
