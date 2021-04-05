@@ -222,6 +222,18 @@ class MainPresenter(
       }
     )
 
+    if (Config.NightMode.isEnabled) {
+      logger.info("Start Night Mode Service")
+      this.startNewTimeline(
+        interval = 1 m,
+        repeat = true,
+        title = "Night Mode Timeline",
+        handler = () => {
+          this.triggerNightMode()
+        }
+      )
+    }
+
     if (Config.IssLocation.isEnabled) {
       logger.info("Start Iss Location Service")
       this.startNewTimeline(
@@ -401,6 +413,12 @@ class MainPresenter(
     this.lblClock.setText(this.calendarService.getHourAndMinuteToString)
     this.lblDate.setText(this.calendarService.getDateToString)
   }
+
+  /**
+    * Trigger Night Mode (global)
+    */
+  private def triggerNightMode(): Unit =
+    logger.warn("Please impl")
 
   /**
     * Iss location check (global)

@@ -72,6 +72,17 @@ trait Configuration {
 
     }
 
+    object NightMode {
+
+      lazy private val c = config.getConfig("night-mode")
+
+      lazy val isEnabled: Boolean = c.getBoolean("is-enabled")
+      lazy val startHour: Int     = c.getInt("start-hour")
+      lazy val stopHour: Int      = c.getInt("stop-hour")
+      lazy val inactiveMin: Int   = c.getInt("inactive-min")
+
+    }
+
   }
 
 }
