@@ -419,11 +419,27 @@ class MainPresenter(
     this.lblDate.setText(this.calendarService.getDateToString)
   }
 
+  private var _nightModeStateOn = false
+
+  private def _nightModeOn(): Unit = {
+    _nightModeStateOn = true
+    panMiddle.visible = false
+  }
+
+  private def _nightModeOff(): Unit =
+    if (_nightModeStateOn) {
+      _nightModeStateOn = false
+      panMiddle.visible = true
+    }
+
   /**
     * Trigger Night Mode (global)
     */
   private def triggerNightMode(): Unit =
-    logger.warn("Please impl")
+    if (nightModeService.shouldHideScreen)
+      this._nightModeOn()
+    else
+      this._nightModeOff()
 
   /**
     * Iss location check (global)
@@ -591,6 +607,7 @@ class MainPresenter(
     }
 
     this.nightModeService.reportInteraction()
+    this._nightModeOff()
   }
 
   /**
@@ -617,6 +634,7 @@ class MainPresenter(
     }
 
     this.nightModeService.reportInteraction()
+    this._nightModeOff()
   }
 
   /**
@@ -651,6 +669,7 @@ class MainPresenter(
     }
 
     this.nightModeService.reportInteraction()
+    this._nightModeOff()
   }
 
   /**
@@ -660,6 +679,7 @@ class MainPresenter(
   def panArrowLeft_onMouseClicked(event: MouseEvent): Unit = {
     this.switchPane(right = false)
     this.nightModeService.reportInteraction()
+    this._nightModeOff()
   }
 
   /**
@@ -669,6 +689,7 @@ class MainPresenter(
   def panArrowRight_onMouseClicked(event: MouseEvent): Unit = {
     this.switchPane(right = true)
     this.nightModeService.reportInteraction()
+    this._nightModeOff()
   }
 
   /**
@@ -717,6 +738,7 @@ class MainPresenter(
     }
 
     this.nightModeService.reportInteraction()
+    this._nightModeOff()
   }
 
   /**
@@ -752,6 +774,7 @@ class MainPresenter(
     this.updateLightStates()
 
     this.nightModeService.reportInteraction()
+    this._nightModeOff()
   }
 
   /**
@@ -777,6 +800,7 @@ class MainPresenter(
     this.updateLightStates()
 
     this.nightModeService.reportInteraction()
+    this._nightModeOff()
   }
 
   /**
