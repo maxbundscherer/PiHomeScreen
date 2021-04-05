@@ -79,6 +79,10 @@ class MainPresenter(
     private val panSecond: Pane,
     private val panThird: Pane,
     private val panFourth: Pane,
+    //LayoutPans
+    private val panMiddle: Pane,
+    private val panLeftArrow: Pane,
+    private val panRightArrow: Pane,
     /*
                                        // Second Pane
      */
@@ -374,12 +378,13 @@ class MainPresenter(
     * Switch pane
     * @param right True = go right / False = go left
     */
-  private def switchPane(right: Boolean): Unit = {
+  private def switchPane(right: Boolean, flagForceNoChange: Boolean = false): Unit = {
 
     val newDirection: Int = if (right) 1 else -1
     val result            = (this.actualPane + newDirection) % (this.maxPane + 1)
 
-    this.actualPane = if (result < 0) this.maxPane else result
+    this.actualPane =
+      if (flagForceNoChange) this.actualPane else if (result < 0) this.maxPane else result
 
     this.actualPane match {
 
@@ -424,12 +429,21 @@ class MainPresenter(
   private def _nightModeOn(): Unit = {
     _nightModeStateOn = true
     panMiddle.visible = false
+    panLeftArrow.visible = false
+    panRightArrow.visible = false
+    this.panFirst.setVisible(false)
+    this.panSecond.setVisible(false)
+    this.panThird.setVisible(false)
+    this.panFourth.setVisible(false)
   }
 
   private def _nightModeOff(): Unit =
     if (_nightModeStateOn) {
       _nightModeStateOn = false
       panMiddle.visible = true
+      panLeftArrow.visible = true
+      panRightArrow.visible = true
+      this.switchPane(right = false, flagForceNoChange = true)
     }
 
   /**
@@ -668,6 +682,11 @@ class MainPresenter(
       this.updateLightStates()
     }
 
+    this.nightModeService.reportInteraction()
+    this._nightModeOff()
+  }
+
+  def panBackground_onMouseClicked(event: MouseEvent): Unit = {
     this.nightModeService.reportInteraction()
     this._nightModeOff()
   }

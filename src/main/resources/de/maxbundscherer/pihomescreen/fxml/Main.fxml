@@ -11,7 +11,7 @@
 <?import javafx.scene.media.MediaView?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="panBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.maxbundscherer.pihomescreen.presenter.MainPresenter">
+<Pane fx:id="panBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#panBackground_onMouseClicked" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.maxbundscherer.pihomescreen.presenter.MainPresenter">
 
    <children>
 
@@ -47,7 +47,7 @@
          </children>
       </Pane>
 
-      <Pane layoutX="162.0" layoutY="171.0" prefHeight="215.0" prefWidth="700.0" style="-fx-background-color: rgba(0, 0, 0, 0.7); -fx-background-radius: 0;">
+      <Pane fx:id="panMiddle" layoutX="162.0" layoutY="171.0" prefHeight="215.0" prefWidth="700.0" style="-fx-background-color: rgba(0, 0, 0, 0.7); -fx-background-radius: 0;">
          <children>
 
             <ProgressBar fx:id="prbKitchen" layoutX="25.0" layoutY="146.0" onMouseClicked="#prb_onMouseClicked" prefHeight="40.0" prefWidth="200.0" progress="0.5" style="-fx-accent: grey;" />
@@ -84,7 +84,7 @@
          </children>
       </Pane>
 
-      <Pane layoutX="53.0" layoutY="444.0" onMouseClicked="#panArrowLeft_onMouseClicked" prefHeight="84.0" prefWidth="84.0" style="-fx-background-color: rgba(0, 0, 0, 0.7);">
+      <Pane fx:id="panLeftArrow" layoutX="53.0" layoutY="444.0" onMouseClicked="#panArrowLeft_onMouseClicked" prefHeight="84.0" prefWidth="84.0" style="-fx-background-color: rgba(0, 0, 0, 0.7);">
          <children>
 
             <ImageView fitHeight="75.0" fitWidth="75.0" layoutX="5.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
@@ -96,7 +96,7 @@
          </children>
       </Pane>
 
-      <Pane layoutX="888.0" layoutY="444.0" onMouseClicked="#panArrowRight_onMouseClicked" prefHeight="84.0" prefWidth="84.0" style="-fx-background-color: rgba(0, 0, 0, 0.7);">
+      <Pane fx:id="panRightArrow" layoutX="888.0" layoutY="444.0" onMouseClicked="#panArrowRight_onMouseClicked" prefHeight="84.0" prefWidth="84.0" style="-fx-background-color: rgba(0, 0, 0, 0.7);">
          <children>
 
             <ImageView fitHeight="75.0" fitWidth="75.0" layoutX="5.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
