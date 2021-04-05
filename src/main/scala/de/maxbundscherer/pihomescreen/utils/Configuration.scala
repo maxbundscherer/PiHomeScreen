@@ -43,11 +43,12 @@ trait Configuration {
 
     }
 
-    object BackgroundVideoFilePaths {
+    object Pexels {
 
-      lazy private val c = config.getConfig("background-video-file-paths")
+      lazy private val c = config.getConfig("pexels")
 
-      lazy val pexelsToken: String = c.getString("pexels-token")
+      lazy val pexelsToken: String  = c.getString("pexels-token")
+      lazy val localWorkDir: String = c.getString("local-work-dir")
 
     }
 
