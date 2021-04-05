@@ -55,9 +55,8 @@ object ImageHelper extends RandomImageDownloader {
         case Failure(exception) =>
           logger.warn(s"Error download random image (${exception.getLocalizedMessage})")
         case Success(rUrl) =>
-          s"curl $rUrl --output background.jpeg" !
-
-          val img = new Image(new java.io.FileInputStream("background.jpeg"))
+          s"curl $rUrl --max-time 2 --output /tmp/background.jpeg --silent" !!
+          val img = new Image(new java.io.FileInputStream("/tmp/background.jpeg"))
 
           randomImageShown = true
           return new Background(Array(new BackgroundImage(img, null, null, null, null)))
