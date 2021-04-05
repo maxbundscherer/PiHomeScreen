@@ -16,4 +16,6 @@ abstract class CalendarService {
 
   def getCurrentHour24: Int
 
+  def getCurrentDate: java.util.Date
+
 }

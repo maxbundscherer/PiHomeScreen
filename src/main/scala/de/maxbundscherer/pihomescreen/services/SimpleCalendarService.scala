@@ -45,4 +45,6 @@ class SimpleCalendarService extends CalendarService {
   override def getCurrentHour24: Int =
     this.hourFormat.format(this.getTime).toInt
 
+  override def getCurrentDate: java.util.Date = this.getTime
+
 }
