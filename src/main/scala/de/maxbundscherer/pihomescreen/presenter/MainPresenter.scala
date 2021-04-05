@@ -7,6 +7,7 @@ import de.maxbundscherer.pihomescreen.services.{
   SimpleHueService,
   SimpleIssLocationService,
   SimpleJokeService,
+  SimpleNightModeService,
   SimpleVideoService,
   SimpleWeatherService
 }
@@ -16,6 +17,7 @@ import de.maxbundscherer.pihomescreen.services.abstracts.{
   IssLocationService,
   JokeService,
   LightService,
+  NightModeService,
   VideoService,
   WeatherService
 }
@@ -32,6 +34,7 @@ import javafx.scene.media.{ Media, MediaPlayer, MediaView }
 import org.apache.logging.log4j.scala.Logging
 import scalafx.Includes._
 import scalafx.application.Platform
+
 import scala.language.postfixOps
 import scalafx.scene.control.{ Alert, Button, ButtonType, Label, ProgressBar, ToggleButton }
 import scalafx.scene.image.ImageView
@@ -40,6 +43,7 @@ import scalafx.scene.layout.Pane
 import scalafxml.core.macros.sfxml
 import scalafx.geometry.Pos
 import scalafx.scene.control.Alert.AlertType
+
 import scala.concurrent.Future
 
 @sfxml
@@ -120,6 +124,7 @@ class MainPresenter(
   private lazy val issLocationService: IssLocationService = new SimpleIssLocationService()
   private lazy val csvUtils: CSVUtils                     = new CSVUtils(Config.PhilipsHueReporting.reportFilepath)
   private lazy val videoService: VideoService             = new SimpleVideoService()
+  private lazy val nightModeService: NightModeService     = new SimpleNightModeService(calendarService)
 
   /**
     * State
@@ -584,6 +589,8 @@ class MainPresenter(
       this.lightService.setRoomBrightness(room, newRoomBrightness)
       this.updateLightStates()
     }
+
+    this.nightModeService.reportInteraction()
   }
 
   /**
@@ -608,6 +615,8 @@ class MainPresenter(
       this.lightService.toggleRoom(room)
       this.updateLightStates()
     }
+
+    this.nightModeService.reportInteraction()
   }
 
   /**
@@ -640,21 +649,27 @@ class MainPresenter(
       this.lightService.toggleLightBulb(light)
       this.updateLightStates()
     }
+
+    this.nightModeService.reportInteraction()
   }
 
   /**
     * Click on pane (Arrow left)
     * @param event MouseEvent
     */
-  def panArrowLeft_onMouseClicked(event: MouseEvent): Unit =
+  def panArrowLeft_onMouseClicked(event: MouseEvent): Unit = {
     this.switchPane(right = false)
+    this.nightModeService.reportInteraction()
+  }
 
   /**
     * Click on pane (Arrow right)
     * @param event MouseEvent
     */
-  def panArrowRight_onMouseClicked(event: MouseEvent): Unit =
+  def panArrowRight_onMouseClicked(event: MouseEvent): Unit = {
     this.switchPane(right = true)
+    this.nightModeService.reportInteraction()
+  }
 
   /**
     * #####################################################################################
@@ -700,6 +715,8 @@ class MainPresenter(
       this.lightService.setScene(scene)
       this.updateLightStates()
     }
+
+    this.nightModeService.reportInteraction()
   }
 
   /**
@@ -733,6 +750,8 @@ class MainPresenter(
     //TODO: Implement with future handler
     this.lightService.triggerRoutine(routine)
     this.updateLightStates()
+
+    this.nightModeService.reportInteraction()
   }
 
   /**
@@ -756,6 +775,8 @@ class MainPresenter(
 
     //TODO: Implement with future handler
     this.updateLightStates()
+
+    this.nightModeService.reportInteraction()
   }
 
   /**
