@@ -21,7 +21,9 @@ class SimpleNightModeService(calendarService: CalendarService)
 
     val cHour: Int = calendarService.getCurrentHour24
 
-    if (cHour >= Config.NightMode.startHour && cHour <= Config.NightMode.stopHour) true else false
+    if (cHour >= Config.NightMode.startHour) true
+    else if (cHour <= Config.NightMode.stopHour) true
+    else false
 
   }
 
