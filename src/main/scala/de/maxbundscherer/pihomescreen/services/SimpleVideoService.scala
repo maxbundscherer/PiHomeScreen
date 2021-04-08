@@ -117,7 +117,7 @@ class SimpleVideoService extends VideoService with JSONWebclient with Configurat
 
             } else {
               isProcNow = false
-              lastProcFilename = Some(filePath)
+              lastProcFilename = None
               logger.debug("Skip download video (already downloaded)")
             }
 
@@ -141,8 +141,9 @@ class SimpleVideoService extends VideoService with JSONWebclient with Configurat
     Try {
 
       if (lastProcFilename.isDefined) {
+        val c = lastProcFilename.get
         lastProcFilename = None
-        return Try(lastProcFilename.get)
+        return Try(c)
       }
 
       val fileNames = getListOfFiles(Config.Pexels.localWorkDir)
