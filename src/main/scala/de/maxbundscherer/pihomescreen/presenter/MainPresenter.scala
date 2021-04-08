@@ -523,6 +523,8 @@ class MainPresenter(
           val p = new MediaPlayer(m)
           p.setAutoPlay(true)
 
+          p.setCycleCount(MediaPlayer.INDEFINITE)
+
           this.cMediaView.setSmooth(true)
           this.cMediaView.mediaPlayer.set(p)
 
