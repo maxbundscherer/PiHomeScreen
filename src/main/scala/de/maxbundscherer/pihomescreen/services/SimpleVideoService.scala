@@ -92,13 +92,19 @@ class SimpleVideoService extends VideoService with JSONWebclient with Configurat
                 case Success(_) =>
                   logger.debug("Stop download video / Start conv now")
 
-                  //NON OMX on mac os!
-                  s"ffmpeg -i $downloadFilePath -loglevel error -vf fps=24,scale=1024:600 -c:v h264_omx $filePath" !!
+                  Try {
+                    //NON OMX on mac os!
+                    s"ffmpeg -i $downloadFilePath -loglevel error -vf fps=24,scale=1024:600 -c:v h264_omx $filePath" !!
 
-                  s"mv $downloadFilePath $filePath" !!
-
-                  isProcNow = false
-                  logger.debug("Stop converting video")
+                    s"mv $downloadFilePath $filePath" !!
+                  } match {
+                    case Failure(exception) =>
+                      isProcNow = false
+                      logger.warn(s"Unknown error (${exception.getLocalizedMessage})")
+                    case Success(_) =>
+                      isProcNow = false
+                      logger.debug("Stop converting video")
+                  }
 
               }
 
