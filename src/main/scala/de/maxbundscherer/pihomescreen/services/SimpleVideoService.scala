@@ -2,8 +2,10 @@ package de.maxbundscherer.pihomescreen.services
 
 import de.maxbundscherer.pihomescreen.services.abstracts.VideoService
 import de.maxbundscherer.pihomescreen.utils.{ Configuration, JSONWebclient }
-
 import org.apache.logging.log4j.scala.Logging
+
+import java.io.File
+import java.net.URL
 
 class SimpleVideoService extends VideoService with JSONWebclient with Configuration with Logging {
 
@@ -81,11 +83,11 @@ class SimpleVideoService extends VideoService with JSONWebclient with Configurat
 
               val downloadFilePath = "/tmp/downloadVideo.mp4"
 
-              Webclient.downloadFileGetRequest(
-                filePath = downloadFilePath,
-                url = randomVideo.url,
-                headerParams = Map.empty
-              ) match {
+              Try {
+
+                new URL(randomVideo.url) #> new File(downloadFilePath) !!
+
+              } match {
                 case Failure(exception) =>
                   isProcNow = false
                   logger.warn(s"Download video error (${exception.getLocalizedMessage})")
