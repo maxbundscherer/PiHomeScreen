@@ -4,13 +4,23 @@ import scala.concurrent.Future
 
 abstract class VideoService {
 
-  val MIN_DURATION_S: Int     = 15 * 60
-  val TARGET_FILENAME: String = "backgroundVideo.mp4"
+  import scala.util.Try
 
-  def downloadNextVideoFile: Future[Unit]
+  protected val targetUrl: String =
+    s"https://api.pexels.com/videos/popular?per_page=100&min_width=1024&min_height=600&min_duration=$MIN_DURATION_S"
 
-  def rmWorkingFiles(): Unit
+  private val MIN_DURATION_S: Int = 15 * 60
 
-  def isVideoReady: Boolean
+  case class RandomVideo(url: String, id: Long)
+
+  protected def getRandomVideo: Try[RandomVideo]
+
+  protected def generateFilePath(videoId: Long): String
+
+  protected def isAlreadyDownloaded(filePath: String): Boolean
+
+  def downloadRandomVideoAndConvert(): Future[Unit]
+
+  def getLocalRandomVideo: Try[String]
 
 }

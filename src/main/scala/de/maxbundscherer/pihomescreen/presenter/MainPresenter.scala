@@ -45,6 +45,7 @@ import scalafx.geometry.Pos
 import scalafx.scene.control.Alert.AlertType
 
 import scala.concurrent.Future
+import scala.util.{ Failure, Success }
 
 @sfxml
 class MainPresenter(
@@ -509,40 +510,35 @@ class MainPresenter(
     */
   private def updateBackground(): Unit = {
 
-    if (showedVideo) {
-      logger.debug("Remove video files")
-      videoService.rmWorkingFiles()
-    }
+    if (!showedVideo)
+      this.videoService.getLocalRandomVideo match {
+        case Failure(exception) =>
+          logger.warn(s"No local video found (${exception.getLocalizedMessage})")
+          this.videoService.downloadRandomVideoAndConvert()
+        case Success(localVideoFilePath) =>
+          val m = new Media(
+            new java.io.File(localVideoFilePath).toURI.toString
+          )
 
-    if (videoService.isVideoReady) {
+          val p = new MediaPlayer(m)
+          p.setAutoPlay(true)
 
-      logger.debug("Video is ready")
+          this.cMediaView.setSmooth(true)
+          this.cMediaView.mediaPlayer.set(p)
 
-      this.cMediaView.visible = true
-      this.showedVideo = true
+          this.cMediaView.visible = true
+          showedVideo = true
+          return
+      }
 
-      val m = new Media(
-        new java.io.File(videoService.TARGET_FILENAME).toURI.toString
-      )
+    //No Video
 
-      val p = new MediaPlayer(m)
-      p.setAutoPlay(true)
+    this.panBackground.setBackground(ImageHelper.getNextBackground())
 
-      this.cMediaView.setSmooth(true)
-      this.cMediaView.mediaPlayer.set(p)
+    this.cMediaView.visible = false
+    showedVideo = false
 
-    } else {
-
-      logger.debug("Video is not ready")
-
-      this.panBackground.setBackground(ImageHelper.getNextBackground())
-
-      this.cMediaView.visible = false
-      this.showedVideo = false
-
-      videoService.downloadNextVideoFile
-    }
-
+    this.videoService.downloadRandomVideoAndConvert()
   }
 
   /**

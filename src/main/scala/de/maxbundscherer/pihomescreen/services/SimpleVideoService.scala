@@ -4,114 +4,137 @@ import de.maxbundscherer.pihomescreen.services.abstracts.VideoService
 import de.maxbundscherer.pihomescreen.utils.{ Configuration, JSONWebclient }
 
 import org.apache.logging.log4j.scala.Logging
-import scala.concurrent.Future
 
 class SimpleVideoService extends VideoService with JSONWebclient with Configuration with Logging {
 
   import scala.concurrent.ExecutionContext.Implicits.global
 
   import scala.util.{ Failure, Success, Try }
-
+  import scala.concurrent.Future
+  import java.nio.file.{ Files, Paths }
   import sys.process._
-  import java.net.URL
-  import java.io.File
 
   import io.circe.Decoder
   import io.circe.generic.auto._, io.circe.parser._, io.circe.syntax._
 
-  private val targetUrl: String =
-    s"https://api.pexels.com/videos/popular?per_page=100&min_width=1024&min_height=600&min_duration=$MIN_DURATION_S"
+  protected def getRandomVideo: Try[RandomVideo] =
+    Try {
 
-  private var isDownloading: Boolean = false
+      case class JsonVideoFile(
+          id: Long,
+          quality: String,
+          file_type: String,
+          width: Option[Int],
+          height: Option[Int],
+          link: String
+      )
 
-  /**
-    * Get actual temperature in celsius
-    *
-    * @return Either Left = Error / Right = FileName
-    */
-  def downloadNextVideoFile: Future[Unit] =
-    Future {
+      case class JsonModelVideo(video_files: Vector[JsonVideoFile])
 
-      if (!isDownloading) {
+      case class JsonModel(videos: Vector[JsonModelVideo])
 
-        isDownloading = true
-
-        case class JsonVideoFile(
-            id: Long,
-            quality: String,
-            file_type: String,
-            width: Option[Int],
-            height: Option[Int],
-            link: String
-        )
-
-        case class JsonModelVideo(video_files: Vector[JsonVideoFile])
-
-        case class JsonModel(videos: Vector[JsonModelVideo])
-
-        logger.debug("Start download video")
-
-        Webclient.getCachedRequestToJson(
+      val data = Webclient
+        .getCachedRequestToJson(
           decoder = Decoder[JsonModel],
           url = this.targetUrl,
           headerParams = Map(
             "Authorization" -> Config.Pexels.pexelsToken
           )
-        ) match {
+        )
+        .right
+        .get
 
-          case Left(error) =>
-            isDownloading = false
-            this.rmWorkingFiles()
-            logger.error(error)
+      val selection: Vector[JsonVideoFile] = data.videos
+        .flatMap(_.video_files)
+        .filter(_.quality.equals("sd"))
 
-          case Right(data) =>
-            Try {
+      val t: JsonVideoFile = selection(scala.util.Random.nextInt((selection.size)))
 
-              val selection = data.videos
-                .flatMap(_.video_files)
-                .filter(_.quality.equals("sd"))
+      RandomVideo(url = t.link, id = t.id)
+    }
 
-              val sUrl: String = selection(scala.util.Random.nextInt(selection.size)).link
+  protected def generateFilePath(videoId: Long): String =
+    Config.Pexels.localWorkDir + s"background-$videoId.mp4"
 
-              new URL(sUrl) #> new File("downloadVideo.mp4") !
+  protected def isAlreadyDownloaded(filePath: String): Boolean =
+    Files.exists(Paths.get(filePath))
 
-              logger.debug("Stop download video / Start conv now")
+  var isProcNow = false
 
-              //NON OMX on mac os!
-              s"ffmpeg -i downloadVideo.mp4 -loglevel error -vf fps=24,scale=1024:600 -c:v h264_omx $TARGET_FILENAME" !
+  def downloadRandomVideoAndConvert(): Future[Unit] =
+    Future {
 
-            } match {
-              case Failure(exception) =>
-                isDownloading = false
-                this.rmWorkingFiles()
-                logger.error(exception.getLocalizedMessage)
+      if (!isProcNow) {
 
-              case Success(_) =>
-                isDownloading = false
-                logger.debug(s"Fin convert video ($TARGET_FILENAME)")
+        isProcNow = true
+
+        this.getRandomVideo match {
+          case Failure(exception) =>
+            isProcNow = false
+            logger.warn(s"Failed to get random video (${exception.getLocalizedMessage})")
+          case Success(randomVideo) =>
+            val filePath = generateFilePath(randomVideo.id)
+
+            if (!this.isAlreadyDownloaded(filePath)) {
+
+              logger.debug("Start download random video")
+
+              val downloadFilePath = "/tmp/downloadVideo.mp4"
+
+              Webclient.downloadFileGetRequest(
+                filePath = downloadFilePath,
+                url = randomVideo.url,
+                headerParams = Map.empty
+              ) match {
+                case Failure(exception) =>
+                  isProcNow = false
+                  logger.warn(s"Download video error (${exception.getLocalizedMessage})")
+                case Success(_) =>
+                  logger.debug("Stop download video / Start conv now")
+
+                  //NON OMX on mac os!
+                  s"ffmpeg -i $downloadFilePath -loglevel error -vf fps=24,scale=1024:600 -c:v h264_omx $filePath" !!
+
+                  s"mv $downloadFilePath $filePath" !!
+
+                  isProcNow = false
+                  logger.debug("Stop converting video")
+
+              }
+
+            } else {
+              isProcNow = false
+              logger.debug("Skip download video (already downloaded)")
             }
 
         }
 
       } else
-        logger.debug("Skip download video (is already downloading)")
+        logger.debug("Skip proc videos (is already processing)")
 
     }
 
-  override def rmWorkingFiles(): Unit =
-    Try {
-      if (!isDownloading)
-        s"rm downloadVideo.mp4 $TARGET_FILENAME" !!
-    }
-
-  override def isVideoReady: Boolean = {
-
-    if (isDownloading)
-      return false
-
-    import java.nio.file.{ Files, Paths }
-    import java.nio.file.{ Files, Paths }
-
-    Files.exists(Paths.get(TARGET_FILENAME))
+  private def getListOfFiles(dir: String): Vector[java.io.File] = {
+    // Thank you https://alvinalexander.com/scala/how-to-list-files-in-directory-filter-names-scala/
+    val d = new java.io.File(dir)
+    if (d.exists && d.isDirectory)
+      d.listFiles.filter(_.isFile).toVector
+    else
+      Vector[java.io.File]()
   }
+
+  def getLocalRandomVideo(): Try[String] =
+    Try {
+
+      val fileNames = getListOfFiles(Config.Pexels.localWorkDir)
+        .map(_.getAbsolutePath)
+        .filter(_.contains(".mp4"))
+        .filter(_.contains("background"))
+
+      if (fileNames.nonEmpty)
+        fileNames(scala.util.Random.nextInt(fileNames.size))
+      else throw new Exception("No files")
+
+    }
+
 }
