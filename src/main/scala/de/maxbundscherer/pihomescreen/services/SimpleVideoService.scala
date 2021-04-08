@@ -61,7 +61,8 @@ class SimpleVideoService extends VideoService with JSONWebclient with Configurat
   protected def isAlreadyDownloaded(filePath: String): Boolean =
     Files.exists(Paths.get(filePath))
 
-  var isProcNow = false
+  var isProcNow                        = false
+  var lastProcFilename: Option[String] = None
 
   def downloadRandomVideoAndConvert(): Future[Unit] =
     Future {
@@ -73,6 +74,7 @@ class SimpleVideoService extends VideoService with JSONWebclient with Configurat
         this.getRandomVideo match {
           case Failure(exception) =>
             isProcNow = false
+            lastProcFilename = None
             logger.warn(s"Failed to get random video (${exception.getLocalizedMessage})")
           case Success(randomVideo) =>
             val filePath = generateFilePath(randomVideo.id)
@@ -90,6 +92,7 @@ class SimpleVideoService extends VideoService with JSONWebclient with Configurat
               } match {
                 case Failure(exception) =>
                   isProcNow = false
+                  lastProcFilename = None
                   logger.warn(s"Download video error (${exception.getLocalizedMessage})")
                 case Success(_) =>
                   logger.debug("Stop download video / Start conv now")
@@ -102,9 +105,11 @@ class SimpleVideoService extends VideoService with JSONWebclient with Configurat
                   } match {
                     case Failure(exception) =>
                       isProcNow = false
+                      lastProcFilename = None
                       logger.warn(s"Unknown error (${exception.getLocalizedMessage})")
                     case Success(_) =>
                       isProcNow = false
+                      lastProcFilename = Some(filePath)
                       logger.debug("Stop converting video")
                   }
 
@@ -112,6 +117,7 @@ class SimpleVideoService extends VideoService with JSONWebclient with Configurat
 
             } else {
               isProcNow = false
+              lastProcFilename = Some(filePath)
               logger.debug("Skip download video (already downloaded)")
             }
 
@@ -133,6 +139,11 @@ class SimpleVideoService extends VideoService with JSONWebclient with Configurat
 
   def getLocalRandomVideo(): Try[String] =
     Try {
+
+      if (lastProcFilename.isDefined) {
+        lastProcFilename = None
+        return Try(lastProcFilename.get)
+      }
 
       val fileNames = getListOfFiles(Config.Pexels.localWorkDir)
         .map(_.getAbsolutePath)
