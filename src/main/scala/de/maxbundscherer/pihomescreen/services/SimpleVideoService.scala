@@ -32,8 +32,7 @@ class SimpleVideoService extends VideoService with JSONWebclient with Configurat
   def downloadNextVideoFile: Future[Unit] =
     Future {
 
-      //TODO: Enable simple video service and add cache for downloaded videos
-      if (!isDownloading && false) {
+      if (!isDownloading) {
 
         isDownloading = true
 
@@ -79,7 +78,7 @@ class SimpleVideoService extends VideoService with JSONWebclient with Configurat
               logger.debug("Stop download video / Start conv now")
 
               //NON OMX on mac os!
-              s"ffmpeg -i downloadVideo.mp4 -loglevel error -vf fps=23,scale=1024:600 -c:v h264_omx $TARGET_FILENAME" !
+              s"ffmpeg -i downloadVideo.mp4 -loglevel error -vf fps=24,scale=1024:600 -c:v h264_omx $TARGET_FILENAME" !
 
             } match {
               case Failure(exception) =>
