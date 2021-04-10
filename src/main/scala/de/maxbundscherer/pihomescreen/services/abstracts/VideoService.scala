@@ -9,7 +9,7 @@ abstract class VideoService {
   protected val targetUrl: String =
     s"https://api.pexels.com/videos/popular?per_page=100&min_width=1024&min_height=600&min_duration=$MIN_DURATION_S"
 
-  private val MIN_DURATION_S: Int = 15 * 60
+  protected val MIN_DURATION_S: Int = 15 * 60
 
   case class RandomVideo(url: String, id: Long)
 
