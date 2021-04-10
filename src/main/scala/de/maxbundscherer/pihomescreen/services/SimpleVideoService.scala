@@ -31,7 +31,7 @@ class SimpleVideoService extends VideoService with JSONWebclient with Configurat
           link: String
       )
 
-      case class JsonModelVideo(video_files: Vector[JsonVideoFile])
+      case class JsonModelVideo(video_files: Vector[JsonVideoFile], duration: Int)
 
       case class JsonModel(videos: Vector[JsonModelVideo])
 
@@ -47,6 +47,7 @@ class SimpleVideoService extends VideoService with JSONWebclient with Configurat
         .get
 
       val selection: Vector[JsonVideoFile] = data.videos
+        .filter(_.duration >= MIN_DURATION_S)
         .flatMap(_.video_files)
         .filter(_.quality.equals("sd"))
 
