@@ -503,7 +503,11 @@ class MainPresenter(
 
   }
 
-  var showedVideo = false
+  private def stopVideo(): Unit =
+    if (this.mediaPlayer.isDefined) this.mediaPlayer.get.stop()
+
+  var showedVideo                      = false
+  var mediaPlayer: Option[MediaPlayer] = None
 
   /**
     * Updates Background (global)
@@ -522,8 +526,8 @@ class MainPresenter(
 
           val p = new MediaPlayer(m)
           p.setAutoPlay(true)
-
           p.setCycleCount(MediaPlayer.INDEFINITE)
+          this.mediaPlayer = Some(p)
 
           this.cMediaView.setSmooth(true)
           this.cMediaView.mediaPlayer.set(p)
@@ -535,6 +539,7 @@ class MainPresenter(
 
     //No Video
 
+    this.stopVideo()
     this.panBackground.setBackground(ImageHelper.getNextBackground())
 
     this.cMediaView.visible = false
