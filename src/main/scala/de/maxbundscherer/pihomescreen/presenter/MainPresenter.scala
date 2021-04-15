@@ -85,7 +85,7 @@ class MainPresenter(
     private val panLeftArrow: Pane,
     private val panRightArrow: Pane,
     /*
-                                       // Second Pane
+                                                        // Second Pane
      */
     private val secondPane_btnSceneKitchenRead: Button,
     private val secondPane_btnSceneKitchenRelax: Button,
@@ -98,7 +98,7 @@ class MainPresenter(
     private val secondPane_btnSceneBedroomNightLight: Button,
     private val secondPane_btnSceneBedroomRed: Button,
     /*
-                                       // Third Pane
+                                                        // Third Pane
      */
     private val thirdPane_btnRoutineWakeUp: Button,
     private val thirdPane_btnRoutineRelax: Button,
@@ -107,7 +107,7 @@ class MainPresenter(
     private val thirdPane_btnRoutineAllOff: Button,
     private val thirdPane_btnExit: Button,
     /*
-                                       // Fourth Pane
+                                                        // Fourth Pane
      */
     private val fourthPane_labTop: Label,
     private val fourthPane_labBottom: Label
@@ -329,53 +329,51 @@ class MainPresenter(
   /**
     * Updates states from toggle buttons
     */
-  private def updateLightStates(): Unit =
-    Future {
+  private def updateLightStates(): Unit = {
 
-      val actualBulbStates
-          : Either[String, Map[lightService.Lights.Light, lightService.EntityState]] =
-        this.lightService.getLightBulbStates
+    val actualBulbStates: Either[String, Map[lightService.Lights.Light, lightService.EntityState]] =
+      this.lightService.getLightBulbStates
 
-      actualBulbStates match {
+    actualBulbStates match {
 
-        case Left(error) =>
-          logger.error(s"Can not get light bulb states ($error)")
+      case Left(error) =>
+        logger.error(s"Can not get light bulb states ($error)")
 
-        case Right(actualBulbStates) =>
-          this.lastSeenBulbStates = Some(actualBulbStates)
+      case Right(actualBulbStates) =>
+        this.lastSeenBulbStates = Some(actualBulbStates)
 
-          Platform.runLater(for ((light, lightState) <- actualBulbStates) {
+        for ((light, lightState) <- actualBulbStates) {
 
-            val targetToggleButton = this.lightsMapping.find(_._2._1.equals(light)).get._1
-            targetToggleButton.setStyle(this.lightStyleTranslator(lightState.on))
+          val targetToggleButton = this.lightsMapping.find(_._2._1.equals(light)).get._1
+          targetToggleButton.setStyle(this.lightStyleTranslator(lightState.on))
 
-          })
+        }
 
-          val actualRoomStates = this.lightService.getRoomStates(Some(actualBulbStates))
+        val actualRoomStates = this.lightService.getRoomStates(Some(actualBulbStates))
 
-          actualRoomStates match {
+        actualRoomStates match {
 
-            case Left(error) =>
-              logger.error(s"Can not get room states ($error)")
+          case Left(error) =>
+            logger.error(s"Can not get room states ($error)")
 
-            case Right(actualRoomStates) =>
-              this.lastSeenRoomStates = Some(actualRoomStates)
+          case Right(actualRoomStates) =>
+            this.lastSeenRoomStates = Some(actualRoomStates)
 
-              Platform.runLater(for ((room, roomState) <- actualRoomStates) {
+            for ((room, roomState) <- actualRoomStates) {
 
-                val targetProgressBar = this.roomsMappingProgressBars.find(_._2 == room).get._1
+              val targetProgressBar = this.roomsMappingProgressBars.find(_._2 == room).get._1
 
-                val newBrightness = if (roomState.brightness <= 0.20) 0.20 else roomState.brightness
-                targetProgressBar.setProgress(newBrightness)
-                targetProgressBar.setStyle(this.roomStyleTranslator(roomState.on))
+              val newBrightness = if (roomState.brightness <= 0.20) 0.20 else roomState.brightness
+              targetProgressBar.setProgress(newBrightness)
+              targetProgressBar.setStyle(this.roomStyleTranslator(roomState.on))
 
-              })
+            }
 
-          }
-
-      }
+        }
 
     }
+
+  }
 
   /**
     * Switch pane
@@ -422,15 +420,10 @@ class MainPresenter(
   /**
     * Updates clock (global)
     */
-  private def updateClock(): Unit =
-    Future {
-
-      val a = this.calendarService.getHourAndMinuteToString
-      val b = this.calendarService.getDateToString
-
-      Platform.runLater(this.lblClock.setText(a))
-      Platform.runLater(this.lblDate.setText(b))
-    }
+  private def updateClock(): Unit = {
+    this.lblClock.setText(this.calendarService.getHourAndMinuteToString)
+    this.lblDate.setText(this.calendarService.getDateToString)
+  }
 
   private var _nightModeStateOn = false
 
@@ -561,34 +554,31 @@ class MainPresenter(
   /**
     * Updates weather (global)
     */
-  private def updateWeather(): Unit =
-    Future {
+  private def updateWeather(): Unit = {
 
-      val ans: String = this.weatherService.getActualTempInCelsius match {
-        case Left(error) =>
-          logger.error(s"Can not get weather ($error)")
-          "??"
-        case Right(data) => data
-      }
-
-      Platform.runLater(this.lblWeather.setText(ans + " C°"))
+    val ans: String = this.weatherService.getActualTempInCelsius match {
+      case Left(error) =>
+        logger.error(s"Can not get weather ($error)")
+        "??"
+      case Right(data) => data
     }
+
+    this.lblWeather.setText(ans + " C°")
+  }
 
   /**
     * Do health check
     */
   private def doHealthCheck(): Unit =
-    Future {
-      this.healthCheckService.doHealthCheck() match {
+    this.healthCheckService.doHealthCheck() match {
 
-        case Left(error) =>
-          this.lastError = Some(error)
-          Platform.runLater(this.imvWarning.setVisible(true))
+      case Left(error) =>
+        this.lastError = Some(error)
+        this.imvWarning.setVisible(true)
 
-        case Right(_) =>
-          Platform.runLater(this.imvWarning.setVisible(false))
+      case Right(_) =>
+        this.imvWarning.setVisible(false)
 
-      }
     }
 
   /**
@@ -849,36 +839,33 @@ class MainPresenter(
   /**
     * Updates jokes (fourthPane)
     */
-  private def updateJokes(): Unit =
-    Future {
+  private def updateJokes(): Unit = {
 
-      val firstJoke = this.jokeService.getFirstJoke() match {
+    val firstJoke = this.jokeService.getFirstJoke() match {
 
-        case Left(error) =>
-          logger.error(s"Can not get first joke ($error)")
-          "Fehler: Kann Witz nicht laden"
+      case Left(error) =>
+        logger.error(s"Can not get first joke ($error)")
+        "Fehler: Kann Witz nicht laden"
 
-        case Right(joke) => joke
-      }
-
-      val secondJoke = this.jokeService.getSecondJoke() match {
-
-        case Left(error) =>
-          logger.error(s"Can not get second joke ($error)")
-          "Fehler: Kann Witz nicht laden"
-
-        case Right(joke) => joke
-      }
-
-      Platform.runLater {
-        this.fourthPane_labTop.setText(firstJoke)
-        this.fourthPane_labBottom.setText(secondJoke)
-
-        //Fix: Java FX Center Bug (Label alignment)
-        this.fourthPane_labTop.setAlignment(Pos.BaselineCenter)
-        this.fourthPane_labBottom.setAlignment(Pos.BaselineCenter)
-      }
-
+      case Right(joke) => joke
     }
+
+    val secondJoke = this.jokeService.getSecondJoke() match {
+
+      case Left(error) =>
+        logger.error(s"Can not get second joke ($error)")
+        "Fehler: Kann Witz nicht laden"
+
+      case Right(joke) => joke
+    }
+
+    this.fourthPane_labTop.setText(firstJoke)
+    this.fourthPane_labBottom.setText(secondJoke)
+
+    //Fix: Java FX Center Bug (Label alignment)
+    this.fourthPane_labTop.setAlignment(Pos.BaselineCenter)
+    this.fourthPane_labBottom.setAlignment(Pos.BaselineCenter)
+
+  }
 
 }
