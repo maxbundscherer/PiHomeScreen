@@ -504,7 +504,10 @@ class MainPresenter(
   }
 
   private def stopVideo(): Unit =
-    if (this.mediaPlayer.isDefined) this.mediaPlayer.get.stop()
+    if (this.mediaPlayer.isDefined) {
+      this.mediaPlayer.get.stop()
+      this.mediaPlayer.get.dispose()
+    }
 
   var showedVideo                      = false
   var mediaPlayer: Option[MediaPlayer] = None
