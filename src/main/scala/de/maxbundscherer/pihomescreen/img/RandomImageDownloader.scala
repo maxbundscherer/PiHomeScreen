@@ -3,6 +3,8 @@ package de.maxbundscherer.pihomescreen.img
 import de.maxbundscherer.pihomescreen.utils.{ Configuration, JSONWebclient }
 import org.apache.logging.log4j.scala.Logging
 
+import scala.util.{ Failure, Success }
+
 trait RandomImageDownloader extends Configuration with JSONWebclient with Logging {
 
   object RandomImage {
@@ -66,11 +68,16 @@ trait RandomImageDownloader extends Configuration with JSONWebclient with Loggin
 
         val modFilepath = filePath.replace(".png", ".jpeg")
 
-        Webclient.downloadFileGetRequest(modFilepath, url, Map("User-Agent" -> agent))
+        Webclient.downloadFileGetRequest(modFilepath, url, Map("User-Agent" -> agent)) match {
+          case Failure(exception) =>
+            logger.error("Can not download pic " + exception.getLocalizedMessage)
 
-        s"convert $modFilepath $filePath" !!
+          case Success(_) =>
+            s"convert $modFilepath $filePath" !!
 
-        s"rm $modFilepath" !!
+            s"rm $modFilepath" !!
+
+        }
 
       }
 
