@@ -16,7 +16,7 @@ trait LightConfiguration {
     val LivingRoomCouch: Light  = 4
     val LivingRoomCloset: Light = 10
 
-    val BedroomBack: Light  = 12
+    val BedroomBack: Light  = 13
     val BedroomFront: Light = 1
 
     val ALL_LIGHTS: Vector[Light] = Vector(
